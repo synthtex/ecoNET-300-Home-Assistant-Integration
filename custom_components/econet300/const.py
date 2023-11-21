@@ -23,7 +23,7 @@ API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 API_REG_PARAMS_URI = "regParams"
 API_REG_PARAMS_PARAM_DATA = "curr"
 
-## Reg params data
+## Reg params data all in one
 API_REG_PARAMS_DATA_URI = "regParamsData"
 
 ## Map names for params data in API_REG_PARAMS_DATA_URI
