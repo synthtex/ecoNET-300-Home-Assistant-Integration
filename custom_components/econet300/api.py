@@ -207,7 +207,7 @@ class Econet300Api:
  #       return {**reg_params, **sys_params}
  
         """Fetch data from regParamsData."""
-        reg_params_sata = await self._fetch_reg_key(API_REG_PARAMS_DATA_URI)
+        reg_params_data = await self._fetch_reg_key(API_REG_PARAMS_DATA_URI)
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):
         """Fetch a key from the json-encoded data.
