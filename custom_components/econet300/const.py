@@ -23,6 +23,15 @@ API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 API_REG_PARAMS_URI = "regParams"
 API_REG_PARAMS_PARAM_DATA = "curr"
 
+## Reg params data
+API_REG_PARAMS_DATA_URI = "regParamsData"
+
+## Map names for params data in API_REG_PARAMS_DATA_URI
+API_RM_CURRENT_DATA_PARAMS_URI ="rmCurrentDataParams"
+
+## Mapunits for params data map API_RM_CURRENT_DATA_PARAMS_URI
+API_RM_PARAMSUNITSNAMES_URI ="rmParamsUnitsNames"
+
 ## Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
 OPERATION_MODE_NAMES = {
