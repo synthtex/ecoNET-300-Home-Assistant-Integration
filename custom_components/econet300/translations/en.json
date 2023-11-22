@@ -17,5 +17,9 @@
                 }
             }
         }
+    },
+    "sensor": {
+        "boilerPower": { "name": "Boiler output" }
     }
+
 }

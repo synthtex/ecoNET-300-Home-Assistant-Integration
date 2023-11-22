@@ -200,12 +200,6 @@ class Econet300Api:
         return Limits(curr_limits["min"], curr_limits["max"])
 
     async def fetch_data(self) -> dict[str, Any]:
- #       """Fetch merged reg_params and sys_params data."""
- #       reg_params = await self._fetch_reg_key(
- #           API_REG_PARAMS_URI, API_REG_PARAMS_PARAM_DATA
- #       )
- #       sys_params = await self._fetch_reg_key(API_SYS_PARAMS_URI)
- #       return {**reg_params, **sys_params}
         """Fetch data from regParamsData."""
         reg_params = await self._fetch_reg_key(API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA)
         return reg_params

@@ -58,6 +58,18 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         process_val=lambda x: round(x, 2),
     ),
+    EconetSensorEntityDescription(
+        key="1794",
+#        econet_key = "boilerPower"
+        name="Boiler output",
+        translation_key= "boilerPower",
+        icon="mdi:thermometer",
+        native_unit_of_measurement=PERCENTAGE,
+        state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.POWER_FACTOR,
+        process_val=lambda x: round(x, 2),
+        suggested_display_precision=1
+    ),
 )
 
 
