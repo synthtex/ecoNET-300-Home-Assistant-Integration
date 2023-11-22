@@ -26,6 +26,8 @@ from .const import (
     SERVICE_COORDINATOR,
     SERVICE_API,
     OPERATION_MODE_NAMES,
+    REG_PARAM_MAP,
+    REG_PARAM_PRECICION,
 )
 from .entity import EconetEntity
 
@@ -60,15 +62,13 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="1794",
-#        econet_key = "boilerPower"
-        name="Boiler output",
-        translation_key= "boilerPower",
+        translation_key=REG_PARAM_MAP[1794],
         icon="mdi:thermometer",
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.POWER_FACTOR,
-        process_val=lambda x: round(x, 2),
-        suggested_display_precision=1
+        suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[1794]],
+        process_val=lambda x: x,
     ),
 )
 

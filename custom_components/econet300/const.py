@@ -58,10 +58,30 @@ PRODUCT_TYPE = {
     1: "ECOMAX_850i_TYPE",
 }
 
+REG_PARAM_MAP ={
+26: "Feeder temperature",
+28: "Weather temperature",
+139: "Valve mixer 1",
+153:
+154: "Oxygen",
+164: "Server",
+173: "SSID",
+73:	"Groznas_I",
+1024:	Boiler temperature
+1025:	HUW temperature
+1028:	Upper buffer temperature
+1029:	Lower buffer temperature
+1030:	Emmision temperature
+1031:	Temp. mixer 1
+
+
+1794: "boilerPower",
+}
+
 # Sensors precision value from econet dev
 REG_PARAM_PRECICION = {
     "boilerPowerKW": 1,
-    "boilerPower": 0,
+    "boilerPower": 0, 
     "fuelStream": 1,
     "ecoSterTemp": 1,
     "ecoSterSetTemp": 1,
