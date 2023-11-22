@@ -92,6 +92,10 @@ class ControllerSensor(EconetEntity, EconetSensor):
 
 def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordinator):
     """Check it can add key"""
+    _LOGGER.debug(
+                "Coordinator hass data: %s does not exist, entity will not be added",
+                coordinator.data,
+            )
     return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
 
 

@@ -15,6 +15,7 @@ from .const import (
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_HW_VER,
     API_REG_PARAMS_DATA_URI,
+    API_REG_PARAMS_DATA_PARAM_DATA,
 )
 from .mem_cache import MemCache
 
@@ -205,9 +206,8 @@ class Econet300Api:
  #       )
  #       sys_params = await self._fetch_reg_key(API_SYS_PARAMS_URI)
  #       return {**reg_params, **sys_params}
- 
         """Fetch data from regParamsData."""
-        reg_params = await self._fetch_reg_key(API_REG_PARAMS_DATA_URI)
+        reg_params = await self._fetch_reg_key(API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA)
         return reg_params
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):

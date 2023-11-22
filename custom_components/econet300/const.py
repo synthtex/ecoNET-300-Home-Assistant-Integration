@@ -25,6 +25,7 @@ API_REG_PARAMS_PARAM_DATA = "curr"
 
 ## Reg params data all in one
 API_REG_PARAMS_DATA_URI = "regParamsData"
+API_REG_PARAMS_DATA_PARAM_DATA ='data'
 
 ## Map names for params data in API_REG_PARAMS_DATA_URI
 API_RM_CURRENT_DATA_PARAMS_URI ="rmCurrentDataParams"
