@@ -35,41 +35,7 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
-
     process_val: Callable[[Any], Any] = lambda x: x
-
-
-SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
-    EconetSensorEntityDescription(
-        key="1031",
-        name="Mixer 1 set temp.",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        process_val=lambda x: round(x, 2),
-    ),
-    EconetSensorEntityDescription(
-        key="28",
-        translation_key= REG_PARAM_MAP[28],
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature[REG_PARAM_UNIT[28]],
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[28]],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="1794",
-        translation_key=REG_PARAM_MAP[1794],
-        icon="mdi:thermometer",
-        native_unit_of_measurement=None,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.POWER_FACTOR,
-        suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[1794]],
-        process_val=lambda x: x,
-    ),
-)
 
 
 class EconetSensor(SensorEntity):
@@ -103,10 +69,6 @@ class ControllerSensor(EconetEntity, EconetSensor):
 
 def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordinator):
     """Check it can add key"""
-    _LOGGER.debug(
-                "Coordinator hass data: %s does not exist, entity will not be added",
-                coordinator.data,
-            )
     return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
 
 
@@ -114,13 +76,22 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     """add key"""
     entities = []
 
-    for description in SENSOR_TYPES:
-        if can_add(description, coordinator):
-            entities.append(ControllerSensor(description, coordinator, api))
+    coordinatorData = coordinator.data
+    for key, value in coordinatorData:
+        if(REG_PARAM_MAP.has_key(key))
+            entityDescription = EconetSensorEntityDescription(
+                key=key,
+                native_unit_of_measurement=REG_PARAM_UNIT[REG_PARAM_MAP[key]],
+                state_class=SensorStateClass.MEASUREMENT,
+                device_class=SensorDeviceClass.TEMPERATURE,
+                suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[key]],
+                process_val=lambda x: x,
+            )
+            entities.append(ControllerSensor(entityDescription, coordinator, api))
         else:
             _LOGGER.debug(
                 "Availability key: %s does not exist, entity will not be added",
-                description.key,
+                key,
             )
 
     return entities
