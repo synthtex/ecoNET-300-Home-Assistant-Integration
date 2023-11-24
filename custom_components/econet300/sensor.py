@@ -25,6 +25,7 @@ from .const import (
     SERVICE_API,
     REG_PARAM_MAP,
     REG_PARAM_PRECICION,
+    REG_PARAM_UNIT,
 )
 from .entity import EconetEntity
 
@@ -52,7 +53,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         key="28",
         translation_key= REG_PARAM_MAP[28],
         icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature[REG_PARAM_UNIT[28]],
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
         suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[28]],

@@ -85,7 +85,7 @@ REG_PARAM_PRECICION = {
 }
 
 # Sensors units from econet dev
-RG_PARAM_UNIT = {
+REG_PARAM_UNIT = {
     'T1': '°C',
     'T2': '°C',
     'T3': '°C',
