@@ -62,8 +62,8 @@ PRODUCT_TYPE = {
 }
 
 REG_PARAM_MAP = {
-    26: "tempFeeder",
-    28: "tempExternalSensor",
+    "26": "tempFeeder",
+    "28": "tempExternalSensor",
 #     139: "Valve mixer 1",
 #     153: "lambdaSet",
 #     154: "lambdaLevel",
