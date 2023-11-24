@@ -1,4 +1,7 @@
 """Constants for the econet Integration integration."""
+from homeassistant.const import (
+    UnitOfTemperature,
+)
 
 DOMAIN = "econet300"
 
@@ -58,16 +61,16 @@ PRODUCT_TYPE = {
     1: "ECOMAX_850i_TYPE",
 }
 
-REG_PARAM_MAP ={
-26: "tempFeeder",
-28: "tempExternalSensor",
-139: "Valve mixer 1",
-153: "lambdaSet",
-154: "lambdaLevel",
-1024: "tempCO",
-1025: "tempCOSet",
-1031: "mixerTemp1",
-1794: "boilerPower",
+REG_PARAM_MAP = {
+    26: "tempFeeder",
+    28: "tempExternalSensor",
+#     139: "Valve mixer 1",
+#     153: "lambdaSet",
+#     154: "lambdaLevel",
+#     1024: "tempCO",
+#     1025: "tempCOSet",
+#     1031: "mixerTemp1",
+#     1794: "boilerPower",
 }
 
 # Sensors precision value from econet dev
@@ -108,10 +111,10 @@ REG_PARAM_UNIT = {
     'tempUpperSolar': '°C',
     'tempLowerSolar': '°C',
     'tempFireplace': '°C',
-    'tempExternalSensor': '°C',
+    'tempExternalSensor': UnitOfTemperature.CELSIUS,
     'tempBack': '°C',
     'fuelStream': 'kg/h',
-    'tempFeeder': '°C',
+    'tempFeeder': UnitOfTemperature.CELSIUS,
     'tempFlueGas': '°C',
     'boilerPowerKW': 'kW',
     'boilerPower': '%',
