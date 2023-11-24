@@ -12,9 +12,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
-    TEMP_CELSIUS,
-    PERCENTAGE,
-    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+    UnitOfTemperature,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
@@ -25,7 +23,6 @@ from .const import (
     DOMAIN,
     SERVICE_COORDINATOR,
     SERVICE_API,
-    OPERATION_MODE_NAMES,
     REG_PARAM_MAP,
     REG_PARAM_PRECICION,
 )
@@ -46,25 +43,26 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         key="1031",
         name="Mixer 1 set temp.",
         icon="mdi:thermometer",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
         process_val=lambda x: round(x, 2),
     ),
     EconetSensorEntityDescription(
         key="28",
-        name="Outside temperature",
+        translation_key= REG_PARAM_MAP[28],
         icon="mdi:thermometer",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
-        process_val=lambda x: round(x, 2),
+        suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[28]],
+        process_val=lambda x: x,
     ),
     EconetSensorEntityDescription(
         key="1794",
         translation_key=REG_PARAM_MAP[1794],
         icon="mdi:thermometer",
-        native_unit_of_measurement=PERCENTAGE,
+        native_unit_of_measurement=None,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.POWER_FACTOR,
         suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[1794]],

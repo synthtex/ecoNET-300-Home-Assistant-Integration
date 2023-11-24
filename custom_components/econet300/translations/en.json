@@ -19,7 +19,8 @@
         }
     },
     "sensor": {
-        "boilerPower": { "name": "Boiler output" }
+        "boilerPower": { "name": "Boiler output" },
+        "tempExternalSensor": { "name": "Outside temperature" },
     }
 
 }
