@@ -67,6 +67,7 @@ PRODUCT_TYPE = {
     1: "ECOMAX_850i_TYPE",  # regType 1
 }
 
+<<<<<<< HEAD
 ## Editable params limits
 API_EDIT_PARAM_URI = "rmCurrNewParam"
 API_EDITABLE_PARAMS_LIMITS_URI = "rmCurrentDataParamsEdits"
@@ -291,4 +292,21 @@ ENTITY_CATEGORY = {
 REG_PARAM_VISIBLE_DEFAULT = {
     "tempUpperBuffer": False,
     "tempLowerBuffer": False,
+=======
+# Sensors precision value from econet dev
+REG_PARAM_PRECICION = {
+    "boilerPowerKW": 1,
+    "boilerPower": 0, 
+    "fuelStream": 1,
+    "ecoSterTemp": 1,
+    "ecoSterSetTemp": 1,
+    "tempExternalSensor": 1,
+    "lambdaSet": 1,
+    "lambdaLevel": 1,
+    "thermoTemp": 1,
+    "thermoSetTemp": 0,
+    "tempFeeder":0,
+    "tempCO":0,
+    "tempFlueGas":0,
+>>>>>>> 3939829 (add sensor precision)
 }
