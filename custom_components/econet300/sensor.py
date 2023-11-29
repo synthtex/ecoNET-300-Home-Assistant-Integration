@@ -113,12 +113,13 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """creating individual sensor description smixer sensors"""
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         description = EconetSensorEntityDescription(
-            key="mixerTemp{}".format(i),
-            name="Mixer {} temperature".format(i),
+            key=f"mixerTemp{i}",
+            name=f"Mixer {i} temperature",
             icon="mdi:thermometer",
             native_unit_of_measurement=UnitOfTemperature.CELSIUS,
             state_class=SensorStateClass.MEASUREMENT,
@@ -130,10 +131,8 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             entities.append(MixerSensor(description, coordinator, api, i))
         else:
             _LOGGER.debug(
-                "Availability key: "
-                + description.key
-                + " does not exist, entity will not be "
-                "added"
+                "Availability key: %s does not exist, entity will not be added",
+                description.key,
             )
 
     return entities
