@@ -29,6 +29,13 @@ _LOGGER = logging.getLogger(__name__)
 
 
 def map_param(param_name):
+    if not param_name in EDITABLE_PARAMS_MAPPING_TABLE:
+        return None
+
+    return EDITABLE_PARAMS_MAPPING_TABLE[param_name]
+
+
+def map_param(param_name):
     """Check params mapping in const.py."""
     if param_name not in EDITABLE_PARAMS_MAPPING_TABLE:
         return None
