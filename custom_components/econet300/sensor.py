@@ -112,6 +112,33 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     return entities
 
 
+def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
+    entities = []
+
+    for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
+        description = EconetSensorEntityDescription(
+            key="mixerTemp{}".format(i),
+            name="Mixer {} temperature".format(i),
+            icon="mdi:thermometer",
+            native_unit_of_measurement=TEMP_CELSIUS,
+            state_class=SensorStateClass.MEASUREMENT,
+            device_class=SensorDeviceClass.TEMPERATURE,
+            process_val=lambda x: round(x, 2),
+        )
+
+        if can_add(description, coordinator):
+            entities.append(MixerSensor(description, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                "Availability key: "
+                + description.key
+                + " does not exist, entity will not be "
+                "added"
+            )
+
+    return entities
+
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
