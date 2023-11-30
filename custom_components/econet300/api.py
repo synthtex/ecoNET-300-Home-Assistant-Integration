@@ -2,11 +2,12 @@
     class describint methods of getting and setting data
 """
 import asyncio
-import logging
 from http import HTTPStatus
+import logging
 from typing import Any
 
-from aiohttp import ClientSession, BasicAuth
+from aiohttp import BasicAuth, ClientSession
+
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -52,15 +53,15 @@ class Limits:
 
 
 class AuthError(Exception):
-    """AuthError"""
+    """Raised when authentication fails."""
 
 
 class ApiError(Exception):
-    """AuthError"""
+    """Raised when an API error occurs."""
 
 
 class DataError(Exception):
-    """DataError"""
+    """Raised when there is an error with the data."""
 
 
 class EconetClient:
@@ -69,7 +70,7 @@ class EconetClient:
     def __init__(
         self, host: str, username: str, password: str, session: ClientSession
     ) -> None:
-        """Initialize."""
+        """Initializethe EconetClient."""
 
         proto = ["http://", "https://"]
 
@@ -252,9 +253,7 @@ class Econet300Api:
         return reg_params
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):
-        """Fetch a key from the json-encoded data.
-        If key is None, then return whole data.
-        """
+        """Fetch a key from the json-encoded data returned by the API for a given registry If key is None, then return whole data."""
         data = await self._client.get_params(reg)
 
         if data is None:

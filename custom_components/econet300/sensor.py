@@ -1,7 +1,8 @@
 """Sensor for Econet300."""
+from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-from typing import Any, Callable
+from typing import Any
 
 from homeassistant.components.sensor import (
     SensorEntityDescription,
@@ -115,7 +116,7 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Creating individual sensor description smixer sensors."""
+    """Create individual sensor descriptions for mixer sensors."""
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
