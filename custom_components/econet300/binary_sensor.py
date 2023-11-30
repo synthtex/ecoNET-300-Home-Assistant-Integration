@@ -1,11 +1,11 @@
-"""Econet binary sensor"""
+"""Econet binary sensor."""
 from dataclasses import dataclass
-
 import logging
 
 from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
     BinarySensorEntity,
+    BinarySensorEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -128,9 +128,9 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         description = EconetBinarySensorEntityDescription(
-            availability_key="mixerTemp{}".format(i),
-            key="mixerPumpWorks{}".format(i),
-            name="Mixer {} pump works".format(i),
+            availability_key=f"mixerTemp{i}",
+            key=f"mixerPumpWorks{i}",
+            name=f"Mixer {i} pump works",
             icon="mdi:pump",
             device_class=BinarySensorDeviceClass.RUNNING,
         )
