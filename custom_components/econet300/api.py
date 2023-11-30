@@ -51,6 +51,9 @@ class Limits:
         self.min = min_v
         self.max = max_v
 
+    class AuthError(Exception):
+        """Raised when authentication fails."""
+
 
 class AuthError(Exception):
     """Raised when authentication fails."""
