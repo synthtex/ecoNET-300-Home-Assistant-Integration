@@ -1,13 +1,14 @@
-"common"
-import logging
+"""Common code for econet300 integration."""
 from datetime import timedelta
+import logging
 
 import async_timeout
+
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .api import Econet300Api, AuthError, ApiError
-from .const import EDITABLE_PARAMS_MAPPING_TABLE, DOMAIN
+from .api import ApiError, AuthError, Econet300Api
+from .const import DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
