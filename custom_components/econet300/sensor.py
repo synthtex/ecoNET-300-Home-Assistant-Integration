@@ -1,12 +1,13 @@
-"""Sensor for Econet300"""
+"""Sensor for Econet300."""
 from dataclasses import dataclass
-from typing import Callable, Any
-
 import logging
+from typing import Any, Callable
 
 from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -15,6 +16,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .common_functions import camel_to_snake
 from .common import EconetDataCoordinator, Econet300Api
 from .const import (
+    AVAILABLE_NUMBER_OF_MIXERS,
     DOMAIN,
     ENTITY_DEVICE_CLASS_MAP,
     STATE_CLASS_MAP,
@@ -63,7 +65,7 @@ class EconetSensor(EconetEntity, SensorEntity):
         )
 
     def _sync_state(self, value):
-        """Sync state"""
+        """Sync state."""
         _LOGGER.debug("Update EconetSensor entity: %s", self.entity_description.name)
         self._attr_native_value = self.entity_description.process_val(value)
         self.async_write_ha_state()
@@ -113,7 +115,7 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """creating individual sensor description smixer sensors"""
+    """Creating individual sensor description smixer sensors."""
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
