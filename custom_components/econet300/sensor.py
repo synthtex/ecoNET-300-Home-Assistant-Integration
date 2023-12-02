@@ -24,7 +24,7 @@ from .const import (
     SERVICE_COORDINATOR,
     SERVICE_API,
     REG_PARAM_MAP,
-    REG_PARAM_PRECICION,
+    REG_PARAM_PRECISION,
     REG_PARAM_UNIT,
 )
 from .entity import EconetEntity
@@ -66,30 +66,49 @@ class ControllerSensor(EconetEntity, EconetSensor):
     ):
         super().__init__(description, coordinator, api)
 
+def get_human_readable_key(key: string):
+    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
+    if key in REG_PARAM_MAP:
+        return REG_PARAM_MAP[key]
+    else
+        return key
 
-def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordinator):
-    """Check it can add key"""
-    return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
+def get_native_unit_of_measurement(key: string):
+    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
+    if key in REG_PARAM_UNIT:
+        return REG_PARAM_UNIT[key]
+    else
+        return None
 
+def get_state_class(key: string):
+    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
+    if key in REG_PARAM_STATE_CLASS:
+        return REG_PARAM_STATE_CLASS[key]
+    else
+        return None
+
+def get_device_class(key: string):
+    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
+    if key in REG_PARAM_DEVICE_CLASS:
+        return REG_PARAM_DEVICE_CLASS[key]
+    else
+        return None
 
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """add key"""
     entities = []
 
     coordinator_data = coordinator.data
-    _LOGGER.debug(
-        "info coordinator data: %s ",
-        coordinator_data,
-        )
     for data_key in coordinator_data:
         if data_key in REG_PARAM_MAP:
+            human_readable_key = get_human_readable_key(data_key)
             entity_description = EconetSensorEntityDescription(
-                key=data_key,
-                translation_key=REG_PARAM_MAP[data_key],
-#                native_unit_of_measurement=REG_PARAM_UNIT[REG_PARAM_MAP[key]],
-                state_class=SensorStateClass.MEASUREMENT,
-                device_class=SensorDeviceClass.TEMPERATURE,
-#               suggested_display_precision=REG_PARAM_PRECICION[REG_PARAM_MAP[data_key]],
+                key=human_readable_key,
+                translation_key=human_readable_key,
+                native_unit_of_measurement=get_native_unit_of_measurement(human_readable_key),
+                state_class=get_state_class(human_readable_key),
+                device_class=get_device_class(human_readable_key),
+                suggested_display_precision=REG_PARAM_PRECICION["tempCO"],
                 process_val=lambda x: x,
             )
             entities.append(ControllerSensor(entity_description, coordinator, api))

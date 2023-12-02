@@ -1,8 +1,12 @@
-"""Constants for the econet Integration integration."""
+"""Constants from the Home Assistant"""
 from homeassistant.const import (
     UnitOfTemperature,
+    SensorDeviceClass,
+    SensorStateClass,
+    PERCENTAGE
 )
 
+"""Constants for the econet Integration integration."""
 DOMAIN = "econet300"
 
 SERVICE_API = "api"
@@ -28,7 +32,7 @@ API_REG_PARAMS_PARAM_DATA = "curr"
 
 ## Reg params data all in one
 API_REG_PARAMS_DATA_URI = "regParamsData"
-API_REG_PARAMS_DATA_PARAM_DATA ='data'
+API_REG_PARAMS_DATA_PARAM_DATA ="data"
 
 ## Map names for params data in API_REG_PARAMS_DATA_URI
 API_RM_CURRENT_DATA_PARAMS_URI ="rmCurrentDataParams"
@@ -61,109 +65,95 @@ PRODUCT_TYPE = {
     1: "ECOMAX_850i_TYPE",
 }
 
+#######################
+######## REG PARAM MAPS
+#######################
 REG_PARAM_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
-#     139: "Valve mixer 1",
-#     153: "lambdaSet",
-#     154: "lambdaLevel",
-#     1024: "tempCO",
-#     1025: "tempCOSet",
-#     1031: "mixerTemp1",
-#     1794: "boilerPower",
+    "153": "lambdaSet",
+    "154": "lambdaLevel",
+    "1024": "tempCO",
+    "1025": "tempCOSet",
+    "1794": "boilerPower",
 }
-
-# Sensors precision value from econet dev
-REG_PARAM_PRECICION = {
-    "boilerPowerKW": 1,
-    "boilerPower": 0, 
-    "fuelStream": 1,
-    "ecoSterTemp": 1,
-    "ecoSterSetTemp": 1,
-    "tempExternalSensor": 1,
-    "lambdaSet": 1,
-    "lambdaLevel": 1,
-    "thermoTemp": 1,
-    "thermoSetTemp": 0,
-}
+# Unknown ID's
+#fanPower
+#tempFlueGas
+#mixerSetTemp1
+#tempBack
+#tempCWU
+#tempExternalSensor
+#boilerPower
+#fuelLevel
+#mode
 
 # Sensors units from econet dev
 REG_PARAM_UNIT = {
-    'T1': '°C',
-    'T2': '°C',
-    'T3': '°C',
-    'T4': '°C',
-    'T5': '°C',
-    'T6': '°C',
-    'P1': '%',
-    'P2': '%',
-    'H': '',
-    'TzCWU': '°C',
-    'tempCO': '°C',
-    'tempCOSet': '°C',
-    'tempCWU': '°C',
-    'tempCWUSet': '°C',
-    'tempOpticalSensor': '%',
-    'fanPower': '%',
-    'fuelLevel': '%',
-    'tempUpperBuffer': '°C',
-    'tempLowerBuffer': '°C',
-    'tempUpperSolar': '°C',
-    'tempLowerSolar': '°C',
-    'tempFireplace': '°C',
-    'tempExternalSensor': UnitOfTemperature.CELSIUS,
-    'tempBack': '°C',
-    'fuelStream': 'kg/h',
-    'tempFeeder': UnitOfTemperature.CELSIUS,
-    'tempFlueGas': '°C',
-    'boilerPowerKW': 'kW',
-    'boilerPower': '%',
-    'ecoSterTemp1': '°C',
-    'ecoSterTemp2': '°C',
-    'ecoSterTemp3': '°C',
-    'ecoSterTemp4': '°C',
-    'ecoSterTemp5': '°C',
-    'ecoSterTemp6': '°C',
-    'ecoSterTemp7': '°C',
-    'ecoSterTemp8': '°C',
-    'ecoSterSetTemp1': '°C',
-    'ecoSterSetTemp2': '°C',
-    'ecoSterSetTemp3': '°C',
-    'ecoSterSetTemp4': '°C',
-    'ecoSterSetTemp5': '°C',
-    'ecoSterSetTemp6': '°C',
-    'ecoSterSetTemp7': '°C',
-    'ecoSterSetTemp8': '°C',
-    'mixerTemp1': '°C',
-    'mixerTemp2': '°C',
-    'mixerTemp3': '°C',
-    'mixerTemp4': '°C',
-    'mixerTemp5': '°C',
-    'mixerTemp6': '°C',
-    'mixerTemp7': '°C',
-    'mixerTemp8': '°C',
-    'mixerSetTemp1': '°C',
-    'mixerSetTemp2': '°C',
-    'mixerSetTemp3': '°C',
-    'mixerSetTemp4': '°C',
-    'mixerSetTemp5': '°C',
-    'mixerSetTemp6': '°C',
-    'mixerSetTemp7': '°C',
-    'mixerSetTemp8': '°C',
-    'lambdaLevel': '%',
-    'lambdaSet': '%',
-    'LPTc': '°C',
-    'LPTsc': '°C',
-    'BHThc': '°C',
-    'LPTbackc': '°C',
-    'LPTbc': '°C',
-    'totalGain': 'kWh',
-    'blowFan1BlowPower': '%',
-    'blowFan2BlowPower': '%',
-    'tempExchanger': '°C',
-    'tempAirIn': '°C',
-    'tempAirOut': '°C',
-    'thermoTemp': '°C',
-    'thermoSetTemp': '°C',
-    'fanPowerExhaust': '%'
+    "tempCO": UnitOfTemperature.CELSIUS,
+    "tempCOSet": UnitOfTemperature.CELSIUS,
+    "tempExternalSensor": UnitOfTemperature.CELSIUS,
+    "tempFeeder": UnitOfTemperature.CELSIUS,
+    "lambdaLevel": PERCENTAGE,
+    "lambdaSet": PERCENTAGE,
+    "thermoTemp": UnitOfTemperature.CELSIUS,
+    "fanPower": PERCENTAGE,
+    "tempFlueGas": UnitOfTemperature.CELSIUS,
+    "mixerSetTemp1": UnitOfTemperature.CELSIUS,
+    "tempBack": UnitOfTemperature.CELSIUS,
+    "tempCWU": UnitOfTemperature.CELSIUS,
+    "tempExternalSensor": UnitOfTemperature.CELSIUS,
+    "boilerPower": PERCENTAGE,
+    "fuelLevel": PERCENTAGE,
+}
+
+REG_PARAM_STATE_CLASS = {
+    "tempFeeder": SensorStateClass.MEASUREMENT,
+    "tempExternalSensor": SensorStateClass.MEASUREMENT,
+    "lambdaSet": SensorStateClass.MEASUREMENT,
+    "lambdaLevel": SensorStateClass.MEASUREMENT,
+    "tempCO": SensorStateClass.MEASUREMENT,
+    "tempCOSet": SensorStateClass.MEASUREMENT,
+    "boilerPower": SensorStateClass.MEASUREMENT,
+    "fanPower": SensorStateClass.MEASUREMENT,
+    "tempFlueGas": SensorStateClass.MEASUREMENT,
+    "mixerSetTemp1": SensorStateClass.MEASUREMENT,
+    "tempBack": SensorStateClass.MEASUREMENT,
+    "tempCWU": SensorStateClass.MEASUREMENT,
+    "tempExternalSensor": SensorStateClass.MEASUREMENT,
+    "boilerPower": SensorStateClass.MEASUREMENT,
+    "fuelLevel": SensorStateClass.MEASUREMENT,
+}
+
+REG_PARAM_DEVICE_CLASS = {
+    "tempFeeder": SensorDeviceClass.TEMPERATURE,
+    "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
+    "tempCO": SensorDeviceClass.TEMPERATURE,
+    "tempCOSet": SensorDeviceClass.TEMPERATURE,
+    "boilerPower": SensorDeviceClass.POWER_FACTOR,
+    "fanPower": SensorDeviceClass.POWER_FACTOR,
+    "tempFlueGas": SensorDeviceClass.TEMPERATURE,
+    "mixerSetTemp1": SensorDeviceClass.TEMPERATURE,
+    "tempBack": SensorDeviceClass.TEMPERATURE,
+    "tempCWU": SensorDeviceClass.TEMPERATURE,
+    "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
+    "boilerPower": SensorDeviceClass.POWER_FACTOR,
+    "mode": "DEVICE_CLASS_OPERATION_MODE",
+}
+
+"""Add only keys where precision more than 0 needed"""
+REG_PARAM_PRECISION = {
+    "tempFeeder": 1,
+    "tempExternalSensor": 1,
+    "lambdaLevel": 1,
+    "tempCO": 1,
+    "tempCOSet": 1,
+    "fanPower": 2,
+    "mixerSetTemp1": 2,
+    "tempBack": 2,
+    "fuelLevel": 1,
+}
+
+REG_PARAM_VALUE_PROCESSOR = {
+    "boilerPower": (lambda x: OPERATION_MODE_NAMES.get(x, "Unknown")),
 }
