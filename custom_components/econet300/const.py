@@ -1,12 +1,14 @@
 """Constants from the Home Assistant"""
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorStateClass
+)
 from homeassistant.const import (
     UnitOfTemperature,
-    SensorDeviceClass,
-    SensorStateClass,
     PERCENTAGE
 )
 
-"""Constants for the econet Integration integration."""
+#Constant for the econet Integration integration
 DOMAIN = "econet300"
 
 SERVICE_API = "api"
@@ -71,22 +73,25 @@ PRODUCT_TYPE = {
 REG_PARAM_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
+    "97": "fuelLevel",
+    "117": "thermostat",
+    "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
     "1024": "tempCO",
-    "1025": "tempCOSet",
+    "1025": "tempCWU",
+    "1030": "tempFlueGas",
+    "1031": "mixerTemp1",
+    "1287": "mixerSetTemp1",
+    "1792": "mode",
     "1794": "boilerPower",
+    "1795": "fanPower",
+    "1280": "tempCOSet",
 }
 # Unknown ID's
-#fanPower
-#tempFlueGas
-#mixerSetTemp1
-#tempBack
-#tempCWU
-#tempExternalSensor
-#boilerPower
-#fuelLevel
-#mode
+# tempBack: "tempBack", pas mane nera tokio parametro
+#    "1025": "tempCOSet", pas mane nera i6jungtas :(
+
 
 # Sensors units from econet dev
 REG_PARAM_UNIT = {
@@ -100,9 +105,9 @@ REG_PARAM_UNIT = {
     "fanPower": PERCENTAGE,
     "tempFlueGas": UnitOfTemperature.CELSIUS,
     "mixerSetTemp1": UnitOfTemperature.CELSIUS,
+    "mixerTemp1": UnitOfTemperature.CELSIUS,
     "tempBack": UnitOfTemperature.CELSIUS,
     "tempCWU": UnitOfTemperature.CELSIUS,
-    "tempExternalSensor": UnitOfTemperature.CELSIUS,
     "boilerPower": PERCENTAGE,
     "fuelLevel": PERCENTAGE,
 }
@@ -120,8 +125,6 @@ REG_PARAM_STATE_CLASS = {
     "mixerSetTemp1": SensorStateClass.MEASUREMENT,
     "tempBack": SensorStateClass.MEASUREMENT,
     "tempCWU": SensorStateClass.MEASUREMENT,
-    "tempExternalSensor": SensorStateClass.MEASUREMENT,
-    "boilerPower": SensorStateClass.MEASUREMENT,
     "fuelLevel": SensorStateClass.MEASUREMENT,
 }
 
@@ -136,8 +139,6 @@ REG_PARAM_DEVICE_CLASS = {
     "mixerSetTemp1": SensorDeviceClass.TEMPERATURE,
     "tempBack": SensorDeviceClass.TEMPERATURE,
     "tempCWU": SensorDeviceClass.TEMPERATURE,
-    "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
-    "boilerPower": SensorDeviceClass.POWER_FACTOR,
     "mode": "DEVICE_CLASS_OPERATION_MODE",
 }
 
@@ -156,4 +157,6 @@ REG_PARAM_PRECISION = {
 
 REG_PARAM_VALUE_PROCESSOR = {
     "boilerPower": (lambda x: OPERATION_MODE_NAMES.get(x, "Unknown")),
+#    "thermostat": (lambda x: "ON" if str(x).strip() == "1" else ("OFF" if str(x).strip() == "0" else None),),
+#    "lambdaStatus": (lambda x: "STOP" if x == 0 else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),)
 }

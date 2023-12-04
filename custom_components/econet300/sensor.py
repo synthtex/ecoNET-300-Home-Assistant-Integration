@@ -21,6 +21,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .common import EconetDataCoordinator, Econet300Api
 from .const import (
     DOMAIN,
+    REG_PARAM_DEVICE_CLASS,
+    REG_PARAM_STATE_CLASS,
     SERVICE_COORDINATOR,
     SERVICE_API,
     REG_PARAM_MAP,
@@ -66,32 +68,32 @@ class ControllerSensor(EconetEntity, EconetSensor):
     ):
         super().__init__(description, coordinator, api)
 
-def get_human_readable_key(key: string):
+def get_human_readable_key(key: str):
     """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
     if key in REG_PARAM_MAP:
         return REG_PARAM_MAP[key]
-    else
+    else:
         return key
 
-def get_native_unit_of_measurement(key: string):
+def get_native_unit_of_measurement(key: str):
     """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
     if key in REG_PARAM_UNIT:
         return REG_PARAM_UNIT[key]
-    else
+    else:
         return None
 
-def get_state_class(key: string):
+def get_state_class(key: str):
     """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
     if key in REG_PARAM_STATE_CLASS:
         return REG_PARAM_STATE_CLASS[key]
-    else
+    else:
         return None
 
-def get_device_class(key: string):
+def get_device_class(key: str):
     """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
     if key in REG_PARAM_DEVICE_CLASS:
         return REG_PARAM_DEVICE_CLASS[key]
-    else
+    else:
         return None
 
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
@@ -108,7 +110,7 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
                 native_unit_of_measurement=get_native_unit_of_measurement(human_readable_key),
                 state_class=get_state_class(human_readable_key),
                 device_class=get_device_class(human_readable_key),
-                suggested_display_precision=REG_PARAM_PRECICION["tempCO"],
+                suggested_display_precision=REG_PARAM_PRECISION["tempCO"],
                 process_val=lambda x: x,
             )
             entities.append(ControllerSensor(entity_description, coordinator, api))
