@@ -5,6 +5,7 @@ from homeassistant.components.sensor import (
 )
 from homeassistant.const import (
     UnitOfTemperature,
+    EntityCategory,
     PERCENTAGE
 )
 
@@ -78,8 +79,11 @@ REG_PARAM_MAP = {
     "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
+    "170": "signal",
     "1024": "tempCO",
     "1025": "tempCWU",
+    "1028": "tempUpperBuffer",
+    "1029": "tempLowerBuffer",
     "1030": "tempFlueGas",
     "1031": "mixerTemp1",
     "1287": "mixerSetTemp1",
@@ -110,6 +114,9 @@ REG_PARAM_UNIT = {
     "tempCWU": UnitOfTemperature.CELSIUS,
     "boilerPower": PERCENTAGE,
     "fuelLevel": PERCENTAGE,
+#    "tempUpperBuffer": UnitOfTemperature.CELSIUS,
+#    "tempLowerBuffer": UnitOfTemperature.CELSIUS,
+#    "signal": PERCENTAGE,
 }
 
 REG_PARAM_STATE_CLASS = {
@@ -126,6 +133,9 @@ REG_PARAM_STATE_CLASS = {
     "tempBack": SensorStateClass.MEASUREMENT,
     "tempCWU": SensorStateClass.MEASUREMENT,
     "fuelLevel": SensorStateClass.MEASUREMENT,
+#    "tempUpperBuffer": SensorStateClass.MEASUREMENT,
+#    "tempLowerBuffer": SensorStateClass.MEASUREMENT,
+#    "signal": SensorStateClass.MEASUREMENT,
 }
 
 REG_PARAM_DEVICE_CLASS = {
@@ -140,6 +150,9 @@ REG_PARAM_DEVICE_CLASS = {
     "tempBack": SensorDeviceClass.TEMPERATURE,
     "tempCWU": SensorDeviceClass.TEMPERATURE,
     "mode": "DEVICE_CLASS_OPERATION_MODE",
+#    "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
+#    "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
+#    "signal": SensorDeviceClass.SIGNAL_STRENGTH,
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -153,10 +166,23 @@ REG_PARAM_PRECISION = {
     "mixerSetTemp1": 2,
     "tempBack": 2,
     "fuelLevel": 1,
+#    "tempUpperBuffer": 1,
+#    "tempLowerBuffer": 1,
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
     "boilerPower": (lambda x: OPERATION_MODE_NAMES.get(x, "Unknown")),
-#    "thermostat": (lambda x: "ON" if str(x).strip() == "1" else ("OFF" if str(x).strip() == "0" else None),),
-#    "lambdaStatus": (lambda x: "STOP" if x == 0 else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),)
+    "thermostat": (lambda x: "ON" if str(x).strip() == "1" else ("OFF" if str(x).strip() == "0" else None),),
+    "lambdaStatus": (lambda x: "STOP" if x == 0 else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),)
+}
+
+REG_PARAM_ENTITY_CATEGORY = {
+    "signal": EntityCategory.DIAGNOSTIC,
+
+}
+
+# Default values for visible 'entity_registry_visible_default=False,' in sensor.py
+REG_PARAM_VISIBLE_DEFAULT = {
+    "tempUpperBuffer": False,
+    "tempLowerBuffer": False,
 }
