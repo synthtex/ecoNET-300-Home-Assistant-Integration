@@ -48,7 +48,7 @@ class Limits:
     """Class difining entity value set limits"""
 
     def __init__(self, min_v: float, max_v: float):
-        """Constructs all the necessary attributes for the Limits object."""
+        """Construct the necessary attributes for the Limits object."""
         self.min = min_v
         self.max = max_v
 

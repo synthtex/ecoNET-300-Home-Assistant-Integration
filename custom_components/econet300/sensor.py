@@ -137,7 +137,6 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
                 "Availability key: %s does not exist, entity will not be added",
                 description.key,
             )
-
     return entities
 
 
