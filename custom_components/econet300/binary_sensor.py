@@ -88,13 +88,8 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
     return entity_description
 
 
-def can_add_mixer(
-    desc: str, coordinator: EconetDataCoordinator
-):
-    return (
-        coordinator.has_data(desc)
-        and coordinator.data[desc] is not None
-    )
+def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
+    return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
 def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
