@@ -1,8 +1,13 @@
-"""Constants for the econet Integration integration."""
+"""Constants from the Home Assistant"""
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     UnitOfTemperature,
+    EntityCategory,
+    PERCENTAGE,
+    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
 )
 
+# Constant for the econet Integration integration
 DOMAIN = "econet300"
 
 SERVICE_API = "api"
@@ -28,13 +33,13 @@ API_REG_PARAMS_PARAM_DATA = "curr"
 
 ## Reg params data all in one
 API_REG_PARAMS_DATA_URI = "regParamsData"
-API_REG_PARAMS_DATA_PARAM_DATA ='data'
+API_REG_PARAMS_DATA_PARAM_DATA = "data"
 
 ## Map names for params data in API_REG_PARAMS_DATA_URI
-API_RM_CURRENT_DATA_PARAMS_URI ="rmCurrentDataParams"
+API_RM_CURRENT_DATA_PARAMS_URI = "rmCurrentDataParams"
 
 ## Mapunits for params data map API_RM_CURRENT_DATA_PARAMS_URI
-API_RM_PARAMSUNITSNAMES_URI ="rmParamsUnitsNames"
+API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 
 ## Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
@@ -61,109 +66,163 @@ PRODUCT_TYPE = {
     1: "ECOMAX_850i_TYPE",
 }
 
+## Editable params limits
+API_EDIT_PARAM_URI = "rmCurrNewParam"
+API_EDITABLE_PARAMS_LIMITS_URI = "rmCurrentDataParamsEdits"
+API_EDITABLE_PARAMS_LIMITS_DATA = "data"
+
+EDITABLE_PARAMS_MAPPING_TABLE = {
+    "tempCOSet": "1280",
+    "tempCWUSet": "1281",
+    "mixerSetTemp1": "1287",
+    "mixerSetTemp2": "1288",
+    "mixerSetTemp3": "1289",
+    "mixerSetTemp4": "1290",
+    "mixerSetTemp5": "1291",
+    "mixerSetTemp6": "1292",
+}
+
+#######################
+######## REG PARAM MAPS
+#######################
 REG_PARAM_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
-#     139: "Valve mixer 1",
-#     153: "lambdaSet",
-#     154: "lambdaLevel",
-#     1024: "tempCO",
-#     1025: "tempCOSet",
-#     1031: "mixerTemp1",
-#     1794: "boilerPower",
+    "97": "fuelLevel",
+    "117": "thermostat",
+    "151": "lambdaStatus",
+    "153": "lambdaSet",
+    "154": "lambdaLevel",
+    "170": "signal",
+    "1024": "tempCO",
+    "1025": "tempCWU",
+    "1028": "tempUpperBuffer",
+    "1029": "tempLowerBuffer",
+    "1030": "tempFlueGas",
+    "1031": "mixerTemp1",
+    "1287": "mixerSetTemp1",
+    "1792": "mode",
+    "1794": "boilerPower",
+    "1795": "fanPower",
+    "1280": "tempCOSet",
 }
 
-# Sensors precision value from econet dev
-REG_PARAM_PRECICION = {
-    "boilerPowerKW": 1,
-    "boilerPower": 0, 
-    "fuelStream": 1,
-    "ecoSterTemp": 1,
-    "ecoSterSetTemp": 1,
-    "tempExternalSensor": 1,
-    "lambdaSet": 1,
-    "lambdaLevel": 1,
-    "thermoTemp": 1,
-    "thermoSetTemp": 0,
-}
+# Unknown ID's
+# tempBack: "tempBack", pas mane nera tokio parametro
+#    "1025": "tempCOSet", pas mane nera i6jungtas :(
+#               quality
+
 
 # Sensors units from econet dev
 REG_PARAM_UNIT = {
-    'T1': '°C',
-    'T2': '°C',
-    'T3': '°C',
-    'T4': '°C',
-    'T5': '°C',
-    'T6': '°C',
-    'P1': '%',
-    'P2': '%',
-    'H': '',
-    'TzCWU': '°C',
-    'tempCO': '°C',
-    'tempCOSet': '°C',
-    'tempCWU': '°C',
-    'tempCWUSet': '°C',
-    'tempOpticalSensor': '%',
-    'fanPower': '%',
-    'fuelLevel': '%',
-    'tempUpperBuffer': '°C',
-    'tempLowerBuffer': '°C',
-    'tempUpperSolar': '°C',
-    'tempLowerSolar': '°C',
-    'tempFireplace': '°C',
-    'tempExternalSensor': UnitOfTemperature.CELSIUS,
-    'tempBack': '°C',
-    'fuelStream': 'kg/h',
-    'tempFeeder': UnitOfTemperature.CELSIUS,
-    'tempFlueGas': '°C',
-    'boilerPowerKW': 'kW',
-    'boilerPower': '%',
-    'ecoSterTemp1': '°C',
-    'ecoSterTemp2': '°C',
-    'ecoSterTemp3': '°C',
-    'ecoSterTemp4': '°C',
-    'ecoSterTemp5': '°C',
-    'ecoSterTemp6': '°C',
-    'ecoSterTemp7': '°C',
-    'ecoSterTemp8': '°C',
-    'ecoSterSetTemp1': '°C',
-    'ecoSterSetTemp2': '°C',
-    'ecoSterSetTemp3': '°C',
-    'ecoSterSetTemp4': '°C',
-    'ecoSterSetTemp5': '°C',
-    'ecoSterSetTemp6': '°C',
-    'ecoSterSetTemp7': '°C',
-    'ecoSterSetTemp8': '°C',
-    'mixerTemp1': '°C',
-    'mixerTemp2': '°C',
-    'mixerTemp3': '°C',
-    'mixerTemp4': '°C',
-    'mixerTemp5': '°C',
-    'mixerTemp6': '°C',
-    'mixerTemp7': '°C',
-    'mixerTemp8': '°C',
-    'mixerSetTemp1': '°C',
-    'mixerSetTemp2': '°C',
-    'mixerSetTemp3': '°C',
-    'mixerSetTemp4': '°C',
-    'mixerSetTemp5': '°C',
-    'mixerSetTemp6': '°C',
-    'mixerSetTemp7': '°C',
-    'mixerSetTemp8': '°C',
-    'lambdaLevel': '%',
-    'lambdaSet': '%',
-    'LPTc': '°C',
-    'LPTsc': '°C',
-    'BHThc': '°C',
-    'LPTbackc': '°C',
-    'LPTbc': '°C',
-    'totalGain': 'kWh',
-    'blowFan1BlowPower': '%',
-    'blowFan2BlowPower': '%',
-    'tempExchanger': '°C',
-    'tempAirIn': '°C',
-    'tempAirOut': '°C',
-    'thermoTemp': '°C',
-    'thermoSetTemp': '°C',
-    'fanPowerExhaust': '%'
+    "tempCO": UnitOfTemperature.CELSIUS,
+    "tempCOSet": UnitOfTemperature.CELSIUS,
+    "tempExternalSensor": UnitOfTemperature.CELSIUS,
+    "tempFeeder": UnitOfTemperature.CELSIUS,
+    "lambdaLevel": PERCENTAGE,
+    "lambdaSet": PERCENTAGE,
+    "thermoTemp": UnitOfTemperature.CELSIUS,
+    "fanPower": PERCENTAGE,
+    "tempFlueGas": UnitOfTemperature.CELSIUS,
+    "mixerSetTemp1": UnitOfTemperature.CELSIUS,
+    "mixerTemp1": UnitOfTemperature.CELSIUS,
+    "tempBack": UnitOfTemperature.CELSIUS,
+    "tempCWU": UnitOfTemperature.CELSIUS,
+    "boilerPower": PERCENTAGE,
+    "fuelLevel": PERCENTAGE,
+    "tempUpperBuffer": UnitOfTemperature.CELSIUS,
+    "tempLowerBuffer": UnitOfTemperature.CELSIUS,
+    "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+    "quality": PERCENTAGE,
+}
+
+REG_PARAM_STATE_CLASS = {
+    "tempFeeder": SensorStateClass.MEASUREMENT,
+    "tempExternalSensor": SensorStateClass.MEASUREMENT,
+    "lambdaSet": SensorStateClass.MEASUREMENT,
+    "lambdaLevel": SensorStateClass.MEASUREMENT,
+    "tempCO": SensorStateClass.MEASUREMENT,
+    "tempCOSet": SensorStateClass.MEASUREMENT,
+    "boilerPower": SensorStateClass.MEASUREMENT,
+    "fanPower": SensorStateClass.MEASUREMENT,
+    "tempFlueGas": SensorStateClass.MEASUREMENT,
+    "mixerSetTemp1": SensorStateClass.MEASUREMENT,
+    "tempBack": SensorStateClass.MEASUREMENT,
+    "tempCWU": SensorStateClass.MEASUREMENT,
+    "fuelLevel": SensorStateClass.MEASUREMENT,
+    "tempUpperBuffer": SensorStateClass.MEASUREMENT,
+    "tempLowerBuffer": SensorStateClass.MEASUREMENT,
+    "signal": SensorStateClass.MEASUREMENT,
+    "quality": SensorStateClass.MEASUREMENT,
+}
+
+REG_PARAM_DEVICE_CLASS = {
+    "tempFeeder": SensorDeviceClass.TEMPERATURE,
+    "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
+    "tempCO": SensorDeviceClass.TEMPERATURE,
+    "tempCOSet": SensorDeviceClass.TEMPERATURE,
+    "boilerPower": SensorDeviceClass.POWER_FACTOR,
+    "fanPower": SensorDeviceClass.POWER_FACTOR,
+    "tempFlueGas": SensorDeviceClass.TEMPERATURE,
+    "mixerSetTemp1": SensorDeviceClass.TEMPERATURE,
+    "tempBack": SensorDeviceClass.TEMPERATURE,
+    "tempCWU": SensorDeviceClass.TEMPERATURE,
+    "mode": "DEVICE_CLASS_OPERATION_MODE",
+    "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
+    "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
+    "signal": SensorDeviceClass.SIGNAL_STRENGTH,
+    "softVer": "econet_software_version",
+    "moduleASoftVer": "module_a_software_version",
+    "moduleBSoftVer": "Module_b_software_version",
+    "modulePanelSoftVer": "module_panel_software_version",
+    "moduleLambdaSoftVer": "module_lamda_software_version",
+    "protocolType": "protocol_type",
+    "controllerID": "controller_ID",
+}
+
+"""Add only keys where precision more than 0 needed"""
+REG_PARAM_PRECISION = {
+    "tempFeeder": 1,
+    "tempExternalSensor": 1,
+    "lambdaLevel": 1,
+    "tempCO": 1,
+    "tempCOSet": 1,
+    "fanPower": 2,
+    "mixerSetTemp1": 2,
+    "tempBack": 2,
+    "fuelLevel": 1,
+    "tempUpperBuffer": 1,
+    "tempLowerBuffer": 1,
+}
+
+REG_PARAM_VALUE_PROCESSOR = {
+    "boilerPower": (lambda x: OPERATION_MODE_NAMES.get(x, "Unknown")),
+    "thermostat": (
+        lambda x: "ON"
+        if str(x).strip() == "1"
+        else ("OFF" if str(x).strip() == "0" else None),
+    ),
+    "lambdaStatus": (
+        lambda x: "STOP"
+        if x == 0
+        else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
+    ),
+}
+
+REG_PARAM_ENTITY_CATEGORY = {
+    "signal": EntityCategory.DIAGNOSTIC,
+    "quality": EntityCategory.DIAGNOSTIC,
+    "softVer": EntityCategory.DIAGNOSTIC,
+    "moduleASoftVer": EntityCategory.DIAGNOSTIC,
+    "moduleBSoftVer": EntityCategory.DIAGNOSTIC,
+    "modulePanelSoftVer": EntityCategory.DIAGNOSTIC,
+    "moduleLambdaSoftVer": EntityCategory.DIAGNOSTIC,
+    "protocolType": EntityCategory.DIAGNOSTIC,
+    "controllerID": EntityCategory.DIAGNOSTIC,
+}
+
+# Default values for visible 'entity_registry_visible_default=False,' in sensor.py
+REG_PARAM_VISIBLE_DEFAULT = {
+    "tempUpperBuffer": False,
+    "tempLowerBuffer": False,
 }

@@ -1,3 +1,6 @@
+"""Econet300 API class
+    class describint methods of getting and setting data
+"""
 import asyncio
 import logging
 from http import HTTPStatus
@@ -10,12 +13,13 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 from .const import (
     API_SYS_PARAMS_PARAM_UID,
     API_SYS_PARAMS_URI,
-    API_REG_PARAMS_URI,
-    API_REG_PARAMS_PARAM_DATA,
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_HW_VER,
     API_REG_PARAMS_DATA_URI,
     API_REG_PARAMS_DATA_PARAM_DATA,
+    EDITABLE_PARAMS_MAPPING_TABLE,
+    API_EDITABLE_PARAMS_LIMITS_URI,
+    API_EDITABLE_PARAMS_LIMITS_DATA,
 )
 from .mem_cache import MemCache
 
@@ -23,6 +27,8 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class Limits:
+    """Class difining entity value set limits"""
+
     def __init__(self, min_v: float, max_v: float):
         self.min = min_v
         self.max = max_v
@@ -41,6 +47,8 @@ class DataError(Exception):
 
 
 class EconetClient:
+    """Econet client class"""
+
     def __init__(
         self, host: str, username: str, password: str, session: ClientSession
     ) -> None:
@@ -59,19 +67,18 @@ class EconetClient:
         self._auth = BasicAuth(username, password)
 
     def host(self):
+        """Set host address"""
         return self._host
 
     async def set_param(self, key: str, value: str):
-        url = "{}/econet/rmCurrNewParam?newParamKey={}&newParamValue={}".format(
-            self._host, key, value
+        """Api call to set param"""
+        return await self._get(
+            f"{self._host}/econet/rmCurrNewParam?newParamKey={key}&newParamValue={value}"
         )
 
-        return await self._get(url)
-
     async def get_params(self, reg: str):
-        url = "{}/econet/{}".format(self._host, reg)
-
-        return await self._get(url)
+        """Call for getting api params"""
+        return await self._get(f"{self._host}/econet/{reg}")
 
     async def _get(self, url):
         attempt = 1
@@ -85,7 +92,7 @@ class EconetClient:
                     if resp.status == HTTPStatus.UNAUTHORIZED:
                         raise AuthError
 
-                    elif resp.status != HTTPStatus.OK:
+                    if resp.status != HTTPStatus.OK:
                         return None
 
                     return await resp.json()
@@ -97,7 +104,14 @@ class EconetClient:
                 attempt += 1
 
 
+def get_param_id(name: str):
+    """Check if param is mapped and return its value"""
+    return lambda name=name: EDITABLE_PARAMS_MAPPING_TABLE.get(name, None)
+
+
 class Econet300Api:
+    """Econet300 API class"""
+
     def __init__(self, client: EconetClient, cache: MemCache) -> None:
         self._client = client
         self._cache = cache
@@ -107,24 +121,30 @@ class Econet300Api:
 
     @classmethod
     async def create(cls, client: EconetClient, cache: MemCache):
+        """Create and return initial object"""
         c = cls(client, cache)
         await c.init()
 
         return c
 
     def host(self):
+        """Get clients host address"""
         return self._client.host()
 
     def uid(self) -> str:
+        """Get uid"""
         return self._uid
 
     def sw_rev(self) -> str:
+        """Get software version"""
         return self._sw_revision
 
     def hw_ver(self) -> str:
+        """Get hardware version"""
         return self._hw_version
 
     async def init(self):
+        """Econet300 Api initilization"""
         sys_params = await self._client.get_params(API_SYS_PARAMS_URI)
 
         if API_SYS_PARAMS_PARAM_UID not in sys_params:
@@ -152,7 +172,8 @@ class Econet300Api:
             self._hw_version = sys_params[API_SYS_PARAMS_PARAM_HW_VER]
 
     async def set_param(self, param, value) -> bool:
-        param_idx = map_param(param)
+        """Set param value in Econet300 API"""
+        param_idx = get_param_id(param)
         if param_idx is None:
             _LOGGER.warning(
                 "Requested param set for: '{param}' but mapping for this param does not exist"
@@ -172,6 +193,7 @@ class Econet300Api:
         return True
 
     async def get_param_limits(self, param: str):
+        """Get Param Limits from Econet300 Api"""
         if not self._cache.exists(API_EDITABLE_PARAMS_LIMITS_DATA):
             limits = await self._fetch_reg_key(
                 API_EDITABLE_PARAMS_LIMITS_URI, API_EDITABLE_PARAMS_LIMITS_DATA
@@ -179,7 +201,7 @@ class Econet300Api:
             self._cache.set(API_EDITABLE_PARAMS_LIMITS_DATA, limits)
 
         limits = self._cache.get(API_EDITABLE_PARAMS_LIMITS_DATA)
-        param_idx = map_param(param)
+        param_idx = get_param_id(param)
 
         if param_idx is None:
             _LOGGER.warning(
@@ -201,7 +223,9 @@ class Econet300Api:
 
     async def fetch_data(self) -> dict[str, Any]:
         """Fetch data from regParamsData."""
-        reg_params = await self._fetch_reg_key(API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA)
+        reg_params = await self._fetch_reg_key(
+            API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA
+        )
         return reg_params
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):
@@ -224,6 +248,7 @@ class Econet300Api:
 
 
 async def make_api(hass: HomeAssistant, cache: MemCache, data: dict):
+    """Create api object"""
     return await Econet300Api.create(
         EconetClient(
             data["host"],
