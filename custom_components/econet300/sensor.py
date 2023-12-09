@@ -22,6 +22,7 @@ from .const import (
     REG_PARAM_MAP,
     REG_PARAM_PRECISION,
     REG_PARAM_UNIT,
+    REG_PARAM_VALUE_PROCESSOR,
 )
 from .entity import EconetEntity
 
@@ -31,6 +32,7 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
+
     process_val: Callable[[Any], Any] = lambda x: x
 
 
@@ -62,59 +64,37 @@ class ControllerSensor(EconetEntity, EconetSensor):
     ):
         super().__init__(description, coordinator, api)
 
-def get_human_readable_key(key: str):
-    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
-    if key in REG_PARAM_MAP:
-        return REG_PARAM_MAP[key]
-    else:
-        return key
 
-def get_native_unit_of_measurement(key: str):
-    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
-    if key in REG_PARAM_UNIT:
-        return REG_PARAM_UNIT[key]
-    else:
-        return None
+def create_entity_description(key: str):
+    """Creates Econect300 sensor entity based on supplied key"""
+    map_key = REG_PARAM_MAP.get(key, key)
+    return EconetSensorEntityDescription(
+        key=map_key,
+        translation_key=map_key,
+        native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
+        state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
+        device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
+        suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),
+        process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, map_key),
+    )
 
-def get_state_class(key: str):
-    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
-    if key in REG_PARAM_STATE_CLASS:
-        return REG_PARAM_STATE_CLASS[key]
-    else:
-        return None
-
-def get_device_class(key: str):
-    """CHECK if supplied key is defined and return it's value otherwise return appropriate result"""
-    if key in REG_PARAM_DEVICE_CLASS:
-        return REG_PARAM_DEVICE_CLASS[key]
-    else:
-        return None
 
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """add key"""
+    """Creating controller sensor entities"""
     entities = []
-
     coordinator_data = coordinator.data
     for data_key in coordinator_data:
         if data_key in REG_PARAM_MAP:
-            human_readable_key = get_human_readable_key(data_key)
-            entity_description = EconetSensorEntityDescription(
-                key=human_readable_key,
-                translation_key=human_readable_key,
-                native_unit_of_measurement=get_native_unit_of_measurement(human_readable_key),
-                state_class=get_state_class(human_readable_key),
-                device_class=get_device_class(human_readable_key),
-                suggested_display_precision=REG_PARAM_PRECISION["tempCO"],
-                process_val=lambda x: x,
+            entities.append(
+                ControllerSensor(create_entity_description(data_key), coordinator, api)
             )
-            entities.append(ControllerSensor(entity_description, coordinator, api))
             _LOGGER.debug(
-                "Availability key: %s exist, entity will be added",
+                "Key: %s mapped, entity will be added",
                 data_key,
             )
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
+                "Key: %s is not mapped, entity will not be added",
                 data_key,
             )
 
@@ -127,7 +107,6 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> bool:
     """Set up the sensor platform."""
-
     coordinator = hass.data[DOMAIN][entry.entry_id][SERVICE_COORDINATOR]
     api = hass.data[DOMAIN][entry.entry_id][SERVICE_API]
 

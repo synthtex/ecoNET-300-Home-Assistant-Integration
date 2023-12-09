@@ -1,15 +1,13 @@
 """Constants from the Home Assistant"""
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorStateClass
-)
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     UnitOfTemperature,
     EntityCategory,
-    PERCENTAGE
+    PERCENTAGE,
+    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
 )
 
-#Constant for the econet Integration integration
+# Constant for the econet Integration integration
 DOMAIN = "econet300"
 
 SERVICE_API = "api"
@@ -35,13 +33,13 @@ API_REG_PARAMS_PARAM_DATA = "curr"
 
 ## Reg params data all in one
 API_REG_PARAMS_DATA_URI = "regParamsData"
-API_REG_PARAMS_DATA_PARAM_DATA ="data"
+API_REG_PARAMS_DATA_PARAM_DATA = "data"
 
 ## Map names for params data in API_REG_PARAMS_DATA_URI
-API_RM_CURRENT_DATA_PARAMS_URI ="rmCurrentDataParams"
+API_RM_CURRENT_DATA_PARAMS_URI = "rmCurrentDataParams"
 
 ## Mapunits for params data map API_RM_CURRENT_DATA_PARAMS_URI
-API_RM_PARAMSUNITSNAMES_URI ="rmParamsUnitsNames"
+API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 
 ## Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
@@ -68,6 +66,22 @@ PRODUCT_TYPE = {
     1: "ECOMAX_850i_TYPE",
 }
 
+## Editable params limits
+API_EDIT_PARAM_URI = "rmCurrNewParam"
+API_EDITABLE_PARAMS_LIMITS_URI = "rmCurrentDataParamsEdits"
+API_EDITABLE_PARAMS_LIMITS_DATA = "data"
+
+EDITABLE_PARAMS_MAPPING_TABLE = {
+    "tempCOSet": "1280",
+    "tempCWUSet": "1281",
+    "mixerSetTemp1": "1287",
+    "mixerSetTemp2": "1288",
+    "mixerSetTemp3": "1289",
+    "mixerSetTemp4": "1290",
+    "mixerSetTemp5": "1291",
+    "mixerSetTemp6": "1292",
+}
+
 #######################
 ######## REG PARAM MAPS
 #######################
@@ -92,9 +106,11 @@ REG_PARAM_MAP = {
     "1795": "fanPower",
     "1280": "tempCOSet",
 }
+
 # Unknown ID's
 # tempBack: "tempBack", pas mane nera tokio parametro
 #    "1025": "tempCOSet", pas mane nera i6jungtas :(
+#               quality
 
 
 # Sensors units from econet dev
@@ -114,9 +130,10 @@ REG_PARAM_UNIT = {
     "tempCWU": UnitOfTemperature.CELSIUS,
     "boilerPower": PERCENTAGE,
     "fuelLevel": PERCENTAGE,
-#    "tempUpperBuffer": UnitOfTemperature.CELSIUS,
-#    "tempLowerBuffer": UnitOfTemperature.CELSIUS,
-#    "signal": PERCENTAGE,
+    "tempUpperBuffer": UnitOfTemperature.CELSIUS,
+    "tempLowerBuffer": UnitOfTemperature.CELSIUS,
+    "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+    "quality": PERCENTAGE,
 }
 
 REG_PARAM_STATE_CLASS = {
@@ -133,9 +150,10 @@ REG_PARAM_STATE_CLASS = {
     "tempBack": SensorStateClass.MEASUREMENT,
     "tempCWU": SensorStateClass.MEASUREMENT,
     "fuelLevel": SensorStateClass.MEASUREMENT,
-#    "tempUpperBuffer": SensorStateClass.MEASUREMENT,
-#    "tempLowerBuffer": SensorStateClass.MEASUREMENT,
-#    "signal": SensorStateClass.MEASUREMENT,
+    "tempUpperBuffer": SensorStateClass.MEASUREMENT,
+    "tempLowerBuffer": SensorStateClass.MEASUREMENT,
+    "signal": SensorStateClass.MEASUREMENT,
+    "quality": SensorStateClass.MEASUREMENT,
 }
 
 REG_PARAM_DEVICE_CLASS = {
@@ -150,9 +168,16 @@ REG_PARAM_DEVICE_CLASS = {
     "tempBack": SensorDeviceClass.TEMPERATURE,
     "tempCWU": SensorDeviceClass.TEMPERATURE,
     "mode": "DEVICE_CLASS_OPERATION_MODE",
-#    "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
-#    "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
-#    "signal": SensorDeviceClass.SIGNAL_STRENGTH,
+    "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
+    "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
+    "signal": SensorDeviceClass.SIGNAL_STRENGTH,
+    "softVer": "econet_software_version",
+    "moduleASoftVer": "module_a_software_version",
+    "moduleBSoftVer": "Module_b_software_version",
+    "modulePanelSoftVer": "module_panel_software_version",
+    "moduleLambdaSoftVer": "module_lamda_software_version",
+    "protocolType": "protocol_type",
+    "controllerID": "controller_ID",
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -166,19 +191,34 @@ REG_PARAM_PRECISION = {
     "mixerSetTemp1": 2,
     "tempBack": 2,
     "fuelLevel": 1,
-#    "tempUpperBuffer": 1,
-#    "tempLowerBuffer": 1,
+    "tempUpperBuffer": 1,
+    "tempLowerBuffer": 1,
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
     "boilerPower": (lambda x: OPERATION_MODE_NAMES.get(x, "Unknown")),
-    "thermostat": (lambda x: "ON" if str(x).strip() == "1" else ("OFF" if str(x).strip() == "0" else None),),
-    "lambdaStatus": (lambda x: "STOP" if x == 0 else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),)
+    "thermostat": (
+        lambda x: "ON"
+        if str(x).strip() == "1"
+        else ("OFF" if str(x).strip() == "0" else None),
+    ),
+    "lambdaStatus": (
+        lambda x: "STOP"
+        if x == 0
+        else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
+    ),
 }
 
 REG_PARAM_ENTITY_CATEGORY = {
     "signal": EntityCategory.DIAGNOSTIC,
-
+    "quality": EntityCategory.DIAGNOSTIC,
+    "softVer": EntityCategory.DIAGNOSTIC,
+    "moduleASoftVer": EntityCategory.DIAGNOSTIC,
+    "moduleBSoftVer": EntityCategory.DIAGNOSTIC,
+    "modulePanelSoftVer": EntityCategory.DIAGNOSTIC,
+    "moduleLambdaSoftVer": EntityCategory.DIAGNOSTIC,
+    "protocolType": EntityCategory.DIAGNOSTIC,
+    "controllerID": EntityCategory.DIAGNOSTIC,
 }
 
 # Default values for visible 'entity_registry_visible_default=False,' in sensor.py
