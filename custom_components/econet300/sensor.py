@@ -6,16 +6,10 @@ import logging
 
 from homeassistant.components.sensor import (
     SensorEntityDescription,
-    SensorStateClass,
-    SensorDeviceClass,
     SensorEntity,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    UnitOfTemperature,
-)
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .common import EconetDataCoordinator, Econet300Api
