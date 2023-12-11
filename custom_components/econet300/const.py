@@ -196,17 +196,13 @@ REG_PARAM_PRECISION = {
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
-    "boilerPower": (lambda x: OPERATION_MODE_NAMES.get(x, "Unknown")),
-    "thermostat": (
-        lambda x: "ON"
-        if str(x).strip() == "1"
-        else ("OFF" if str(x).strip() == "0" else None),
-    ),
-    "lambdaStatus": (
-        lambda x: "STOP"
-        if x == 0
-        else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
-    ),
+    "boilerPower": lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
+    "thermostat": lambda x: "ON"
+    if str(x).strip() == "1"
+    else ("OFF" if str(x).strip() == "0" else None),
+    "lambdaStatus": lambda x: "STOP"
+    if x == 0
+    else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
 }
 
 REG_PARAM_ENTITY_CATEGORY = {
