@@ -136,6 +136,7 @@ REG_PARAM_UNIT = {
     "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     "quality": PERCENTAGE,
     "valveMixer1": PERCENTAGE,
+
 }
 
 REG_PARAM_STATE_CLASS = {
@@ -189,7 +190,7 @@ REG_PARAM_PRECISION = {
     "tempFeeder": 1,
     "tempExternalSensor": 1,
     "lambdaLevel": 1,
-    "lambdaSet": 1,
+    "lambdaSet":1,
     "tempCO": 1,
     "mixerTemp1": 1,
     "tempBack": 2,
@@ -197,7 +198,7 @@ REG_PARAM_PRECISION = {
     "tempLowerBuffer": 1,
     "tempCWU": 1,
     "tempFlueGas": 1,
-}
+    }
 
 REG_PARAM_VALUE_PROCESSOR = {
     "mode": lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
