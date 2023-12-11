@@ -23,6 +23,7 @@ from .const import (
     REG_PARAM_PRECISION,
     REG_PARAM_UNIT,
     REG_PARAM_VALUE_PROCESSOR,
+    REG_PARAM_ENTITY_CATEGORY,
 )
 from .entity import EconetEntity
 
@@ -77,6 +78,7 @@ def create_entity_description(key: str):
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
         suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),
         process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, lambda x: x),
+        entity_category=REG_PARAM_ENTITY_CATEGORY.get(map_key, None),
     )
 
 
