@@ -21,7 +21,23 @@
     "sensor": {
         "boilerPower": { "name": "Boiler output" },
         "tempExternalSensor": { "name": "Outside temperature" },
-        "tempFeeder":{"name": "Feeder temperature"}
+        "tempFeeder":{"name": "Feeder temperature"},
+        "fuelLevel": { "name": "fuelLevel" },
+        "thermostat": { "name": "thermostat" },
+        "lambdaStatus": { "name": "lambdaStatus" },
+        "lambdaSet": { "name": "lambdaSet" },
+        "lambdaLevel": { "name": "lambdaLevel" },
+        "signal": { "name": "signal" },
+        "tempCO": { "name": "tempCO" },
+        "tempCWU": { "name": "tempCWU" },
+        "tempUpperBuffer": { "name": "tempUpperBuffer" },
+        "tempLowerBuffer": { "name": "tempLowerBuffer" },
+        "tempFlueGas": { "name": "tempFlueGas" },
+        "mixerTemp1": { "name": "mixerTemp1" },
+        "mixerSetTemp1": { "name": "mixerSetTemp1" },
+        "mode": { "name": "mode" },
+        "fanPower": { "name": "fanPower" },
+        "tempCOSet": { "name": "tempCOSet" }
     }
 
 }
