@@ -84,19 +84,21 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     """Creating controller sensor entities"""
     entities = []
     coordinator_data = coordinator.data
-    for data_key in coordinator_data:
+    for data_key, data_value in coordinator_data:
         if data_key in REG_PARAM_MAP:
             entities.append(
                 ControllerSensor(create_entity_description(data_key), coordinator, api)
             )
             _LOGGER.debug(
-                "Key: %s mapped, entity will be added",
+                "Key: %s mapped with value %s, entity will be added",
                 data_key,
+                data_value,
             )
         else:
             _LOGGER.debug(
-                "Key: %s is not mapped, entity will not be added",
+                "Key: %s is not mapped with value %s, entity will not be added",
                 data_key,
+                data_value,
             )
 
     return entities
