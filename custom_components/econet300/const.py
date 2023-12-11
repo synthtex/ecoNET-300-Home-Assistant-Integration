@@ -91,10 +91,13 @@ REG_PARAM_MAP = {
     "97": "fuelLevel",
     "117": "thermostat",
     "139": "valveMixer1",
+    "143": "servoMixer1",
     "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
+    "168": "main_server",
     "170": "signal",
+    "171": "Status_wifi",
     "1024": "tempCO",
     "1025": "tempCWU",
     "1028": "tempUpperBuffer",
@@ -136,6 +139,7 @@ REG_PARAM_UNIT = {
     "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     "quality": PERCENTAGE,
     "valveMixer1": PERCENTAGE,
+
 }
 
 REG_PARAM_STATE_CLASS = {
@@ -182,6 +186,9 @@ REG_PARAM_DEVICE_CLASS = {
     "protocolType": "protocol_type",
     "controllerID": "controller_ID",
     "valveMixer1": "valve_mixer_1",
+    "servoMixer1": "servo_mixer_1",
+    "Status_wifi": "wifi_status",
+    "main_server": "main_server",
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -190,8 +197,9 @@ REG_PARAM_PRECISION = {
     "tempExternalSensor": 1,
     "fuelLevel": 0,
     "lambdaLevel": 1,
-    "lambdaSet": 1,
+    "lambdaSet":1,
     "tempCO": 1,
+    "tempCOSet": 0,
     "fanPower": 0,
     "mixerSetTemp1": 0,
     "mixerTemp1": 1,
@@ -200,7 +208,7 @@ REG_PARAM_PRECISION = {
     "tempLowerBuffer": 1,
     "tempCWU": 1,
     "tempFlueGas": 1,
-}
+    }
 
 REG_PARAM_VALUE_PROCESSOR = {
     "mode": lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
@@ -222,6 +230,8 @@ REG_PARAM_ENTITY_CATEGORY = {
     "moduleLambdaSoftVer": EntityCategory.DIAGNOSTIC,
     "protocolType": EntityCategory.DIAGNOSTIC,
     "controllerID": EntityCategory.DIAGNOSTIC,
+    "Status_wifi": EntityCategory.DIAGNOSTIC,
+    "main_server": EntityCategory.DIAGNOSTIC,
 }
 
 # Default values for visible 'entity_registry_visible_default=False,' in sensor.py
