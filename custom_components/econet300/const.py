@@ -90,6 +90,7 @@ REG_PARAM_MAP = {
     "28": "tempExternalSensor",
     "97": "fuelLevel",
     "117": "thermostat",
+    "139": "valveMixer1",
     "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
@@ -134,6 +135,7 @@ REG_PARAM_UNIT = {
     "tempLowerBuffer": UnitOfTemperature.CELSIUS,
     "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     "quality": PERCENTAGE,
+    "valveMixer1": PERCENTAGE,
 }
 
 REG_PARAM_STATE_CLASS = {
@@ -154,6 +156,7 @@ REG_PARAM_STATE_CLASS = {
     "tempLowerBuffer": SensorStateClass.MEASUREMENT,
     "signal": SensorStateClass.MEASUREMENT,
     "quality": SensorStateClass.MEASUREMENT,
+    "valveMixer1": SensorStateClass.MEASUREMENT,
 }
 
 REG_PARAM_DEVICE_CLASS = {
@@ -178,6 +181,7 @@ REG_PARAM_DEVICE_CLASS = {
     "moduleLambdaSoftVer": "module_lamda_software_version",
     "protocolType": "protocol_type",
     "controllerID": "controller_ID",
+    "valveMixer1": "valve_mixer_1",
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -185,14 +189,14 @@ REG_PARAM_PRECISION = {
     "tempFeeder": 1,
     "tempExternalSensor": 1,
     "lambdaLevel": 1,
+    "lambdaSet": 1,
     "tempCO": 1,
-    "tempCOSet": 1,
-    "fanPower": 2,
-    "mixerSetTemp1": 2,
+    "mixerTemp1": 1,
     "tempBack": 2,
-    "fuelLevel": 1,
     "tempUpperBuffer": 1,
     "tempLowerBuffer": 1,
+    "tempCWU": 1,
+    "tempFlueGas": 1,
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
