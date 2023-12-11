@@ -75,7 +75,7 @@ def create_entity_description(key: str):
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
         suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),
-        process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, map_key),
+        process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, lambda x: x),
     )
 
 

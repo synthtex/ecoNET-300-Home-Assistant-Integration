@@ -17,5 +17,28 @@
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]"
     }
-  }
+  },
+  "entity":{
+    "sensor": {
+        "boilerPower": { "name": "Boiler output" },
+        "tempExternalSensor": { "name": "Outside temperature" },
+        "tempFeeder":{"name": "Feeder temperature"},
+        "fuelLevel": { "name": "fuel Level" },
+        "thermostat": { "name": "thermostat" },
+        "lambdaStatus": { "name": "lambda Status" },
+        "lambdaSet": { "name": "lambda Set" },
+        "lambdaLevel": { "name": "lambda Level" },
+        "signal": { "name": "signal" },
+        "tempCO": { "name": "tempCO" },
+        "tempCWU": { "name": "tempCWU" },
+        "tempUpperBuffer": { "name": "tempUpper Buffer" },
+        "tempLowerBuffer": { "name": "tempLower Buffer" },
+        "tempFlueGas": { "name": "temp Flue Gas" },
+        "mixerTemp1": { "name": "mixer Temp1" },
+        "mixerSetTemp1": { "name": "mixer SetT emp1" },
+        "mode": { "name": "mode" },
+        "fanPower": { "name": "fanPower" },
+        "tempCOSet": { "name": "tempCOSet" }
+    }
+}
 }
