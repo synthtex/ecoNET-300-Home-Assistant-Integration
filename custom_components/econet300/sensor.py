@@ -69,7 +69,7 @@ def create_entity_description(key: str):
     """Creates Econect300 sensor entity based on supplied key"""
     map_key = REG_PARAM_MAP.get(key, key)
     return EconetSensorEntityDescription(
-        key=map_key,
+        key=key,
         translation_key=map_key,
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
