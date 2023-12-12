@@ -20,7 +20,7 @@
     },
     "entity":{
         "sensor": {
-            "boilerPower": { "name": "Boiler output" },
+            "boiler_Power": { "name": "Boiler output" },
             "tempExternalSensor": { "name": "Outside temperature" },
             "tempFeeder": {"name": "Feeder temperature"},
             "fuelLevel": { "name": "fuel Level" },
