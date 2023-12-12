@@ -101,7 +101,6 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
                 data_key,
             )
 
-
     return entities
 
 
