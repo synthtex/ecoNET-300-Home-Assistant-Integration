@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Callable, Any
 
 import logging
+import re
 
 from homeassistant.components.sensor import (
     SensorEntityDescription,
@@ -66,13 +67,19 @@ class ControllerSensor(EconetEntity, EconetSensor):
         super().__init__(description, coordinator, api)
 
 
+def camel_to_snake(key):
+    """Converting camel case return from api ti snake case to mach translations keys structure"""
+    key = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", key)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", key).lower()
+
+
 def create_entity_description(key: str):
     """Creates Econect300 sensor entity based on supplied key"""
     map_key = REG_PARAM_MAP.get(key, key)
     return EconetSensorEntityDescription(
         key=key,
         name=map_key,
-        translation_key=map_key,
+        translation_key=camel_to_snake(map_key),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
@@ -100,7 +107,6 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
                 "Key: %s is not mapped, entity will not be added",
                 data_key,
             )
-
 
     return entities
 
