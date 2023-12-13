@@ -106,7 +106,7 @@ REG_PARAM_MAP = {
     "1031": "mixerTemp1",
     "1287": "mixerSetTemp1",
     "1792": "mode",
-    "1794": "boiler_power",
+    "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
 }
@@ -132,14 +132,13 @@ REG_PARAM_UNIT = {
     "mixerTemp1": UnitOfTemperature.CELSIUS,
     "tempBack": UnitOfTemperature.CELSIUS,
     "tempCWU": UnitOfTemperature.CELSIUS,
-    "boiler_power": PERCENTAGE,
+    "boilerPower": PERCENTAGE,
     "fuelLevel": PERCENTAGE,
     "tempUpperBuffer": UnitOfTemperature.CELSIUS,
     "tempLowerBuffer": UnitOfTemperature.CELSIUS,
     "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     "quality": PERCENTAGE,
     "valveMixer1": PERCENTAGE,
-
 }
 
 REG_PARAM_STATE_CLASS = {
@@ -168,7 +167,7 @@ REG_PARAM_DEVICE_CLASS = {
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
     "tempCOSet": SensorDeviceClass.TEMPERATURE,
-    "boiler_power": SensorDeviceClass.POWER_FACTOR,
+    "boilerPower": SensorDeviceClass.POWER_FACTOR,
     "fanPower": SensorDeviceClass.POWER_FACTOR,
     "tempFlueGas": SensorDeviceClass.TEMPERATURE,
     "mixerSetTemp1": SensorDeviceClass.TEMPERATURE,
@@ -197,7 +196,7 @@ REG_PARAM_PRECISION = {
     "tempExternalSensor": 1,
     "fuelLevel": 0,
     "lambdaLevel": 1,
-    "lambdaSet":1,
+    "lambdaSet": 1,
     "tempCO": 1,
     "tempCOSet": 0,
     "fanPower": 0,
@@ -208,7 +207,7 @@ REG_PARAM_PRECISION = {
     "tempLowerBuffer": 1,
     "tempCWU": 1,
     "tempFlueGas": 1,
-    }
+}
 
 REG_PARAM_VALUE_PROCESSOR = {
     "mode": lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
@@ -238,4 +237,11 @@ REG_PARAM_ENTITY_CATEGORY = {
 REG_PARAM_VISIBLE_DEFAULT = {
     "tempUpperBuffer": False,
     "tempLowerBuffer": False,
+}
+
+REG_PARAM_TRANSLATION_KEY = {
+    "boilerPower": "boiler_power",
+    "tempExternalSensor": "temp_external_sensor",
+    "tempFeeder": "temp_feeder",
+    "fuelLevel": "fuel_fevel",
 }

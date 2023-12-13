@@ -18,6 +18,7 @@ from .const import (
     DOMAIN,
     REG_PARAM_DEVICE_CLASS,
     REG_PARAM_STATE_CLASS,
+    REG_PARAM_TRANSLATION_KEY,
     SERVICE_COORDINATOR,
     SERVICE_API,
     REG_PARAM_MAP,
@@ -79,7 +80,7 @@ def create_entity_description(key: str):
     return EconetSensorEntityDescription(
         key=key,
         name=map_key,
-        translation_key=camel_to_snake(map_key),
+        translation_key=REG_PARAM_TRANSLATION_KEY.get(map_key, None),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
