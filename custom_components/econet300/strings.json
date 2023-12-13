@@ -40,4 +40,6 @@
       "fan_power": { "name": "fanPoweriukas" },
       "temp_co_set": { "name": "tempCOSetukas" }
 }
+  }
 }
+
