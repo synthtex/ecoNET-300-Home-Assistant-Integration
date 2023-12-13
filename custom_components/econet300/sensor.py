@@ -123,6 +123,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
         description = EconetSensorEntityDescription(
             key=f"mixerTemp{i}",
             name=f"Mixer {i} temperature",
+            translation_key=f"mixer_temp_{i}",
             icon="mdi:thermometer",
             native_unit_of_measurement=UnitOfTemperature.CELSIUS,
             state_class=SensorStateClass.MEASUREMENT,
@@ -140,6 +141,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
         description2 = EconetSensorEntityDescription(
             key=f"mixerSetTemp{i}",
             name=f"Mixer {i} set temperature",
+            translation_key=f"mixer_{i}_set_temp",
             icon="mdi:thermometer",
             native_unit_of_measurement=UnitOfTemperature.CELSIUS,
             state_class=SensorStateClass.MEASUREMENT,
