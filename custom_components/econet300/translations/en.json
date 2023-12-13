@@ -29,7 +29,7 @@
             "lambda_set": { "name": "lambda Set" },
             "lambda_level": { "name": "lambda Level" },
             "signal": { "name": "signaliukas" },
-            "temp_cO": { "name": "tempCOukas" },
+            "temp_co": { "name": "tempCOukas" },
             "temp_cwu": { "name": "tempCWUiukas" },
             "temp_upper_buffer": { "name": "tempUpper Buffer" },
             "temp_lower_buffer": { "name": "tempLower Buffer" },
