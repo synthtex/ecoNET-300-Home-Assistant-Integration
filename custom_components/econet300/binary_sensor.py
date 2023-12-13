@@ -30,7 +30,7 @@ BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
     EconetBinarySensorEntityDescription(
         availability_key="pumpCWU",
         key="pumpCWUWorks",
-        translation_key="pumpCWU",
+        translation_key="pump_swu",
         name="HUW pump",
         icon="mdi:pump",
         icon_off="mdi:pump-off",
@@ -39,7 +39,7 @@ BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
     EconetBinarySensorEntityDescription(
         availability_key="pumpCirculation",
         key="pumpCirculationWorks",
-        translation_key="pumpCirculation",
+        translation_key="pump_circulation",
         icon="mdi:pump",
         icon_off="mdi:pump-off",
         device_class=BinarySensorDeviceClass.RUNNING,

@@ -29,7 +29,7 @@ NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
     EconetNumberEntityDescription(
         key="tempCOSet",
         name="Boiler set temperature",
-        translation_key="tempCOSet",
+        translation_key="temp_co_set",
         icon="mdi:thermometer",
         device_class=NumberDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -41,6 +41,7 @@ NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
     EconetNumberEntityDescription(
         key="tempCWUSet",
         name="HUW set temperature",
+        translation_key="temp_cwu_set",
         icon="mdi:thermometer",
         device_class=NumberDeviceClass.TEMPERATURE,
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,

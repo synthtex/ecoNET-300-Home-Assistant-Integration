@@ -44,7 +44,7 @@ class EconetSensorEntityDescription(SensorEntityDescription):
 SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     EconetSensorEntityDescription(
         key="fanPower",
-        translation_key="fanPower",
+        translation_key="fan_power",
         name="Fan output",
         icon="mdi:fan",
         native_unit_of_measurement=PERCENTAGE,
@@ -54,7 +54,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="tempCO",
-        translation_key="tempCO",
+        translation_key="temp_co",
         name="Boiler temperature",
         icon="mdi:thermometer-lines",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -66,7 +66,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     EconetSensorEntityDescription(
         key="tempCOSet",
         name="Boiler set temperature",
-        translation_key="tempCOSet",
+        translation_key="temp_co_set",
         icon="mdi:thermometer-chevron-up",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
@@ -75,7 +75,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="tempFeeder",
-        translation_key="tempFeeder",
+        translation_key="temp_feeder",
         name="Feeder temperature",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -86,7 +86,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="tempFlueGas",
-        translation_key="tempFlueGas",
+        translation_key="temp_flue_gas",
         name="Flue gas temperature",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -97,7 +97,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="tempBack",
-        translation_key="tempBack",
+        translation_key="temp_back",
         name="Water back temperature ",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -107,7 +107,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="tempCWU",
-        translation_key="tempCWU",
+        translation_key="temp_cwu",
         name="HUW temperature",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -118,7 +118,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
    EconetSensorEntityDescription(
         key="tempCWUSet",
-        translation_key="CWU_SET_TEMP",
+        translation_key="temp_cwu_set",
         name="HUW set temperature",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -129,7 +129,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="tempExternalSensor",
-        translation_key="tempExternalSensor",
+        translation_key="temp_external_sensor",
         name="Outside temperature",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -140,7 +140,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="boilerPower",
-        translation_key="boilerPower",
+        translation_key="boiler_power",
         name="Boiler output",
         icon="mdi:gauge",
         native_unit_of_measurement=PERCENTAGE,
@@ -151,7 +151,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="fuelLevel",
-        translation_key="fuelLevel",
+        translation_key="fuel_level",
         name="Fuel level",
         icon="mdi:gas-station",
         native_unit_of_measurement=PERCENTAGE,
@@ -168,7 +168,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="lambdaSet",
-        translation_key="lambdaSet",
+        translation_key="lambda_set",
         name="Oxygen set level",
         icon="mdi:lambda",
         native_unit_of_measurement=PERCENTAGE,
@@ -177,7 +177,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="lambdaLevel",
-        translation_key="lambdaLevel",
+        translation_key="lambda_level",
         name="Oxygen level",
         icon="mdi:lambda",
         native_unit_of_measurement=PERCENTAGE,
@@ -195,7 +195,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
     EconetSensorEntityDescription(
         key="lambdaStatus",
-        translation_key="lambdaStatus",
+        translation_key="lambda_status",
         name="Lamda status",
         icon="mdi:lambda",
         process_val=lambda x: "STOP"
@@ -204,7 +204,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
     ),
         EconetSensorEntityDescription(
         key="tempUpperBuffer",
-        translation_key="tempUpperBuffer",
+        translation_key="temp_upper_buffer",
         name="Upper buffer temperature",
         icon="mdi:thermometer",
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
@@ -354,6 +354,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
         description = EconetSensorEntityDescription(
             key=f"mixerTemp{i}",
             name=f"Mixer {i} temperature",
+            translation_key=f"mixer_temp_{i}",
             icon="mdi:thermometer",
             native_unit_of_measurement=UnitOfTemperature.CELSIUS,
             state_class=SensorStateClass.MEASUREMENT,
@@ -371,6 +372,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
         description2 = EconetSensorEntityDescription(
             key=f"mixerSetTemp{i}",
             name=f"Mixer {i} set temperature",
+            translation_key=f"mixer_{i}_set_temp",
             icon="mdi:thermometer",
             native_unit_of_measurement=UnitOfTemperature.CELSIUS,
             state_class=SensorStateClass.MEASUREMENT,
