@@ -62,5 +62,10 @@ Thank for @pblxptr add new code line from him
 - Added: `HUW temperature` sensor key `tempCWUSet`
 - Added: `Upper buffer temperature` sensor (by defoult off)
 
+## [v0.3.3] 2023-12-14
+- Change readme pictures links
+- cleaned translation files and rename keys by requrements
+- Added: alarm constants for future
+
 
 
