@@ -18,7 +18,6 @@ from .const import (
     DOMAIN,
     REG_PARAM_DEVICE_CLASS,
     REG_PARAM_STATE_CLASS,
-    REG_PARAM_TRANSLATION_KEY,
     SERVICE_COORDINATOR,
     SERVICE_API,
     REG_PARAM_MAP,
@@ -35,9 +34,7 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
-
     process_val: Callable[[Any], Any] = lambda x: x
-
 
 class EconetSensor(SensorEntity):
     """Econet Sensor"""
@@ -46,6 +43,10 @@ class EconetSensor(SensorEntity):
         super().__init__(name=name, unique_id=unique_id)
         self.entity_description = entity_description
         self._attr_native_value = None
+    @property
+    def name(self):
+        """Return the localized name of the sensor."""
+        return self.hass.localize(f"econet300.entity.sensor.{self.entity_description.name}")
 
     def _sync_state(self, value):
         """Sync state"""
@@ -79,8 +80,7 @@ def create_entity_description(key: str):
     map_key = REG_PARAM_MAP.get(key, key)
     return EconetSensorEntityDescription(
         key=key,
-        name=map_key,
-        translation_key=REG_PARAM_TRANSLATION_KEY.get(map_key, None),
+        name=camel_to_snake(map_key),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
