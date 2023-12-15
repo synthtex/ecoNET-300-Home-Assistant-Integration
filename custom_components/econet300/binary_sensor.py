@@ -36,14 +36,14 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
 BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
     EconetBinarySensorEntityDescription(
         key="1544",
-        name="Pump mixer 1",
+        translation_key="mixer_pump1",
         icon="mdi:pump",
         icon_off="mdi:pump-off",
         device_class=BinarySensorDeviceClass.RUNNING,
     ),
     EconetBinarySensorEntityDescription(
         key="1541",
-        name="Boiler pump",
+        translation_key="boiler_pump",
         icon="mdi:pump",
         icon_off="mdi:pump-off",
         device_class=BinarySensorDeviceClass.RUNNING,
