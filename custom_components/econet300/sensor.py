@@ -34,9 +34,7 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
-
     process_val: Callable[[Any], Any] = lambda x: x
-
 
 class EconetSensor(SensorEntity):
     """Econet Sensor"""
@@ -76,6 +74,7 @@ def camel_to_snake(key):
 def create_entity_description(key: str):
     """Creates Econect300 sensor entity based on supplied key"""
     map_key = REG_PARAM_MAP.get(key, key)
+    _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     return EconetSensorEntityDescription(
         key=key,
         translation_key=camel_to_snake(map_key),
