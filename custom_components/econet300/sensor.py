@@ -34,7 +34,9 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
+
     process_val: Callable[[Any], Any] = lambda x: x
+
 
 class EconetSensor(SensorEntity):
     """Econet Sensor"""
