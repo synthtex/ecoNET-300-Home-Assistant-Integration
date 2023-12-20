@@ -65,6 +65,13 @@ class EconetSensor(EconetEntity, SensorEntity):
             self.entity_description,
         )
 
+    @property
+    def device_info(self):
+        """Return device information."""
+        return {
+            "name": f"entity.sensor.{self.entity_description.translation_key}"
+        }
+
     def _sync_state(self, value):
         """Sync state."""
         _LOGGER.debug("Update EconetSensor entity: %s", self.entity_description.name)
