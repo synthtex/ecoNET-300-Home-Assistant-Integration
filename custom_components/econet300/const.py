@@ -350,5 +350,5 @@ ALARMS_NAMES = {
     53: "Clogged auger Alarm",
     54: "Temperature above maximum for the thermocouple.",
     55: "Thermocouple wired improperly.",
-    255: "Alarm unknown"
+    255: "Alarm unknown",
 }
