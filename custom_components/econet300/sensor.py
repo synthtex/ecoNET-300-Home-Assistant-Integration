@@ -287,11 +287,14 @@ class EconetSensor(SensorEntity):
         self._attr_native_value = None
 
     @property
-    def device_info(self):
-        """Return device information."""
-        return {
-            "name": f"entity.sensor.{self.entity_description.translation_key}"
-        }
+    def name(self):
+        """Return the name of the sensor."""
+        if self.entity_description.translation_key:
+            _LOGGER.debug("Using translation key for sensor: %s", self.entity_description.translation_key)
+            return f"entity.sensor.{self.entity_description.translation_key}"
+        else:
+            _LOGGER.debug("Using name for sensor: %s", self.entity_description.name)
+            return self.entity_description.name
 
     def _sync_state(self, value):
         """Sync state."""

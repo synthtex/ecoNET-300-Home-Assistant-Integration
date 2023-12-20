@@ -43,6 +43,8 @@ class Limits:
 
     class AuthError(Exception):
         """Raised when authentication fails."""
+
+
 class AuthError(Exception):
     """Raised when authentication fails."""
 

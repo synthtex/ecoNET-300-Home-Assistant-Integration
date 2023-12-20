@@ -28,8 +28,8 @@ class EconetDataCoordinator(DataUpdateCoordinator):
         self._api = api
 
     def has_data(self, key: str):
-            """Check if the specified key exists in the data dictionary."""
-            return key in self.data
+        """Check if the specified key exists in the data dictionary."""
+        return key in self.data
 
     async def _async_update_data(self):
         """Fetch data from API endpoint.

@@ -70,7 +70,6 @@ class EconetNumber(EconetEntity, NumberEntity):
 
         self._attr_native_value = value
 
-
         self._attr_native_min_value = value - 1
         self._attr_native_max_value = value + 1
 
