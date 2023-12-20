@@ -94,6 +94,7 @@ def camel_to_snake(key):
 def create_entity_description(key: str):
     """Creates Econect300 sensor entity based on supplied key"""
     map_key = REG_PARAM_MAP.get(key, key)
+    _LOGGER.debug("REG_PARAM_MAP: %s", REG_PARAM_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     return EconetSensorEntityDescription(
         key=key,
