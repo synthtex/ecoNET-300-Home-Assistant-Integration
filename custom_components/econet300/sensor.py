@@ -49,6 +49,7 @@ class EconetSensor(SensorEntity):
             "EconetSensor initialized with name: %s, unique_id: %s",
             self.name,
             self.unique_id,
+            self.entity_description,
         )
 
     @property
@@ -96,7 +97,7 @@ def create_entity_description(key: str):
     map_key = REG_PARAM_MAP.get(key, key)
     _LOGGER.debug("REG_PARAM_MAP: %s", REG_PARAM_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
-    return EconetSensorEntityDescription(
+    entity_description = EconetSensorEntityDescription(
         key=key,
         translation_key=camel_to_snake(map_key),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
@@ -106,7 +107,8 @@ def create_entity_description(key: str):
         process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, lambda x: x),
         entity_category=REG_PARAM_ENTITY_CATEGORY.get(map_key, None),
     )
-
+    _LOGGER.debug("Created entity description: %s", entity_description)
+    return entity_description
 
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Creating controller sensor entities"""
