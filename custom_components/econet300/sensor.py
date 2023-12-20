@@ -39,10 +39,11 @@ class EconetSensorEntityDescription(SensorEntityDescription):
 class EconetSensor(SensorEntity):
     """Econet Sensor"""
 
-    def __init__(self, entity_description, name, unique_id):
-        super().__init__(name=name, unique_id=unique_id)
+    def __init__(self, entity_description, unique_id):
+        super().__init__(name=None, unique_id=unique_id)
         self.entity_description = entity_description
         self._attr_native_value = None
+        _LOGGER.debug("EconetSensor initialized with name: %s, unique_id: %s", self.name, self.unique_id)
 
     def _sync_state(self, value):
         """Sync state"""
