@@ -34,7 +34,9 @@ _LOGGER = logging.getLogger(__name__)
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
+
     process_val: Callable[[Any], Any] = lambda x: x
+
 
 class EconetSensor(SensorEntity):
     """Econet Sensor"""
@@ -43,7 +45,24 @@ class EconetSensor(SensorEntity):
         super().__init__(name=None, unique_id=unique_id)
         self.entity_description = entity_description
         self._attr_native_value = None
-        _LOGGER.debug("EconetSensor initialized with name: %s, unique_id: %s", self.name, self.unique_id)
+        _LOGGER.debug(
+            "EconetSensor initialized with name: %s, unique_id: %s",
+            self.name,
+            self.unique_id,
+        )
+
+    @property
+    def name(self):
+        """Return the name of the sensor."""
+        if self.entity_description.translation_key:
+            _LOGGER.debug(
+                "Using translation key for sensor: %s",
+                self.entity_description.translation_key,
+            )
+            return f"entity.sensor.{self.entity_description.translation_key}"
+        else:
+            _LOGGER.debug("Using name for sensor: %s", self.entity_description.name)
+            return self.entity_description.name
 
     def _sync_state(self, value):
         """Sync state"""
