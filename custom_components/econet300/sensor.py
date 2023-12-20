@@ -46,7 +46,7 @@ class EconetSensor(SensorEntity):
         self.entity_description = entity_description
         self._attr_native_value = None
         _LOGGER.debug(
-            "EconetSensor initialized with name: %s, unique_id: %s",
+            "EconetSensor initialized with name: %s, unique_id: %s, entity_description: %s",
             self.name,
             self.unique_id,
             self.entity_description,
@@ -95,11 +95,13 @@ def camel_to_snake(key):
 def create_entity_description(key: str):
     """Creates Econect300 sensor entity based on supplied key"""
     map_key = REG_PARAM_MAP.get(key, key)
+    translation_key = camel_to_snake(map_key)
     _LOGGER.debug("REG_PARAM_MAP: %s", REG_PARAM_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
-        translation_key=camel_to_snake(map_key),
+        name=translation_key,
+        translation_key=translation_key,
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
