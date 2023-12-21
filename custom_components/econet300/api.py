@@ -66,8 +66,9 @@ class EconetClient:
         self._session = session
         self._auth = BasicAuth(username, password)
 
-    def host(self):
-        """Set host address"""
+    @property
+    def host(self) -> str:
+        """Get host address"""
         return self._host
 
     async def set_param(self, key: str, value: str):
@@ -127,18 +128,22 @@ class Econet300Api:
 
         return c
 
-    def host(self):
+    @property
+    def host(self) -> str:
         """Get clients host address"""
-        return self._client.host()
+        return self._client.host
 
+    @property
     def uid(self) -> str:
         """Get uid"""
         return self._uid
 
+    @property
     def sw_rev(self) -> str:
         """Get software version"""
         return self._sw_revision
 
+    @property
     def hw_ver(self) -> str:
         """Get hardware version"""
         return self._hw_version

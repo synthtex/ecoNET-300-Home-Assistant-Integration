@@ -30,19 +30,19 @@ class EconetEntity(CoordinatorEntity):
     @property
     def unique_id(self) -> str | None:
         """Return the unique_id of the entity"""
-        return f"{self.api.uid()}-{self.entity_description.key}"
+        return f"{self.api.uid}-{self.entity_description.key}"
 
     @property
     def device_info(self) -> DeviceInfo | None:
         """Return device info of the entity"""
         return DeviceInfo(
-            identifiers={(DOMAIN, self.api.uid())},
+            identifiers={(DOMAIN, self.api.uid)},
             name=DEVICE_INFO_CONTROLLER_NAME,
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
-            configuration_url=self.api.host(),
-            sw_version=self.api.sw_rev(),
-            hw_version=self.api.hw_ver(),
+            configuration_url=self.api.host,
+            sw_version=self.api.sw_rev,
+            hw_version=self.api.hw_ver,
         )
 
     @callback

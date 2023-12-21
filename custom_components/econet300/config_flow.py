@@ -36,7 +36,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     try:
         api = await make_api(hass, cache, data)
-        info["uid"] = api.uid()
+        info["uid"] = api.uid
     except AuthError as auth_error:
         raise InvalidAuth from auth_error
     except TimeoutError as timeout_error:
