@@ -12,6 +12,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .entity import EconetEntity
+
 from .common import EconetDataCoordinator, Econet300Api
 
 from .const import (
@@ -19,8 +21,6 @@ from .const import (
     SERVICE_COORDINATOR,
     SERVICE_API,
 )
-
-from .entity import EconetEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -30,7 +30,6 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Describes Econet binary sensor entity."""
 
     icon_off: str | None = None
-    availability_key: str = ""
 
 
 BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
@@ -51,12 +50,24 @@ BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
 )
 
 
-class EconetBinarySensor(BinarySensorEntity):
+class EconetBinarySensor(EconetEntity, BinarySensorEntity):
     """Describe Econet Binary Sensor"""
+
+    entity_description: EconetBinarySensorEntityDescription
+
+    def __init__(
+        self,
+        entity_description: EconetBinarySensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+    ):
+        """Initialize a new ecoNET binary sensor."""
+        self.entity_description = entity_description
+        self.api = api
+        super().__init__(coordinator)
 
     def _sync_state(self, value):
         """Sync state"""
-
         self._attr_is_on = value
         self.async_write_ha_state()
 
@@ -70,39 +81,26 @@ class EconetBinarySensor(BinarySensorEntity):
         )
 
 
-class ControllerBinarySensor(EconetEntity, EconetBinarySensor):
-    """Describes Econet binary sensor entity."""
-
-    def __init__(
-        self,
-        description: EconetBinarySensorEntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-    ):
-        super().__init__(description, coordinator, api)
-
-
 def can_add(
     desc: EconetBinarySensorEntityDescription, coordinator: EconetDataCoordinator
 ):
     """Check can add key"""
-    return (
-        coordinator.has_data(desc.availability_key)
-        and coordinator.data[desc.availability_key] is not False
-    )
+    return coordinator.has_data(desc.key)
 
 
 def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """create binary sensors"""
-    entities = []
+    entities: list[EconetBinarySensor] = []
+
     for description in BINARY_SENSOR_TYPES:
         if can_add(description, coordinator):
-            entities.append(ControllerBinarySensor(description, coordinator, api))
+            entities.append(EconetBinarySensor(description, coordinator, api))
         else:
             _LOGGER.debug(
                 "Availability key: %s does not exist, entity will not be added",
                 description.key,
             )
+
     return entities
 
 
@@ -112,11 +110,10 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> bool:
     """Set up the sensor platform."""
-
     coordinator = hass.data[DOMAIN][entry.entry_id][SERVICE_COORDINATOR]
     api = hass.data[DOMAIN][entry.entry_id][SERVICE_API]
 
-    entities: list[ControllerBinarySensor] = []
-    entities = entities + create_binary_sensors(coordinator, api)
+    entities: list[EconetBinarySensor] = []
+    entities.extend(create_binary_sensors(coordinator, api))
 
     return async_add_entities(entities)

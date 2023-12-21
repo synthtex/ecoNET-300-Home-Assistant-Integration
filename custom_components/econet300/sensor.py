@@ -38,70 +38,49 @@ class EconetSensorEntityDescription(SensorEntityDescription):
     process_val: Callable[[Any], Any] = lambda x: x
 
 
-class EconetSensor(SensorEntity):
+class EconetSensor(EconetEntity, SensorEntity):
     """Econet Sensor"""
 
-    def __init__(self, entity_description, unique_id):
-        super().__init__(name=None, unique_id=unique_id)
+    entity_description: EconetSensorEntityDescription
+
+    def __init__(
+        self,
+        entity_description: EconetSensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+    ):
+        """Initialize a new ecoNET sensor."""
         self.entity_description = entity_description
+        self.api = api
         self._attr_native_value = None
+        super().__init__(coordinator)
         _LOGGER.debug(
-            "EconetSensor initialized with name: %s, unique_id: %s, entity_description: %s",
-            self.name,
+            "EconetSensor initialized with unique_id: %s, entity_description: %s",
             self.unique_id,
             self.entity_description,
         )
 
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        if self.entity_description.translation_key:
-            _LOGGER.debug(
-                "Using translation key for sensor: %s",
-                self.entity_description.translation_key,
-            )
-            return f"entity.sensor.{self.entity_description.translation_key}"
-        else:
-            _LOGGER.debug("Using name for sensor: %s", self.entity_description.name)
-            return self.entity_description.name
-
     def _sync_state(self, value):
         """Sync state"""
         _LOGGER.debug("Update EconetSensor entity: %s", self.entity_description.name)
-
         self._attr_native_value = self.entity_description.process_val(value)
-
         self.async_write_ha_state()
 
 
-class ControllerSensor(EconetEntity, EconetSensor):
-    """class controller"""
-
-    def __init__(
-        self,
-        description: EconetSensorEntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-    ):
-        super().__init__(description, coordinator, api)
-
-
-def camel_to_snake(key):
+def camel_to_snake(key: str) -> str:
     """Converting camel case return from api ti snake case to mach translations keys structure"""
     key = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", key)
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", key).lower()
 
 
-def create_entity_description(key: str):
+def create_entity_description(key: str) -> EconetSensorEntityDescription:
     """Creates Econect300 sensor entity based on supplied key"""
     map_key = REG_PARAM_MAP.get(key, key)
-    translation_key = camel_to_snake(map_key)
     _LOGGER.debug("REG_PARAM_MAP: %s", REG_PARAM_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
-        name=translation_key,
-        translation_key=translation_key,
+        translation_key=camel_to_snake(map_key),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
@@ -112,14 +91,15 @@ def create_entity_description(key: str):
     _LOGGER.debug("Created entity description: %s", entity_description)
     return entity_description
 
+
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Creating controller sensor entities"""
-    entities = []
+    entities: list[EconetSensor] = []
     coordinator_data = coordinator.data
     for data_key in coordinator_data:
         if data_key in REG_PARAM_MAP:
             entities.append(
-                ControllerSensor(create_entity_description(data_key), coordinator, api)
+                EconetSensor(create_entity_description(data_key), coordinator, api)
             )
             _LOGGER.debug(
                 "Key: %s mapped, entity will be added",
@@ -144,6 +124,6 @@ async def async_setup_entry(
     api = hass.data[DOMAIN][entry.entry_id][SERVICE_API]
 
     entities: list[EconetSensor] = []
-    entities = entities + create_controller_sensors(coordinator, api)
+    entities.extend(create_controller_sensors(coordinator, api))
 
     return async_add_entities(entities)
