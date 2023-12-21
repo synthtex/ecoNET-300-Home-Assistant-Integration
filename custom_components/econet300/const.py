@@ -109,14 +109,16 @@ REG_PARAM_MAP = {
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
+
     # Binary sensors for testing
+    "111": "weatherControl",
+    "113": "unseal",
+    "118": "pumpCOWorks",
+    "1536": "fanWorks",
+    "1540": "aditionalFeeder",
+    "1541": "pumpFireplaceWorks",
+    "1542": "pumpCWUWorks", 
 }
-
-# Unknown ID's
-# tempBack: "tempBack", pas mane nera tokio parametro
-#    "1025": "tempCOSet", pas mane nera i6jungtas :(
-#               quality
-
 
 # Sensors units from econet dev
 REG_PARAM_UNIT = {

@@ -26,6 +26,8 @@
     "sensor": {
       "boiler_power": { "name": "Boiler power" },
       "fuel_level": { "name": "Fuel level" },
+      "fan_power": { "name": "Fan power" },
+      "fan_works": { "name": "Fan" },
       "lambda_status": { "name": "Lambda status" },
       "lambda_set": { "name": "Lambda set" },
       "lambda_level": { "name": "Lambda level" },
@@ -33,6 +35,8 @@
       "mode": { "name": "Boiler mode" },
       "mixer_temp1": { "name": "Mixer 1 temperature" },
       "mixer_set_temp1": { "name": "Mixer target temperature" },
+      "pump_cwu_works": { "name": "HUW pump" },
+      "pump_fireplace_works": { "name": "Boiler pump" },
       "signal": { "name": "Signal quality" },
       "servo_mixer1": { "name": "Mixer 1 servo position" },
       "status_wifi": { "name": "Wireless network connected" },
@@ -45,8 +49,9 @@
       "temp_feeder": {"name": "Feeder temperature"},
       "temp_co_set": { "name": "Heating target temperature" },
       "thermostat": { "name": "Thermostat" },
+      "unseal": { "name": "Unseal" },
       "valve_mixer1": { "name": "Mixer 1 valve % open" },
-      "fan_power": { "name": "Fan power" }
+      "weather_control": {"name": "Weather control the boiler"}
     }
   }
 }
