@@ -89,7 +89,6 @@ REG_PARAM_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
     "97": "fuelLevel",
-    "117": "thermostat",
     "139": "valveMixer1",
     "143": "servoMixer1",
     "151": "lambdaStatus",
@@ -109,15 +108,15 @@ REG_PARAM_MAP = {
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
-
     # Binary sensors for testing
     "111": "weatherControl",
     "113": "unseal",
+    "117": "thermostat",
     "118": "pumpCOWorks",
     "1536": "fanWorks",
     "1540": "aditionalFeeder",
     "1541": "pumpFireplaceWorks",
-    "1542": "pumpCWUWorks", 
+    "1542": "pumpCWUWorks",
 }
 
 # Sensors units from econet dev
@@ -233,9 +232,8 @@ REG_PARAM_VALUE_PROCESSOR = {
     "lambdaStatus": lambda x: "STOP"
     if x == 0
     else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
-    "status_wifi": lambda x: 'Connected' if x == 1 else 'Disconnected',
-    "main_server": lambda x: 'Server available' if x == 1 else 'Server not available',
-
+    "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
+    "main_server": lambda x: "Server available" if x == 1 else "Server not available",
 }
 
 REG_PARAM_ENTITY_CATEGORY = {
