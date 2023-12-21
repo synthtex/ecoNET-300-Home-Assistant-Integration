@@ -25,6 +25,7 @@ from .const import (
     REG_PARAM_UNIT,
     REG_PARAM_VALUE_PROCESSOR,
     REG_PARAM_ENTITY_CATEGORY,
+    REG_PARAM_ENTITY_ICON,
 )
 from .entity import EconetEntity
 
@@ -83,6 +84,7 @@ def create_entity_description(key: str) -> EconetSensorEntityDescription:
         device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
         entity_category=REG_PARAM_ENTITY_CATEGORY.get(map_key, None),
         translation_key=camel_to_snake(map_key),
+        icon=REG_PARAM_ENTITY_ICON.get(map_key, None),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),

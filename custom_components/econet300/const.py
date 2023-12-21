@@ -110,7 +110,6 @@ REG_PARAM_MAP = {
     "1795": "fanPower",
     "1280": "tempCOSet",
     # Binary sensors for testing
-
 }
 
 # Unknown ID's
@@ -209,6 +208,10 @@ REG_PARAM_PRECISION = {
     "tempLowerBuffer": 1,
     "tempCWU": 1,
     "tempFlueGas": 1,
+}
+
+ENTITY_ICON = {
+    "mode": "mdi:sync",
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
