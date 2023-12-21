@@ -110,6 +110,7 @@ REG_PARAM_MAP = {
     "1795": "fanPower",
     "1280": "tempCOSet",
     # Binary sensors for testing
+
 }
 
 # Unknown ID's
@@ -210,8 +211,18 @@ REG_PARAM_PRECISION = {
     "tempFlueGas": 1,
 }
 
-ENTITY_ICON = {
+REG_PARAM_ENTITY_ICON = {
     "mode": "mdi:sync",
+    "fanPower": "mdi:fan",
+    "temCO": "mdi:thermometer-lines",
+    "tempCOSet": "mdi:thermometer-chevron-up",
+    "boilerPower": "mdi:gauge",
+    "fuelLevel": "mdi:gas-station",
+    "lambdaLevel": "mdi:lambda",
+    "lambdaSet": "mdi:lambda",
+    "lambdaStatus": "mdi:lambda",
+    "quality": "mdi:signal",
+
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
