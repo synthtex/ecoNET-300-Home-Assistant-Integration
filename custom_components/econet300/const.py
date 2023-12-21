@@ -109,6 +109,8 @@ REG_PARAM_MAP = {
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
+    # Binary sensors for testing
+
 }
 
 # Unknown ID's

@@ -80,13 +80,14 @@ def create_entity_description(key: str) -> EconetSensorEntityDescription:
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
+        device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
+        entity_category=REG_PARAM_ENTITY_CATEGORY.get(map_key, None),
         translation_key=camel_to_snake(map_key),
         native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
-        device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
         suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),
         process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, lambda x: x),
-        entity_category=REG_PARAM_ENTITY_CATEGORY.get(map_key, None),
+        
     )
     _LOGGER.debug("Created entity description: %s", entity_description)
     return entity_description
