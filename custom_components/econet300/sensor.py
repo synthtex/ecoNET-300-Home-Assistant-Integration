@@ -89,7 +89,6 @@ def create_entity_description(key: str) -> EconetSensorEntityDescription:
         state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
         suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),
         process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, lambda x: x),
-        
     )
     _LOGGER.debug("Created entity description: %s", entity_description)
     return entity_description

@@ -110,7 +110,6 @@ REG_PARAM_MAP = {
     "1795": "fanPower",
     "1280": "tempCOSet",
     # Binary sensors for testing
-
 }
 
 # Unknown ID's
@@ -222,7 +221,6 @@ REG_PARAM_ENTITY_ICON = {
     "lambdaSet": "mdi:lambda",
     "lambdaStatus": "mdi:lambda",
     "quality": "mdi:signal",
-
 }
 
 REG_PARAM_VALUE_PROCESSOR = {
