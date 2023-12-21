@@ -34,7 +34,7 @@
       "mixer_temp1": { "name": "Mixer 1 temperature" },
       "mixer_set_temp1": { "name": "Mixer target temperature" },
       "signal": { "name": "Signal quality" },
-      "servoMixer1": { "name": "Mixer 1 servo position" },
+      "servo_mixer1": { "name": "Mixer 1 servo position" },
       "status_wifi": { "name": "Wireless network connected" },
       "temp_co": { "name": "Heating temperature" },
       "temp_cwu": { "name": "Water heater temperature" },
