@@ -20,7 +20,7 @@ from .const import (
     REG_PARAM_STATE_CLASS,
     SERVICE_COORDINATOR,
     SERVICE_API,
-    REG_PARAM_MAP,
+    SENSOR_REG_PARAM_MAP,
     REG_PARAM_PRECISION,
     REG_PARAM_UNIT,
     REG_PARAM_VALUE_PROCESSOR,
@@ -76,8 +76,8 @@ def camel_to_snake(key: str) -> str:
 
 def create_entity_description(key: str) -> EconetSensorEntityDescription:
     """Creates Econect300 sensor entity based on supplied key"""
-    map_key = REG_PARAM_MAP.get(key, key)
-    _LOGGER.debug("REG_PARAM_MAP: %s", REG_PARAM_MAP)
+    map_key = SENSOR_REG_PARAM_MAP.get(key, key)
+    _LOGGER.debug("SENSOR_REG_PARAM_MAP: %s", SENSOR_REG_PARAM_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
@@ -99,7 +99,7 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     entities: list[EconetSensor] = []
     coordinator_data = coordinator.data
     for data_key in coordinator_data:
-        if data_key in REG_PARAM_MAP:
+        if data_key in SENSOR_REG_PARAM_MAP:
             entities.append(
                 EconetSensor(create_entity_description(data_key), coordinator, api)
             )
