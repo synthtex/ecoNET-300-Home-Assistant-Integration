@@ -3,7 +3,6 @@ from dataclasses import dataclass
 from typing import Callable, Any
 
 import logging
-import re
 
 from homeassistant.components.sensor import (
     SensorEntityDescription,
@@ -13,6 +12,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .common_functions import camel_to_snake
 from .common import EconetDataCoordinator, Econet300Api
 from .const import (
     DOMAIN,
@@ -20,7 +20,7 @@ from .const import (
     STATE_CLASS_MAP,
     SERVICE_COORDINATOR,
     SERVICE_API,
-    SENSOR_REG_PARAM_MAP,
+    SENSOR_MAP,
     ENTITY_PRECISION,
     ENTITY_UNIT_MAP,
     ENTITY_VALUE_PROCESSOR,
@@ -69,16 +69,10 @@ class EconetSensor(EconetEntity, SensorEntity):
         self.async_write_ha_state()
 
 
-def camel_to_snake(key: str) -> str:
-    """Converting camel case return from api ti snake case to mach translations keys structure"""
-    key = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", key)
-    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", key).lower()
-
-
 def create_entity_description(key: str) -> EconetSensorEntityDescription:
     """Creates Econect300 sensor entity based on supplied key"""
-    map_key = SENSOR_REG_PARAM_MAP.get(key, key)
-    _LOGGER.debug("SENSOR_REG_PARAM_MAP: %s", SENSOR_REG_PARAM_MAP)
+    map_key = SENSOR_MAP.get(key, key)
+    _LOGGER.debug("SENSOR_MAP: %s", SENSOR_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
@@ -100,7 +94,7 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     entities: list[EconetSensor] = []
     coordinator_data = coordinator.data
     for data_key in coordinator_data:
-        if data_key in SENSOR_REG_PARAM_MAP:
+        if data_key in SENSOR_MAP:
             entities.append(
                 EconetSensor(create_entity_description(data_key), coordinator, api)
             )

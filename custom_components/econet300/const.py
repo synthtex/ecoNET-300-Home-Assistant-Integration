@@ -1,6 +1,6 @@
 """Constants from the Home Assistant"""
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
-from homeassistant.components.binary_sensor import (BinarySensorDeviceClass)
+from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.const import (
     UnitOfTemperature,
     EntityCategory,
@@ -86,7 +86,7 @@ EDITABLE_PARAMS_MAPPING_TABLE = {
 #######################
 ######## REG PARAM MAPS
 #######################
-SENSOR_REG_PARAM_MAP = {
+SENSOR_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
     "97": "fuelLevel",
@@ -122,7 +122,6 @@ BINARY_SENSOR_MAP = {
     "1542": "pumpCWUWorks",
 }
 
-# Sensors units from econet dev
 ENTITY_UNIT_MAP = {
     "tempCO": UnitOfTemperature.CELSIUS,
     "tempCOSet": UnitOfTemperature.CELSIUS,
@@ -168,7 +167,9 @@ STATE_CLASS_MAP = {
 }
 
 ENTITY_DEVICE_CLASS_MAP = {
-    #sensor
+    #############################
+    ######### SENSORS ##########
+    #############################
     "tempFeeder": SensorDeviceClass.TEMPERATURE,
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
@@ -194,13 +195,15 @@ ENTITY_DEVICE_CLASS_MAP = {
     "servoMixer1": "servo_mixer_1",
     "Status_wifi": "wifi_status",
     "main_server": "main_server",
-    # binary_sensors
+    #############################
+    ###### BINARY SENSORS #######
+    #############################
     "weatherControl": BinarySensorDeviceClass.RUNNING,
-    "unseal":BinarySensorDeviceClass.RUNNING,
-    "thermostat":BinarySensorDeviceClass.RUNNING,
-    "pumpCOWorks":BinarySensorDeviceClass.RUNNING,
+    "unseal": BinarySensorDeviceClass.RUNNING,
+    "thermostat": BinarySensorDeviceClass.RUNNING,
+    "pumpCOWorks": BinarySensorDeviceClass.RUNNING,
     "fanWorks": BinarySensorDeviceClass.RUNNING,
-    "aditionalFeeder":BinarySensorDeviceClass.RUNNING,
+    "aditionalFeeder": BinarySensorDeviceClass.RUNNING,
     "pumpFireplaceWorks": BinarySensorDeviceClass.RUNNING,
     "pumpCWUWorks": BinarySensorDeviceClass.RUNNING,
 }
@@ -241,6 +244,7 @@ ENTITY_ICON = {
     "pumpFireplaceWorks": "mdi:pump",
     "pumpCWUWorks": "mdi:pump",
 }
+
 ENTITY_ICON_OFF = {
     "pumpCOWorks": "mdi:pump-off",
     "fanWorks": "mdi:fan-off",
@@ -257,9 +261,8 @@ ENTITY_VALUE_PROCESSOR = {
     "lambdaStatus": lambda x: "STOP"
     if x == 0
     else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
-    "status_wifi": lambda x: 'Connected' if x == 1 else 'Disconnected',
-    "main_server": lambda x: 'Server available' if x == 1 else 'Server not available',
-
+    "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
+    "main_server": lambda x: "Server available" if x == 1 else "Server not available",
 }
 
 ENTITY_CATEGORY = {
