@@ -122,7 +122,7 @@ BINARY_SENSOR_REG_PARAM_MAP = {
 }
 
 # Sensors units from econet dev
-REG_PARAM_UNIT = {
+ENTITY_UNIT_MAP = {
     "tempCO": UnitOfTemperature.CELSIUS,
     "tempCOSet": UnitOfTemperature.CELSIUS,
     "tempExternalSensor": UnitOfTemperature.CELSIUS,
@@ -145,7 +145,7 @@ REG_PARAM_UNIT = {
     "valveMixer1": PERCENTAGE,
 }
 
-REG_PARAM_STATE_CLASS = {
+STATE_CLASS_MAP = {
     "tempFeeder": SensorStateClass.MEASUREMENT,
     "tempExternalSensor": SensorStateClass.MEASUREMENT,
     "lambdaSet": SensorStateClass.MEASUREMENT,
@@ -166,7 +166,7 @@ REG_PARAM_STATE_CLASS = {
     "valveMixer1": SensorStateClass.MEASUREMENT,
 }
 
-REG_PARAM_DEVICE_CLASS = {
+ENTITY_DEVICE_CLASS_MAP = {
     "tempFeeder": SensorDeviceClass.TEMPERATURE,
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
@@ -195,7 +195,7 @@ REG_PARAM_DEVICE_CLASS = {
 }
 
 """Add only keys where precision more than 0 needed"""
-REG_PARAM_PRECISION = {
+ENTITY_PRECISION = {
     "tempFeeder": 1,
     "tempExternalSensor": 1,
     "fuelLevel": 0,
@@ -213,7 +213,7 @@ REG_PARAM_PRECISION = {
     "tempFlueGas": 1,
 }
 
-REG_PARAM_ENTITY_ICON = {
+ENTITY_ICON = {
     "mode": "mdi:sync",
     "fanPower": "mdi:fan",
     "temCO": "mdi:thermometer-lines",
@@ -226,7 +226,7 @@ REG_PARAM_ENTITY_ICON = {
     "quality": "mdi:signal",
 }
 
-REG_PARAM_VALUE_PROCESSOR = {
+ENTITY_VALUE_PROCESSOR = {
     "mode": lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
     "thermostat": lambda x: "ON"
     if str(x).strip() == "true"
@@ -239,7 +239,7 @@ REG_PARAM_VALUE_PROCESSOR = {
 
 }
 
-REG_PARAM_ENTITY_CATEGORY = {
+ENTITY_CATEGORY = {
     "signal": EntityCategory.DIAGNOSTIC,
     "quality": EntityCategory.DIAGNOSTIC,
     "softVer": EntityCategory.DIAGNOSTIC,

@@ -16,17 +16,18 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .common import EconetDataCoordinator, Econet300Api
 from .const import (
     DOMAIN,
-    REG_PARAM_DEVICE_CLASS,
-    REG_PARAM_STATE_CLASS,
+    ENTITY_DEVICE_CLASS_MAP,
+    STATE_CLASS_MAP,
     SERVICE_COORDINATOR,
     SERVICE_API,
     SENSOR_REG_PARAM_MAP,
-    REG_PARAM_PRECISION,
-    REG_PARAM_UNIT,
-    REG_PARAM_VALUE_PROCESSOR,
-    REG_PARAM_ENTITY_CATEGORY,
-    REG_PARAM_ENTITY_ICON,
+    ENTITY_PRECISION,
+    ENTITY_UNIT_MAP,
+    ENTITY_VALUE_PROCESSOR,
+    ENTITY_CATEGORY,
+    ENTITY_ICON,
 )
+
 from .entity import EconetEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -81,14 +82,14 @@ def create_entity_description(key: str) -> EconetSensorEntityDescription:
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
-        device_class=REG_PARAM_DEVICE_CLASS.get(map_key, None),
-        entity_category=REG_PARAM_ENTITY_CATEGORY.get(map_key, None),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        entity_category=ENTITY_CATEGORY.get(map_key, None),
         translation_key=camel_to_snake(map_key),
-        icon=REG_PARAM_ENTITY_ICON.get(map_key, None),
-        native_unit_of_measurement=REG_PARAM_UNIT.get(map_key, None),
-        state_class=REG_PARAM_STATE_CLASS.get(map_key, None),
-        suggested_display_precision=REG_PARAM_PRECISION.get(map_key, None),
-        process_val=REG_PARAM_VALUE_PROCESSOR.get(map_key, lambda x: x),
+        icon=ENTITY_ICON.get(map_key, None),
+        native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key, None),
+        state_class=STATE_CLASS_MAP.get(map_key, None),
+        suggested_display_precision=ENTITY_PRECISION.get(map_key, None),
+        process_val=ENTITY_VALUE_PROCESSOR.get(map_key, lambda x: x),
     )
     _LOGGER.debug("Created entity description: %s", entity_description)
     return entity_description
