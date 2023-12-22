@@ -2,7 +2,6 @@
 from dataclasses import dataclass
 
 import logging
-import re
 
 from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
@@ -11,6 +10,7 @@ from homeassistant.components.binary_sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from custom_components.econet300.common_functions import camel_to_snake
 
 from .entity import EconetEntity
 
@@ -37,7 +37,7 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
 
 
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
-    """Describe Econet Binary Sensor"""
+    """Econet Binary Sensor"""
 
     entity_description: EconetBinarySensorEntityDescription
 
@@ -72,12 +72,6 @@ class EconetBinarySensor(EconetEntity, BinarySensorEntity):
             if self.entity_description.icon_off is not None and not self.is_on
             else self.entity_description.icon
         )
-
-
-def camel_to_snake(key: str) -> str:
-    """Converting camel case return from api ti snake case to mach translations keys structure"""
-    key = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", key)
-    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", key).lower()
 
 
 def create_binary_entity_descritpion(key: str) -> EconetBinarySensorEntityDescription:
