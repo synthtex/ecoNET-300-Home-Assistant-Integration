@@ -20,6 +20,14 @@
   },
   "entity":{
     "binary_sensor": {
+      "weather_control": {"name": "Weather control the boiler"},
+      "unseal": { "name": "Unseal" },
+      "thermostat": { "name": "Boiler thermostat" },
+      "pump_co_works": { "name": "Pump CO" },
+      "fan_works": { "name": "Fan" },           
+      "aditional_feeder": { "name": "Aditional feeder" },
+      "pump_fireplace_works": { "name": "Boiler Pump" },
+      "pump_cwu_works": { "name": "Pump CWU" }, 
       "mixer_pump1": { "name": "Mixer 1 pump" },
       "boiler_pump": { "name": "Boiler pump" }
     },

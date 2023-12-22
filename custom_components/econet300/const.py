@@ -1,5 +1,6 @@
 """Constants from the Home Assistant"""
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.binary_sensor import (BinarySensorDeviceClass)
 from homeassistant.const import (
     UnitOfTemperature,
     EntityCategory,
@@ -110,7 +111,7 @@ SENSOR_REG_PARAM_MAP = {
     "1280": "tempCOSet",
 }
 
-BINARY_SENSOR_REG_PARAM_MAP = {
+BINARY_SENSOR_MAP = {
     "111": "weatherControl",
     "113": "unseal",
     "117": "thermostat",
@@ -167,6 +168,7 @@ STATE_CLASS_MAP = {
 }
 
 ENTITY_DEVICE_CLASS_MAP = {
+    #sensor
     "tempFeeder": SensorDeviceClass.TEMPERATURE,
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
@@ -192,6 +194,15 @@ ENTITY_DEVICE_CLASS_MAP = {
     "servoMixer1": "servo_mixer_1",
     "Status_wifi": "wifi_status",
     "main_server": "main_server",
+    # binary_sensors
+    "weatherControl": BinarySensorDeviceClass.RUNNING,
+    "unseal":BinarySensorDeviceClass.RUNNING,
+    "thermostat":BinarySensorDeviceClass.RUNNING,
+    "pumpCOWorks":BinarySensorDeviceClass.RUNNING,
+    "fanWorks": BinarySensorDeviceClass.RUNNING,
+    "aditionalFeeder":BinarySensorDeviceClass.RUNNING,
+    "pumpFireplaceWorks": BinarySensorDeviceClass.RUNNING,
+    "pumpCWUWorks": BinarySensorDeviceClass.RUNNING,
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -224,6 +235,18 @@ ENTITY_ICON = {
     "lambdaSet": "mdi:lambda",
     "lambdaStatus": "mdi:lambda",
     "quality": "mdi:signal",
+    "pumpCOWorks": "mdi:pump",
+    "fanWorks": "mdi:fan",
+    "aditionalFeeder": "mdi:screw-lag",
+    "pumpFireplaceWorks": "mdi:pump",
+    "pumpCWUWorks": "mdi:pump",
+}
+ENTITY_ICON_OFF = {
+    "pumpCOWorks": "mdi:pump-off",
+    "fanWorks": "mdi:fan-off",
+    "aditionalFeeder": "mdi:screw-lag",
+    "pumpFireplaceWorks": "mdi:pump-off",
+    "pumpCWUWorks": "mdi:pump-off",
 }
 
 ENTITY_VALUE_PROCESSOR = {

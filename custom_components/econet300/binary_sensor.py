@@ -2,10 +2,10 @@
 from dataclasses import dataclass
 
 import logging
+import re
 
 from homeassistant.components.binary_sensor import (
     BinarySensorEntityDescription,
-    BinarySensorDeviceClass,
     BinarySensorEntity,
 )
 from homeassistant.config_entries import ConfigEntry
@@ -20,6 +20,10 @@ from .const import (
     DOMAIN,
     SERVICE_COORDINATOR,
     SERVICE_API,
+    BINARY_SENSOR_MAP,
+    ENTITY_DEVICE_CLASS_MAP,
+    ENTITY_ICON,
+    ENTITY_ICON_OFF,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -30,25 +34,6 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Describes Econet binary sensor entity."""
 
     icon_off: str | None = None
-
-
-BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
-    EconetBinarySensorEntityDescription(
-        key="1544",
-        translation_key="mixer_pump1",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        key="1541",
-        translation_key="boiler_pump",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-)
-
 
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
     """Describe Econet Binary Sensor"""
@@ -64,10 +49,17 @@ class EconetBinarySensor(EconetEntity, BinarySensorEntity):
         """Initialize a new ecoNET binary sensor."""
         self.entity_description = entity_description
         self.api = api
+        self._attr_is_on = None
         super().__init__(coordinator)
+        _LOGGER.debug(
+            "EconetBinarySensor initialized with unique_id: %s, entity_description: %s",
+            self.unique_id,
+            self.entity_description,
+        )
 
     def _sync_state(self, value):
         """Sync state"""
+        _LOGGER.debug("EconetBinarySensor _sync_state: %s", value)
         self._attr_is_on = value
         self.async_write_ha_state()
 
@@ -80,25 +72,41 @@ class EconetBinarySensor(EconetEntity, BinarySensorEntity):
             else self.entity_description.icon
         )
 
+def camel_to_snake(key: str) -> str:
+    """Converting camel case return from api ti snake case to mach translations keys structure"""
+    key = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", key)
+    return re.sub("([a-z0-9])([A-Z])", r"\1_\2", key).lower()
 
-def can_add(
-    desc: EconetBinarySensorEntityDescription, coordinator: EconetDataCoordinator
-):
-    """Check can add key"""
-    return coordinator.has_data(desc.key)
+def create_binary_entity_descritpion(key: str) -> EconetBinarySensorEntityDescription:
+    """Create Econet300 binary entity description"""
+    map_key = BINARY_SENSOR_MAP.get(key, key)
+    _LOGGER.debug("create_binary_entity_descritpion: %s", map_key)
+    entity_description = EconetBinarySensorEntityDescription(
+        key=key,
+        translation_key=camel_to_snake(map_key),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        icon=ENTITY_ICON.get(map_key, None),
+        icon_off=ENTITY_ICON_OFF.get(map_key, None),
+    )
+    _LOGGER.debug("create_binary_entity_descritpion: %s", entity_description)               
+    return entity_description
+
 
 
 def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """create binary sensors"""
     entities: list[EconetBinarySensor] = []
-
-    for description in BINARY_SENSOR_TYPES:
-        if can_add(description, coordinator):
-            entities.append(EconetBinarySensor(description, coordinator, api))
+    coordinator = coordinator.data
+    for data_key in BINARY_SENSOR_MAP:
+        if data_key in BINARY_SENSOR_MAP:
+            entities.append(
+                EconetBinarySensor(create_binary_sensors(data_key), coordinator, api)
+                )
+            _LOGGER.debug("Key: %s mapped, binary entity will be added", data_key)
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description.key,
+                "key: %s is not mapped, binary sensor entity will not be added",
+                data_key,
             )
 
     return entities
