@@ -32,6 +32,7 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Describes Econet binary sensor entity."""
 
     icon_off: str | None = None
+    availability_key: str = ""
 
 
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
@@ -92,24 +93,24 @@ def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api)
     _LOGGER.debug("Entering create_binary_sensors function")
     _LOGGER.debug("api: %s", api)
     entities: list[EconetBinarySensor] = []
-    _LOGGER.debug("create_binary_sensors")
+    _LOGGER.debug("Initialized entities list: %s", entities)
     coordinator = coordinator.data
-    _LOGGER.debug("coordinator: %s", coordinator)
+    _LOGGER.debug("Updated coordinator with its data: %s", coordinator)
     for data_key in BINARY_SENSOR_MAP:
-        _LOGGER.debug("data_key: %s", data_key)
+        _LOGGER.debug("Processing data_key: %s", data_key)
         if data_key in BINARY_SENSOR_MAP:
-            entities.append(
-                EconetBinarySensor(
-                    create_binary_entity_descritpion(data_key), coordinator, api
-                )
+            entity = EconetBinarySensor(
+                create_binary_entity_descritpion(data_key), coordinator, api
             )
+            entities.append(entity)
+            _LOGGER.debug("Created and appended entity: %s", entity)
             _LOGGER.debug("Key: %s mapped, binary entity will be added", data_key)
         else:
             _LOGGER.debug(
                 "key: %s is not mapped, binary sensor entity will not be added",
                 data_key,
             )
-
+    _LOGGER.debug("Exiting create_binary_sensors function with entities: %s", entities)
     return entities
 
 
