@@ -35,6 +35,7 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
 
     icon_off: str | None = None
 
+
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
     """Describe Econet Binary Sensor"""
 
@@ -72,10 +73,12 @@ class EconetBinarySensor(EconetEntity, BinarySensorEntity):
             else self.entity_description.icon
         )
 
+
 def camel_to_snake(key: str) -> str:
     """Converting camel case return from api ti snake case to mach translations keys structure"""
     key = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", key)
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", key).lower()
+
 
 def create_binary_entity_descritpion(key: str) -> EconetBinarySensorEntityDescription:
     """Create Econet300 binary entity description"""
@@ -88,20 +91,22 @@ def create_binary_entity_descritpion(key: str) -> EconetBinarySensorEntityDescri
         icon=ENTITY_ICON.get(map_key, None),
         icon_off=ENTITY_ICON_OFF.get(map_key, None),
     )
-    _LOGGER.debug("create_binary_entity_descritpion: %s", entity_description)               
+    _LOGGER.debug("create_binary_entity_descritpion: %s", entity_description)
     return entity_description
-
 
 
 def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """create binary sensors"""
     entities: list[EconetBinarySensor] = []
+
     coordinator = coordinator.data
     for data_key in BINARY_SENSOR_MAP:
         if data_key in BINARY_SENSOR_MAP:
             entities.append(
-                EconetBinarySensor(create_binary_sensors(data_key), coordinator, api)
+                EconetBinarySensor(
+                    create_binary_entity_descritpion(data_key), coordinator, api
                 )
+            )
             _LOGGER.debug("Key: %s mapped, binary entity will be added", data_key)
         else:
             _LOGGER.debug(

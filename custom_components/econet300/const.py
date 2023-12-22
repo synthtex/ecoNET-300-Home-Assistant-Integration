@@ -281,10 +281,3 @@ REG_PARAM_VISIBLE_DEFAULT = {
     "tempUpperBuffer": False,
     "tempLowerBuffer": False,
 }
-
-REG_PARAM_TRANSLATION_KEY = {
-    "boilerPower": "boiler_power",
-    "tempExternalSensor": "temp_external_sensor",
-    "tempFeeder": "temp_feeder",
-    "fuelLevel": "fuel_fevel",
-}
