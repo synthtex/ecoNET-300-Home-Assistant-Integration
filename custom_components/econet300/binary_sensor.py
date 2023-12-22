@@ -10,12 +10,10 @@ from homeassistant.components.binary_sensor import (
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from custom_components.econet300.common_functions import camel_to_snake
 
 from .entity import EconetEntity
-
+from .common_functions import camel_to_snake
 from .common import EconetDataCoordinator, Econet300Api
-
 from .const import (
     DOMAIN,
     SERVICE_COORDINATOR,
