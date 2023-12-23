@@ -261,9 +261,9 @@ ENTITY_VALUE_PROCESSOR = {
         else ("OFF" if str(x).strip() == "false" else None)
     ),
     "lambdaStatus": (
-        lambda x: "STOP"
+        lambda x: "stop"
         if x == 0
-        else ("START" if x == 1 else ("Working" if x == 2 else "Unknown"))
+        else ("start" if x == 1 else ("working" if x == 2 else "unknown"))
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
