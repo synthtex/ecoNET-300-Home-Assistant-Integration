@@ -94,9 +94,9 @@ def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api)
     _LOGGER.debug("api: %s", api)
     entities: list[EconetBinarySensor] = []
     _LOGGER.debug("Initialized entities list: %s", entities)
-    coordinator = coordinator.data
-    _LOGGER.debug("Updated coordinator with its data: %s", coordinator)
-    for data_key in BINARY_SENSOR_MAP:
+    coordinator_data = coordinator.data
+    _LOGGER.debug("Updated coordinator with its data: %s", coordinator_data)
+    for data_key in coordinator_data:
         _LOGGER.debug("Processing data_key: %s", data_key)
         if data_key in BINARY_SENSOR_MAP:
             entity = EconetBinarySensor(
