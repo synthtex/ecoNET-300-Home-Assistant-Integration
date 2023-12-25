@@ -1,9 +1,9 @@
 # ecoNET300 Home Assistant integration
 <div align="center">
 
-| Home Assistant  | ecoNET300     |
-| --------------- | ------------- |
-| <img src="images/ha.png" width="100" height="100" />                |   <img src="images/econet.webp" width="95" height="95" />            |
+| Home Assistant  | ecoNET300     | device        |
+| --------------- | ------------- | ------------- |
+| <img src="images/ha.png" width="100" height="100" />                |   <img src="images/econet.webp" width="95" height="95" />            | <img src="images/econet300_device.jpg" width="100" height="100" /> |
 
 </div>
 
@@ -14,9 +14,6 @@
 ecoNET300 Home Assistant is a custom integration for ecoNET300 devices. 
 
 It works locally, which means it connects directly to your local device using local IP address. It doesn't forward commands/requests through econet24.com. It uses rest api exposed by ecoNET300 device.
-<div align="center">
-<img src="images/econet300_device.jpg" width="100" height="100" />
-</div>
 
 This integration is available from the Lovelace frontend without the need to configure the devices in the file configuration.yaml
 
@@ -35,7 +32,7 @@ Here is an example setup showing econet300 device entities:
 <div align="center">
 
 
-| <img src="images/sensors" width="100" height="100" />                |   <img src="images/diagnostic" width="95" height="95" />            |
+<img src="images/sensors" />             
 
 </div>
 
