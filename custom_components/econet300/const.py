@@ -45,20 +45,20 @@ API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 ## Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
 OPERATION_MODE_NAMES = {
-    0: "TURNED OFF",
-    1: "FIRE UP",
-    2: "FIRE UP",
-    3: "WORK",
-    4: "SUPERVISION",
-    5: "Halted",
-    6: "STOP",
-    7: "BURNING OFF",
-    8: "MANUAL",
-    9: "ALARM",
-    10: "UNSEALING",
-    11: "CHIMNEY",
-    12: "STABILIZATION",
-    13: "NO TRANSMISSION",
+    0: "off",
+    1: "fire_up",
+    2: "fire_up",
+    3: "work",
+    4: "supervision",
+    5: "halted",
+    6: "stop",
+    7: "burning_off",
+    8: "manual",
+    9: "alarm",
+    10: "unsealing",
+    11: "chimney",
+    12: "stabilization",
+    13: "no_transmission",
 }
 
 # add constants to future
@@ -254,13 +254,17 @@ ENTITY_ICON_OFF = {
 }
 
 ENTITY_VALUE_PROCESSOR = {
-    "mode": lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
-    "thermostat": lambda x: "ON"
-    if str(x).strip() == "true"
-    else ("OFF" if str(x).strip() == "false" else None),
-    "lambdaStatus": lambda x: "STOP"
-    if x == 0
-    else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
+    "mode": lambda x: OPERATION_MODE_NAMES.get(x, "unknown"),
+    "thermostat": (
+        lambda x: "ON"
+        if str(x).strip() == "true"
+        else ("OFF" if str(x).strip() == "false" else None)
+    ),
+    "lambdaStatus": (
+        lambda x: "stop"
+        if x == 0
+        else ("start" if x == 1 else ("working" if x == 2 else "unknown"))
+    ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
 }
