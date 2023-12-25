@@ -126,6 +126,7 @@ This is HA integration open-source project. We are always open to people who wan
 
 ### Contributors
 <a href="https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jontofront/ecoNET-300-Home-Assistant-Integration" />
 </a>
 
 ---
