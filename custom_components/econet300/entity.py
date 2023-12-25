@@ -61,7 +61,15 @@ class EconetEntity(CoordinatorEntity):
 
     async def async_added_to_hass(self):
         """Handle added to hass."""
+        _LOGGER.debug("Entering async_added_to_hass method")
+        _LOGGER.debug("Added to HASS: %s", self.entity_description)
+        _LOGGER.debug("Coordinator: %s", self.coordinator)
+
         _LOGGER.debug("Added to HASS: %s", self.entity_description.name)
+
+        if "data" not in dir(self.coordinator):
+            _LOGGER.error("Coordinator object does not have a 'data' attribute")
+            return
 
         if self.coordinator.data[self.entity_description.key] is None:
             _LOGGER.warning(
@@ -69,6 +77,7 @@ class EconetEntity(CoordinatorEntity):
                 self.entity_description.key,
             )
 
+            _LOGGER.debug("Exiting async_added_to_hass method")
             return
 
         value = self.coordinator.data[self.entity_description.key]
