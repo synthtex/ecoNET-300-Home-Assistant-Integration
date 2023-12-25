@@ -1,4 +1,8 @@
 # ecoNET300 Home Assistant integration
+
+[![Code formatter](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://guidelines.denpa.pro/stability#alpha)
+
 <div align="center">
 
 | Home Assistant  | ecoNET300     | device        |
