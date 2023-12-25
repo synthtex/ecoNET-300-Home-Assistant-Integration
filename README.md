@@ -119,11 +119,14 @@ __Password__: Local password (NOT the password that you use to login to econet24
 - Fan (fanWorks)
 - Feeder (fanWorks)
 
-## Contribution
+## Contributing
 
-I work on this project only in my very-limited free time. At this moment I have opened a few other projects which are on a bit higher priority than this one, but I'm going to work on this quite regularlly as I use it in my home automation. However, if you want to help and contribute to this project **it will be highly appreciated.**
+This is HA integration open-source project. We are always open to people who want to use the code or contribute to it.
 
-Also if you see a need for a particular feature, don't hesitate to let me know.
+
+### Contributors
+<a href="https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/graphs/contributors">
+</a>
 
 ---
 ## DISCLAIMER
