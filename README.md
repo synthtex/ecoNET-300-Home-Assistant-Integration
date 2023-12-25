@@ -14,13 +14,21 @@
 ecoNET300 Home Assistant is a custom integration for ecoNET300 devices. 
 
 It works locally, which means it connects directly to your local device using local IP address. It doesn't forward commands/requests through econet24.com. It uses rest api exposed by ecoNET300 device.
+![econet300 device](images/econet300_device.jpg)
 
 This integration is available from the Lovelace frontend without the need to configure the devices in the file configuration.yaml
 
+Integration tested with ecoMAX controller ecoMAX810P-L TOUCH manufactured by [Plum Sp. z o.o.](https://www.plum.pl/)
+
 **Bear in mind that the project is in a very early, pre-alpha phase.**
 
-Plans for first relase:
-- support for some of readonly properties (like mixer temp, ext sensor temp)
+## versions
+* v0.3.3 - version is stable. Most of the work was done by @pblxpt, for which we're very thankful as the community.
+* v1.0.0_beta - is a new dev integration version that fetches more data from API, I don't know yet if it will be better or worse :). It's my first work.
+
+
+## Example
+Here is an example setup showing econet300 device sensors:
 
 ## HACS Installation ##
 Follow [this guide](https://hacs.xyz/docs/faq/custom_repositories/) to add ecoNET-300-Home-Assistant-Integration as a custom repository to the HACS.
