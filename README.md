@@ -1,6 +1,6 @@
 # ecoNET300 Home Assistant integration
 
-[![Code formatter](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Code_formatter](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
 [![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://guidelines.denpa.pro/stability#alpha)
 
@@ -126,7 +126,8 @@ This is HA integration open-source project. We are always open to people who wan
 
 
 ### Contributors
-Many thanks to @denpamusic for his help and pointing me in the right direction 
+Many thanks to @denpamusic for his help and pointing me in the right direction
+
 <a href="https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=jontofront/ecoNET-300-Home-Assistant-Integration" />
 </a>

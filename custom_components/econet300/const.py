@@ -97,7 +97,7 @@ SENSOR_MAP = {
     "154": "lambdaLevel",
     "168": "main_server",
     "170": "signal",
-    "171": "Status_wifi",
+    "171": "status_wifi",
     "1024": "tempCO",
     "1025": "tempCWU",
     "1028": "tempUpperBuffer",
@@ -143,6 +143,7 @@ ENTITY_UNIT_MAP = {
     "signal": SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     "quality": PERCENTAGE,
     "valveMixer1": PERCENTAGE,
+    "burnerOutput": PERCENTAGE,
 }
 
 STATE_CLASS_MAP = {
@@ -164,6 +165,7 @@ STATE_CLASS_MAP = {
     "signal": SensorStateClass.MEASUREMENT,
     "quality": SensorStateClass.MEASUREMENT,
     "valveMixer1": SensorStateClass.MEASUREMENT,
+    "burnerOutput": SensorStateClass.MEASUREMENT,
 }
 
 ENTITY_DEVICE_CLASS_MAP = {
@@ -232,6 +234,7 @@ ENTITY_ICON = {
     "fanPower": "mdi:fan",
     "temCO": "mdi:thermometer-lines",
     "tempCOSet": "mdi:thermometer-chevron-up",
+    "thermostat": "mdi:thermostat",
     "boilerPower": "mdi:gauge",
     "fuelLevel": "mdi:gas-station",
     "lambdaLevel": "mdi:lambda",

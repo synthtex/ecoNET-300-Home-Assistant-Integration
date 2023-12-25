@@ -33,6 +33,7 @@
     },
     "sensor": {
       "boiler_power": { "name": "Moc kotła" },
+      "burner_power": { "name": "Burner output" },
       "fuel_level": { "name": "Poziom paliwa" },
       "fan_works": { "name": "Fan" },
       "fan_power": { "name": "Moc nadmuchu" },

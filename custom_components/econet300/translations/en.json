@@ -32,7 +32,7 @@
       "boiler_pump": { "name": "Boiler pump" }
     },
     "sensor": {
-      "boiler_power": { "name": "Boiler power" },
+      "boiler_power": { "name": "Boiler output" },
       "fuel_level": { "name": "Fuel level" },
       "fan_power": { "name": "Fan power" },
       "fan_works": { "name": "Fan" },
