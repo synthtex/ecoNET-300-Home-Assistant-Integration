@@ -32,7 +32,7 @@ Here is an example setup showing econet300 device entities:
 <div align="center">
 
 
-<img src="images/sensors" />             
+<img src="images/sensors.png" />             
 
 </div>
 
