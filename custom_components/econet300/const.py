@@ -246,6 +246,7 @@ ENTITY_ICON = {
     "aditionalFeeder": "mdi:screw-lag",
     "pumpFireplaceWorks": "mdi:pump",
     "pumpCWUWorks": "mdi:pump",
+    "main_server": "mdi:server",
 }
 
 ENTITY_ICON_OFF = {
