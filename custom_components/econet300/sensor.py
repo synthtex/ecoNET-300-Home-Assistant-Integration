@@ -69,7 +69,10 @@ class EconetSensor(EconetEntity, SensorEntity):
     def name(self):
         """Return the name of the sensor."""
         if self.entity_description.translation_key:
-            _LOGGER.debug("Using translation key for sensor: %s", self.entity_description.translation_key)
+            _LOGGER.debug(
+                "Using translation key for sensor: %s",
+                self.entity_description.translation_key,
+            )
             return f"entity.sensor.{self.entity_description.translation_key}"
         else:
             _LOGGER.debug("Using name for sensor: %s", self.entity_description.name)
