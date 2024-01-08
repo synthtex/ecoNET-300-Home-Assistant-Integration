@@ -16,6 +16,8 @@ from .const import (
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_HW_VER,
     API_REG_PARAMS_DATA_URI,
+    API_REG_PARAMS_URI,
+    API_REG_PARAMS_PARAM_DATA,
     API_REG_PARAMS_DATA_PARAM_DATA,
     EDITABLE_PARAMS_MAPPING_TABLE,
     API_EDITABLE_PARAMS_LIMITS_URI,
@@ -24,6 +26,14 @@ from .const import (
 from .mem_cache import MemCache
 
 _LOGGER = logging.getLogger(__name__)
+
+
+def map_param(param_name):
+    """Check params mapping in const.py."""
+    if param_name not in EDITABLE_PARAMS_MAPPING_TABLE:
+        return None
+
+    return EDITABLE_PARAMS_MAPPING_TABLE[param_name]
 
 
 class Limits:
@@ -111,9 +121,10 @@ def get_param_id(name: str):
 
 
 class Econet300Api:
-    """Econet300 API class"""
+    """Client for interacting with the ecoNET-300 API."""
 
     def __init__(self, client: EconetClient, cache: MemCache) -> None:
+        """Initialize the Econet300Api object with a client, cache, and default values for uid, sw_revision, and hw_version."""
         self._client = client
         self._cache = cache
         self._uid = "default-uid"
@@ -198,7 +209,7 @@ class Econet300Api:
         return True
 
     async def get_param_limits(self, param: str):
-        """Get Param Limits from Econet300 Api"""
+        """Fetch and return the limits for a particular parameter from the Econet 300 API, using a cache for efficient retrieval if available"""
         if not self._cache.exists(API_EDITABLE_PARAMS_LIMITS_DATA):
             limits = await self._fetch_reg_key(
                 API_EDITABLE_PARAMS_LIMITS_URI, API_EDITABLE_PARAMS_LIMITS_DATA
