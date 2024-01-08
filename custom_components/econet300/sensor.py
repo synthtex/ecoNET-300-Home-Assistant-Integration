@@ -150,6 +150,13 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         process_val=lambda x: x,
     ),
     EconetSensorEntityDescription(
+        key="boilerPowerKW",
+        name="Boiler output in kW",
+        state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.POWER,
+        process_val=lambda x: x,
+    ),
+    EconetSensorEntityDescription(
         key="fuelLevel",
         translation_key="fuel_level",
         name="Fuel level",
