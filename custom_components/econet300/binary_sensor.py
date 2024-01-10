@@ -36,6 +36,7 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     availability_key: str = ""
 
 
+
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
     """Econet Binary Sensor"""
 
@@ -91,6 +92,10 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
 
 def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
     """Check if can add mixer entity"""
+    return coordinator.has_data(desc) and coordinator.data[desc] is not None
+
+
+def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
     return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
