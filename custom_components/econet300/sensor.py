@@ -31,7 +31,7 @@ from .const import (
     ENTITY_ICON,
 )
 
-from .entity import EconetEntity
+from .entity import EconetEntity, MixerEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -65,34 +65,25 @@ class EconetSensor(EconetEntity, SensorEntity):
             self.entity_description,
         )
 
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        if self.entity_description.translation_key:
-            _LOGGER.debug(
-                "Using translation key for sensor: %s",
-                self.entity_description.translation_key,
-            )
-            return f"entity.sensor.{self.entity_description.translation_key}"
-        else:
-            _LOGGER.debug("Using name for sensor: %s", self.entity_description.name)
-            return self.entity_description.name
-
-    @property
-    def name(self):
-        """Return the name of the sensor."""
-        if self.entity_description.translation_key:
-            _LOGGER.debug("Using translation key for sensor: %s", self.entity_description.translation_key)
-            return f"entity.sensor.{self.entity_description.translation_key}"
-        else:
-            _LOGGER.debug("Using name for sensor: %s", self.entity_description.name)
-            return self.entity_description.name
-
     def _sync_state(self, value):
         """Sync state."""
         _LOGGER.debug("Update EconetSensor entity: %s", self.entity_description.name)
         self._attr_native_value = self.entity_description.process_val(value)
         self.async_write_ha_state()
+
+
+class MixerSensor(MixerEntity, EconetSensor):
+    """Mixer sensor class."""
+
+    def __init__(
+        self,
+        description: EconetSensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+        idx: int,
+    ):
+        """Initialize a new instance of the EconetSensor class."""
+        super().__init__(description, coordinator, api, idx)
 
 
 def create_entity_description(key: str) -> EconetSensorEntityDescription:
@@ -138,49 +129,12 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     return entities
 
 
-def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Create individual sensor descriptions for mixer sensors."""
-    entities = []
-
-    for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
-        description = EconetSensorEntityDescription(
-            key=f"mixerTemp{i}",
-            name=f"Mixer {i} temperature",
-            translation_key=f"mixer_temp_{i}",
-            icon="mdi:thermometer",
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.TEMPERATURE,
-            suggested_display_precision=0,
-            process_val=lambda x: x,
-        )
-        if can_add(description, coordinator):
-            entities.append(MixerSensor(description, coordinator, api, i))
-        else:
-            _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description.key,
-            )
-        description2 = EconetSensorEntityDescription(
-            key=f"mixerSetTemp{i}",
-            name=f"Mixer {i} set temperature",
-            translation_key=f"mixer_{i}_set_temp",
-            icon="mdi:thermometer",
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.TEMPERATURE,
-            suggested_display_precision=0,
-            process_val=lambda x: x,
-        )
-
-        if can_add(description2, coordinator):
-            entities.append(MixerSensor(description2, coordinator, api, i))
-        else:
-            _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description2.key,
-            )
-    return entities
+def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordinator):
+    """Check if it can add the key."""
+    if desc.key not in coordinator.data:
+        _LOGGER.debug("Key %s does not exist in coordinator.data", desc.key)
+        return False
+    return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
@@ -239,5 +193,6 @@ async def async_setup_entry(
 
     entities: list[EconetSensor] = []
     entities.extend(create_controller_sensors(coordinator, api))
+    entities.extend(create_mixer_sensors(coordinator, api))
 
     return async_add_entities(entities)
