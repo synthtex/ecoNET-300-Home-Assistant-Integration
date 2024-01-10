@@ -22,6 +22,7 @@ from .const import (
     ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
     ENTITY_ICON_OFF,
+    AVAILABLE_NUMBER_OF_MIXERS,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -89,6 +90,7 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
 
 
 def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
+    """Check if can add mixer entity"""
     return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
@@ -119,6 +121,7 @@ def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api)
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Creating mixer sensors entities"""
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
@@ -148,7 +151,6 @@ async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
-    entities=entities + create_mixer_sensors(coordinator, api),
 ) -> bool:
     """Set up the sensor platform."""
     coordinator = hass.data[DOMAIN][entry.entry_id][SERVICE_COORDINATOR]
@@ -156,5 +158,5 @@ async def async_setup_entry(
 
     entities: list[EconetBinarySensor] = []
     entities.extend(create_binary_sensors(coordinator, api))
-
+    entities.extend(create_mixer_sensors(coordinator, api))
     return async_add_entities(entities)

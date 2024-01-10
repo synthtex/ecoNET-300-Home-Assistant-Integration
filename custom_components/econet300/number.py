@@ -22,7 +22,12 @@ _LOGGER = logging.getLogger(__name__)
 
 @dataclass
 class EconetNumberEntityDescription(NumberEntityDescription):
-    """Describes Econet binary sensor entity."""
+    """Describes Econet number entity."""
+
+    _attr_native_value: float | None = None
+    _attr_native_min_value: float | None = None
+    _attr_native_max_value: float | None = None
+    _attr_native_step: int
 
 
 NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
@@ -56,23 +61,36 @@ NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
 class EconetNumber(EconetEntity, NumberEntity):
     """Describes Econet binary sensor entity."""
 
+    entity_description: EconetNumberEntityDescription
+
     def __init__(
         self,
-        description: EconetNumberEntityDescription,
+        entity_description: EconetNumberEntityDescription,
         coordinator: EconetDataCoordinator,
         api: Econet300Api,
     ):
-        """Initialize the EconetNumber entity."""
-        super().__init__(description, coordinator, api)
+        """Initialize a new ecoNET number entyti."""
+        self.entity_description = entity_description
+        self.api = api
+        self._attr_is_on = None
+        self._attr_native_value = None
+        self._attr_native_min_value = None
+        self._attr_native_max_value = None
+        self._attr_native_step = 1
+        super().__init__(coordinator)
+        _LOGGER.debug(
+            "EconetNumberEntity initialized with unique_id: %s, entity_description: %s",
+            self.unique_id,
+            self.entity_description,
+        )
 
     def _sync_state(self, value):
-        """Sync state."""
+        """Sync state"""
+        _LOGGER.debug("EconetNumber _sync_state: %s", value)
 
         self._attr_native_value = value
-
         self._attr_native_min_value = value - 1
         self._attr_native_max_value = value + 1
-
         self.async_write_ha_state()
 
     async def async_set_native_value(self, value: float) -> None:

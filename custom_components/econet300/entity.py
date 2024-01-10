@@ -6,6 +6,7 @@ from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .api import Econet300Api
+from .common import EconetDataCoordinator
 from .const import (
     DEVICE_INFO_CONTROLLER_NAME,
     DEVICE_INFO_MANUFACTURER,

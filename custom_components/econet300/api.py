@@ -17,8 +17,6 @@ from .const import (
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_HW_VER,
     API_REG_PARAMS_DATA_URI,
-    API_REG_PARAMS_URI,
-    API_REG_PARAMS_PARAM_DATA,
     API_REG_PARAMS_DATA_PARAM_DATA,
     EDITABLE_PARAMS_MAPPING_TABLE,
     API_EDITABLE_PARAMS_LIMITS_URI,
@@ -27,13 +25,6 @@ from .const import (
 from .mem_cache import MemCache
 
 _LOGGER = logging.getLogger(__name__)
-
-
-def map_param(param_name):
-    if not param_name in EDITABLE_PARAMS_MAPPING_TABLE:
-        return None
-
-    return EDITABLE_PARAMS_MAPPING_TABLE[param_name]
 
 
 def map_param(param_name):

@@ -83,6 +83,8 @@ EDITABLE_PARAMS_MAPPING_TABLE = {
     "mixerSetTemp6": "1292",
 }
 
+AVAILABLE_NUMBER_OF_MIXERS = 6
+
 #######################
 ######## REG PARAM MAPS
 #######################
@@ -109,6 +111,7 @@ SENSOR_MAP = {
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
+    "0000": "mixerTemp",
 }
 
 BINARY_SENSOR_MAP = {
