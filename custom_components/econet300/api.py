@@ -1,6 +1,4 @@
-"""Econet300 API class
-    class describint methods of getting and setting data
-"""
+"""Econet300 API class class describint methods of getting and setting data."""
 import asyncio
 from http import HTTPStatus
 import logging
@@ -12,15 +10,15 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import (
+    API_EDITABLE_PARAMS_LIMITS_DATA,
+    API_EDITABLE_PARAMS_LIMITS_URI,
+    API_REG_PARAMS_DATA_PARAM_DATA,
+    API_REG_PARAMS_DATA_URI,
+    API_SYS_PARAMS_PARAM_HW_VER,
+    API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_UID,
     API_SYS_PARAMS_URI,
-    API_SYS_PARAMS_PARAM_SW_REV,
-    API_SYS_PARAMS_PARAM_HW_VER,
-    API_REG_PARAMS_DATA_URI,
-    API_REG_PARAMS_DATA_PARAM_DATA,
     EDITABLE_PARAMS_MAPPING_TABLE,
-    API_EDITABLE_PARAMS_LIMITS_URI,
-    API_EDITABLE_PARAMS_LIMITS_DATA,
 )
 from .mem_cache import MemCache
 
@@ -36,7 +34,7 @@ def map_param(param_name):
 
 
 class Limits:
-    """Class difining entity value set limits"""
+    """Class difining entity value set limits."""
 
     def __init__(self, min_v: float, max_v: float):
         """Construct the necessary attributes for the Limits object."""
@@ -60,7 +58,7 @@ class DataError(Exception):
 
 
 class EconetClient:
-    """Econet client class"""
+    """Econet client class."""
 
     def __init__(
         self, host: str, username: str, password: str, session: ClientSession
@@ -81,17 +79,17 @@ class EconetClient:
 
     @property
     def host(self) -> str:
-        """Get host address"""
+        """Get host address."""
         return self._host
 
     async def set_param(self, key: str, value: str):
-        """Api call to set param"""
+        """Set a parameter via API call."""
         return await self._get(
             f"{self._host}/econet/rmCurrNewParam?newParamKey={key}&newParamValue={value}"
         )
 
     async def get_params(self, reg: str):
-        """Call for getting api params"""
+        """Call for getting api param."""
         return await self._get(f"{self._host}/econet/{reg}")
 
     async def _get(self, url):
@@ -119,7 +117,7 @@ class EconetClient:
 
 
 def get_param_id(name: str):
-    """Check if param is mapped and return its value"""
+    """Check if param is mapped and return its value."""
     return lambda name=name: EDITABLE_PARAMS_MAPPING_TABLE.get(name, None)
 
 
@@ -136,7 +134,7 @@ class Econet300Api:
 
     @classmethod
     async def create(cls, client: EconetClient, cache: MemCache):
-        """Create and return initial object"""
+        """Create and return initial object."""
         c = cls(client, cache)
         await c.init()
 
@@ -144,26 +142,26 @@ class Econet300Api:
 
     @property
     def host(self) -> str:
-        """Get clients host address"""
+        """Get clients host address."""
         return self._client.host
 
     @property
     def uid(self) -> str:
-        """Get uid"""
+        """Get uid."""
         return self._uid
 
     @property
     def sw_rev(self) -> str:
-        """Get software version"""
+        """Get software version."""
         return self._sw_revision
 
     @property
     def hw_ver(self) -> str:
-        """Get hardware version"""
+        """Get hardware version."""
         return self._hw_version
 
     async def init(self):
-        """Econet300 Api initilization"""
+        """Econet300 Api initilization."""
         sys_params = await self._client.get_params(API_SYS_PARAMS_URI)
 
         if API_SYS_PARAMS_PARAM_UID not in sys_params:
@@ -191,7 +189,7 @@ class Econet300Api:
             self._hw_version = sys_params[API_SYS_PARAMS_PARAM_HW_VER]
 
     async def set_param(self, param, value) -> bool:
-        """Set param value in Econet300 API"""
+        """Set param value in Econet300 API."""
         param_idx = get_param_id(param)
         if param_idx is None:
             _LOGGER.warning(
@@ -212,7 +210,7 @@ class Econet300Api:
         return True
 
     async def get_param_limits(self, param: str):
-        """Fetch and return the limits for a particular parameter from the Econet 300 API, using a cache for efficient retrieval if available"""
+        """Fetch and return the limits for a particular parameter from the Econet 300 API, using a cache for efficient retrieval if available."""
         if not self._cache.exists(API_EDITABLE_PARAMS_LIMITS_DATA):
             limits = await self._fetch_reg_key(
                 API_EDITABLE_PARAMS_LIMITS_URI, API_EDITABLE_PARAMS_LIMITS_DATA
@@ -265,7 +263,7 @@ class Econet300Api:
 
 
 async def make_api(hass: HomeAssistant, cache: MemCache, data: dict):
-    """Create api object"""
+    """Create api object."""
     return await Econet300Api.create(
         EconetClient(
             data["host"],
