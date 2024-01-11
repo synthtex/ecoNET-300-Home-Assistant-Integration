@@ -36,7 +36,7 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
 
 
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
-    """Econet Binary Sensor"""
+    """Econet Binary Sensor."""
 
     entity_description: EconetBinarySensorEntityDescription
 
@@ -58,7 +58,7 @@ class EconetBinarySensor(EconetEntity, BinarySensorEntity):
         )
 
     def _sync_state(self, value):
-        """Sync state"""
+        """Sync state."""
         _LOGGER.debug("EconetBinarySensor _sync_state: %s", value)
         self._attr_is_on = value
         self.async_write_ha_state()
@@ -74,7 +74,7 @@ class EconetBinarySensor(EconetEntity, BinarySensorEntity):
 
 
 def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescription:
-    """Create Econet300 binary entity description"""
+    """Create Econet300 binary entity description."""
     map_key = BINARY_SENSOR_MAP.get(key, key)
     _LOGGER.debug("create_binary_entity_description: %s", map_key)
     entity_description = EconetBinarySensorEntityDescription(
@@ -89,11 +89,12 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
 
 
 def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
+     """Check if a mixer can be added."""
     return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
 def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """create binary sensors"""
+    """Create binary sensors."""
     _LOGGER.debug("Entering create_binary_sensors function")
     _LOGGER.debug("api: %s", api)
     entities: list[EconetBinarySensor] = []
@@ -119,7 +120,8 @@ def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api)
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Creating mixer sensors entities"""
+    """Creating mixer sensors entities."""
+
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
