@@ -1,11 +1,11 @@
-"""Constants from the Home Assistant"""
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+"""Constants from the Home Assistant."""
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
-    UnitOfTemperature,
-    EntityCategory,
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+    EntityCategory,
+    UnitOfTemperature,
 )
 
 # Constant for the econet Integration integration

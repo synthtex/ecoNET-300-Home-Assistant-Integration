@@ -5,7 +5,6 @@ import logging
 from typing import Any
 
 from homeassistant.components.sensor import (
-    SensorEntityDescription,
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
@@ -14,23 +13,22 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
+from .common import Econet300Api, EconetDataCoordinator
 from .common_functions import camel_to_snake
-from .common import EconetDataCoordinator, Econet300Api
 from .const import (
     AVAILABLE_NUMBER_OF_MIXERS,
     DOMAIN,
+    ENTITY_CATEGORY,
     ENTITY_DEVICE_CLASS_MAP,
-    STATE_CLASS_MAP,
-    SERVICE_COORDINATOR,
-    SERVICE_API,
-    SENSOR_MAP,
+    ENTITY_ICON,
     ENTITY_PRECISION,
     ENTITY_UNIT_MAP,
     ENTITY_VALUE_PROCESSOR,
-    ENTITY_CATEGORY,
-    ENTITY_ICON,
+    SENSOR_MAP,
+    SERVICE_API,
+    SERVICE_COORDINATOR,
+    STATE_CLASS_MAP,
 )
-
 from .entity import EconetEntity, MixerEntity
 
 _LOGGER = logging.getLogger(__name__)
@@ -44,7 +42,7 @@ class EconetSensorEntityDescription(SensorEntityDescription):
 
 
 class EconetSensor(EconetEntity, SensorEntity):
-    """Econet Sensor"""
+    """Econet Sensor."""
 
     entity_description: EconetSensorEntityDescription
 
@@ -87,7 +85,7 @@ class MixerSensor(MixerEntity, EconetSensor):
 
 
 def create_entity_description(key: str) -> EconetSensorEntityDescription:
-    """Creates Econect300 sensor entity based on supplied key"""
+    """Create Econect300 sensor entity based on supplied key."""
     map_key = SENSOR_MAP.get(key, key)
     _LOGGER.debug("SENSOR_MAP: %s", SENSOR_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
@@ -107,7 +105,7 @@ def create_entity_description(key: str) -> EconetSensorEntityDescription:
 
 
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Creating controller sensor entities"""
+    """Create controller sensor entities."""
     entities: list[EconetSensor] = []
     coordinator_data = coordinator.data
     for data_key in SENSOR_MAP:

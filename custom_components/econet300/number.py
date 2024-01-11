@@ -85,7 +85,7 @@ class EconetNumber(EconetEntity, NumberEntity):
         )
 
     def _sync_state(self, value):
-        """Sync state"""
+        """Sync state."""
         _LOGGER.debug("EconetNumber _sync_state: %s", value)
 
         self._attr_native_value = value
