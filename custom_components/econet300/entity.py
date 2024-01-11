@@ -21,41 +21,31 @@ _LOGGER = logging.getLogger(__name__)
 class EconetEntity(CoordinatorEntity):
     """Representes EconetEntity."""
 
-    def __init__(
-        self,
-        description: EntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-    ):
-        super().__init__(coordinator)
+    api: Econet300Api
+    entity_description: EntityDescription
 
-        self.entity_description = description
-
-        self._api = api
-        self._coordinator = coordinator
+    @property
+    def has_entity_name(self):
+        """Return if the name of the entity is describing only the entity itself."""
+        return True
 
     @property
     def unique_id(self) -> str | None:
-        """Return the unique_id of the entity."""
-        return f"{self._api.uid()}-{self.entity_description.key}"
+        """Return the unique_id of the entity"""
+        return f"{self.api.uid}-{self.entity_description.key}"
 
     @property
     def device_info(self) -> DeviceInfo | None:
         """Return device info of the entity."""
         return DeviceInfo(
-            identifiers={(DOMAIN, self._api.uid())},
+            identifiers={(DOMAIN, self.api.uid)},
             name=DEVICE_INFO_CONTROLLER_NAME,
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
-            configuration_url=self._api.host(),
-            sw_version=self._api.sw_rev(),
-            hw_version=self._api.hw_ver(),
+            configuration_url=self.api.host,
+            sw_version=self.api.sw_rev,
+            hw_version=self.api.hw_ver,
         )
-
-    @property
-    def name(self) -> str:
-        """Return the name of the entity."""
-        return self.entity_description.name
 
     @callback
     def _handle_coordinator_update(self) -> None:
@@ -64,26 +54,35 @@ class EconetEntity(CoordinatorEntity):
             "Update EconetEntity, entity name: %s", self.entity_description.name
         )
 
-        if self._coordinator.data[self.entity_description.key] is None:
+        if self.coordinator.data[self.entity_description.key] is None:
             return
 
-        value = self._coordinator.data[self.entity_description.key]
+        value = self.coordinator.data[self.entity_description.key]
 
         self._sync_state(value)
 
     async def async_added_to_hass(self):
         """Handle added to hass."""
+        _LOGGER.debug("Entering async_added_to_hass method")
+        _LOGGER.debug("Added to HASS: %s", self.entity_description)
+        _LOGGER.debug("Coordinator: %s", self.coordinator)
+
         _LOGGER.debug("Added to HASS: %s", self.entity_description.name)
 
-        if self._coordinator.data[self.entity_description.key] is None:
+        if "data" not in dir(self.coordinator):
+            _LOGGER.error("Coordinator object does not have a 'data' attribute")
+            return
+
+        if self.coordinator.data[self.entity_description.key] is None:
             _LOGGER.warning(
                 "Data key: %s was expected to exist but it doesn't",
                 self.entity_description.key,
             )
 
+            _LOGGER.debug("Exiting async_added_to_hass method")
             return
 
-        value = self._coordinator.data[self.entity_description.key]
+        value = self.coordinator.data[self.entity_description.key]
 
         await super().async_added_to_hass()
         self._sync_state(value)

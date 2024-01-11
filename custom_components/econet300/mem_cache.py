@@ -1,4 +1,7 @@
-"""Module provides a memory cache implementation."""
+"""
+This module provides a memory cache implementation.
+It includes a MemCache class and a MemCacheItem class.
+"""
 import logging
 import time
 

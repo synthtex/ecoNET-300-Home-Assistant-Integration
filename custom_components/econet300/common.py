@@ -14,7 +14,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class EconetDataCoordinator(DataUpdateCoordinator):
-    """My custom coordinator."""
+    """Econet data coordinator."""
 
     def __init__(self, hass, api: Econet300Api):
         """Initialize my coordinator."""
@@ -28,7 +28,7 @@ class EconetDataCoordinator(DataUpdateCoordinator):
         self._api = api
 
     def has_data(self, key: str):
-        """Check if the specified key exists in the data dictionary."""
+        """Check if datakey is present in data."""
         return key in self.data
 
     async def _async_update_data(self):

@@ -3,7 +3,7 @@ from dataclasses import dataclass
 import logging
 
 from homeassistant.components.binary_sensor import (
-    BinarySensorDeviceClass,
+    BinarySensorEntityDescription,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -11,9 +11,19 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .common import Econet300Api, EconetDataCoordinator
-from .const import AVAILABLE_NUMBER_OF_MIXERS, DOMAIN, SERVICE_API, SERVICE_COORDINATOR
-from .entity import EconetEntity, MixerEntity
+from .entity import EconetEntity
+from .common_functions import camel_to_snake
+from .common import EconetDataCoordinator, Econet300Api
+from .const import (
+    DOMAIN,
+    SERVICE_COORDINATOR,
+    SERVICE_API,
+    BINARY_SENSOR_MAP,
+    ENTITY_DEVICE_CLASS_MAP,
+    ENTITY_ICON,
+    ENTITY_ICON_OFF,
+    AVAILABLE_NUMBER_OF_MIXERS,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -26,90 +36,32 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     availability_key: str = ""
 
 
-BINARY_SENSOR_TYPES: tuple[EconetBinarySensorEntityDescription, ...] = (
-    EconetBinarySensorEntityDescription(
-        availability_key="pumpCWU",
-        key="pumpCWUWorks",
-        translation_key="pump_swu",
-        name="HUW pump",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="pumpCirculation",
-        key="pumpCirculationWorks",
-        translation_key="pump_circulation",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="pumpFireplace",
-        key="pumpFireplaceWorks",
-        name="Fireplace pump",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="pumpSolar",
-        key="pumpSolarWorks",
-        name="Solar pump",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="pumpCO",
-        key="pumpCOWorks",
-        name="Boiler pump",
-        icon="mdi:pump",
-        icon_off="mdi:pump-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="lighter",
-        key="lighterWorks",
-        name="Lighter",
-        icon="mdi:fire",
-        icon_off="mdi:fire-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="feeder",
-        key="feederWorks",
-        name="Feeder",
-        icon="mdi:screw-lag",
-        icon_off="mdi:screw-lag",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="fan",
-        key="fanWorks",
-        name="Fan",
-        icon="mdi:fan",
-        icon_off="mdi:fan-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-    ),
-    EconetBinarySensorEntityDescription(
-        availability_key="fan2Exhaust",
-        key="fan2ExhaustWorks",
-        name="Fan2",
-        icon="mdi:fan",
-        icon_off="mdi:fan-off",
-        device_class=BinarySensorDeviceClass.RUNNING,
-        entity_registry_enabled_default=False,
-    ),
-)
 
+class EconetBinarySensor(EconetEntity, BinarySensorEntity):
+    """Econet Binary Sensor"""
 
-class EconetBinarySensor(BinarySensorEntity):
-    """Describe Econet Binary Sensor."""
+    entity_description: EconetBinarySensorEntityDescription
+
+    def __init__(
+        self,
+        entity_description: EconetBinarySensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+    ):
+        """Initialize a new ecoNET binary sensor."""
+        self.entity_description = entity_description
+        self.api = api
+        self._attr_is_on = None
+        super().__init__(coordinator)
+        _LOGGER.debug(
+            "EconetBinarySensor initialized with unique_id: %s, entity_description: %s",
+            self.unique_id,
+            self.entity_description,
+        )
 
     def _sync_state(self, value):
-        """Sync state."""
-
+        """Sync state"""
+        _LOGGER.debug("EconetBinarySensor _sync_state: %s", value)
         self._attr_is_on = value
         self.async_write_ha_state()
 
@@ -123,42 +75,24 @@ class EconetBinarySensor(BinarySensorEntity):
         )
 
 
-class ControllerBinarySensor(EconetEntity, EconetBinarySensor):
-    """Describes Econet binary sensor entity."""
-
-    def __init__(
-        self,
-        description: EconetBinarySensorEntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-    ):
-        """Initialize the ControllerBinarySensor."""
-        super().__init__(description, coordinator, api)
-
-
-class MixerBinarySensor(MixerEntity, EconetBinarySensor):
-    """Describes Econet Mixer binary sensor entity."""
-
-    def __init__(
-        self,
-        description: EconetBinarySensorEntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-        idx: int,
-    ):
-        """Initialize the MixerBinarySensor object with a description, coordinator, api, and index."""
-
-        super().__init__(description, coordinator, api, idx)
-
-
-def can_add(
-    desc: EconetBinarySensorEntityDescription, coordinator: EconetDataCoordinator
-):
-    """Check can add key."""
-    return (
-        coordinator.has_data(desc.availability_key)
-        and coordinator.data[desc.availability_key] is not False
+def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescription:
+    """Create Econet300 binary entity description"""
+    map_key = BINARY_SENSOR_MAP.get(key, key)
+    _LOGGER.debug("create_binary_entity_description: %s", map_key)
+    entity_description = EconetBinarySensorEntityDescription(
+        key=key,
+        translation_key=camel_to_snake(map_key),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        icon=ENTITY_ICON.get(map_key, None),
+        icon_off=ENTITY_ICON_OFF.get(map_key, None),
     )
+    _LOGGER.debug("create_binary_entity_description: %s", entity_description)
+    return entity_description
+
+
+def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
+    """Check if can add mixer entity"""
+    return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
 def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
@@ -166,20 +100,33 @@ def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
 
 
 def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Create binary sensors."""
-    entities = []
-    for description in BINARY_SENSOR_TYPES:
-        if can_add(description, coordinator):
-            entities.append(ControllerBinarySensor(description, coordinator, api))
+    """create binary sensors"""
+    _LOGGER.debug("Entering create_binary_sensors function")
+    _LOGGER.debug("api: %s", api)
+    entities: list[EconetBinarySensor] = []
+    _LOGGER.debug("Initialized entities list: %s", entities)
+    coordinator_data = coordinator.data
+    _LOGGER.debug("Updated coordinator with its data: %s", coordinator_data)
+    for data_key in BINARY_SENSOR_MAP:
+        _LOGGER.debug("Processing data_key: %s", data_key)
+        if data_key in coordinator_data:
+            entity = EconetBinarySensor(
+                create_binary_entity_description(data_key), coordinator, api
+            )
+            entities.append(entity)
+            _LOGGER.debug("Created and appended entity: %s", entity)
+            _LOGGER.debug("Key: %s mapped, binary entity will be added", data_key)
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added.",
-                description.key,
+                "key: %s is not mapped, binary sensor entity will not be added",
+                data_key,
             )
+    _LOGGER.debug("Exiting create_binary_sensors function with entities: %s", entities)
     return entities
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Creating mixer sensors entities"""
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
@@ -196,8 +143,10 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             entities.append(MixerBinarySensor(description, coordinator, api, i))
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description.key,
+                "Availability key: "
+                + description.key
+                + " does not exist, entity will not be "
+                "added"
             )
 
     return entities
@@ -209,12 +158,10 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> bool:
     """Set up the sensor platform."""
-
     coordinator = hass.data[DOMAIN][entry.entry_id][SERVICE_COORDINATOR]
     api = hass.data[DOMAIN][entry.entry_id][SERVICE_API]
 
-    entities: list[ControllerBinarySensor] = []
-    entities = entities + create_binary_sensors(coordinator, api)
-    entities = entities + create_mixer_sensors(coordinator, api)
-
+    entities: list[EconetBinarySensor] = []
+    entities.extend(create_binary_sensors(coordinator, api))
+    entities.extend(create_mixer_sensors(coordinator, api))
     return async_add_entities(entities)
