@@ -3,7 +3,6 @@ from dataclasses import dataclass
 import logging
 
 from homeassistant.components.binary_sensor import (
-    BinarySensorEntityDescription,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -11,19 +10,19 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .entity import EconetEntity
+from .common import Econet300Api, EconetDataCoordinator
 from .common_functions import camel_to_snake
-from .common import EconetDataCoordinator, Econet300Api
 from .const import (
-    DOMAIN,
-    SERVICE_COORDINATOR,
-    SERVICE_API,
+    AVAILABLE_NUMBER_OF_MIXERS,
     BINARY_SENSOR_MAP,
+    DOMAIN,
     ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
     ENTITY_ICON_OFF,
-    AVAILABLE_NUMBER_OF_MIXERS,
+    SERVICE_API,
+    SERVICE_COORDINATOR,
 )
+from .entity import EconetEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -34,7 +33,6 @@ class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
 
     icon_off: str | None = None
     availability_key: str = ""
-
 
 
 class EconetBinarySensor(EconetEntity, BinarySensorEntity):
@@ -88,11 +86,6 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
     )
     _LOGGER.debug("create_binary_entity_description: %s", entity_description)
     return entity_description
-
-
-def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
-    """Check if can add mixer entity"""
-    return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
 def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
