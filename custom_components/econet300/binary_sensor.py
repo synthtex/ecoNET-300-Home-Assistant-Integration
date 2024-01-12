@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import logging
 
 from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -22,7 +23,7 @@ from .const import (
     SERVICE_API,
     SERVICE_COORDINATOR,
 )
-from .entity import EconetEntity
+from .entity import EconetEntity, MixerEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -88,8 +89,23 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
     return entity_description
 
 
+class MixerBinarySensor(MixerEntity, EconetBinarySensor):
+    """Describes Econet Mixer binary sensor entity."""
+
+    def __init__(
+        self,
+        description: EconetBinarySensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+        idx: int,
+    ):
+        """Initialize the MixerBinarySensor object with a description, coordinator, api, and index."""
+
+        super().__init__(description, coordinator, api, idx)
+
+
 def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
-     """Check if a mixer can be added."""
+    """Check if a mixer can be added."""
     return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
