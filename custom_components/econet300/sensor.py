@@ -165,6 +165,13 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         process_val=lambda x: round(x, 1),
     ),
+        EconetSensorEntityDescription(
+        key="fuelStream",
+        translation_key="fuel_stream",
+        name="Fuel stream",
+        state_class=SensorStateClass.MEASUREMENT,
+        process_val=lambda x: round(x, 1),
+    ),
     EconetSensorEntityDescription(
         key="mode",
         translation_key="mode",
