@@ -183,10 +183,10 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
-        availaimility_mixer_key = f"mixerTemp{i}"
-        if can_add_mixer(availaimility_mixer_key, coordinator):
+        availability_mixer_key = f"mixerTemp{i}"
+        if can_add_mixer(availability_mixer_key, coordinator):
             description = EconetBinarySensorEntityDescription(
-                availability_key=availaimility_mixer_key,
+                availability_key=availability_mixer_key,
                 key=f"mixerPumpWorks{i}",
                 name=f"Mixer {i}",
                 icon="mdi:pump",
@@ -197,7 +197,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
         else:
             _LOGGER.debug(
                 "Availability key: %s does not exist, entity will not be added",
-                description.key,
+                availability_mixer_key,
             )
 
     return entities
