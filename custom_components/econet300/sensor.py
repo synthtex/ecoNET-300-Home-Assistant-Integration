@@ -8,10 +8,14 @@ from homeassistant.components.sensor import (
     SensorEntity,
     SensorEntityDescription,
     SensorStateClass,
+    SensorDeviceClass,
 )
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.const import (
+    UnitOfTemperature,
+)
 
 from .common import Econet300Api, EconetDataCoordinator
 from .common_functions import camel_to_snake
@@ -137,7 +141,7 @@ def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordina
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Create individual sensor descriptions for mixer sensors."""
-    entities = []
+    entities: list[MixerSensor] = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         description = EconetSensorEntityDescription(
