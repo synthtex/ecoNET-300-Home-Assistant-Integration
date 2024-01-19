@@ -137,6 +137,7 @@ def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordina
     return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
 
 
+## Fix  mixer add sensors
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Create individual sensor descriptions for mixer sensors."""
     entities: list[MixerSensor] = []
