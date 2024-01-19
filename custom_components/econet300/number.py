@@ -27,7 +27,7 @@ class EconetNumberEntityDescription(NumberEntityDescription):
     _attr_native_value: float | None = None
     _attr_native_min_value: float | None = None
     _attr_native_max_value: float | None = None
-    _attr_native_step: int
+    _attr_native_step: int = 1
 
 
 NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
@@ -115,7 +115,7 @@ class EconetNumber(EconetEntity, NumberEntity):
             )
             return
 
-        if not await self._api.set_param(self.entity_description.key, int(value)):
+        if not await self.api.set_param(self.entity_description.key, int(value)):
             _LOGGER.warning("Setting value failed")
             return
 
