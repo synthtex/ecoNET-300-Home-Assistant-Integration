@@ -32,7 +32,7 @@ class EconetNumberEntityDescription(NumberEntityDescription):
 
 NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
     EconetNumberEntityDescription(
-        key="tempCOSet",
+        key="1280",
         name="Boiler set temperature",
         translation_key="temp_co_set",
         icon="mdi:thermometer",
@@ -44,7 +44,7 @@ NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
         native_step=1,
     ),
     EconetNumberEntityDescription(
-        key="tempCWUSet",
+        key="1281",
         name="HUW set temperature",
         translation_key="temp_cwu_set",
         icon="mdi:thermometer",
@@ -125,6 +125,10 @@ class EconetNumber(EconetEntity, NumberEntity):
 
 def can_add(desc: EconetNumberEntityDescription, coordinator: EconetDataCoordinator):
     """Check if a given entity can be added based on the availability of data in the coordinator."""
+    _LOGGER.debug("Checking if number entity can be added with key: %s", desc.key)
+    _LOGGER.debug(
+        "Checking if number entity can be added with key: %s", coordinator.data
+    )
     return coordinator.has_data(desc.key) and coordinator.data[desc.key]
 
 
@@ -151,7 +155,8 @@ async def async_setup_entry(
 
         if number_limits is None:
             _LOGGER.warning(
-                "Cannot add entity: {}, numeric limits for this entity is None"
+                "Cannot add number entity: %s, numeric limits for this entity is None",
+                description.key,
             )
             continue
 
@@ -160,7 +165,7 @@ async def async_setup_entry(
             entities.append(EconetNumber(description, coordinator, api))
         else:
             _LOGGER.debug(
-                "Cannot add entity - availability key: %s does not exist",
+                "Cannot add number entity - availability key: %s does not exist",
                 description.key,
             )
 

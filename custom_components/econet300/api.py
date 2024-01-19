@@ -116,11 +116,6 @@ class EconetClient:
                 attempt += 1
 
 
-def get_param_id(name: str):
-    """Check if param is mapped and return its value."""
-    return lambda name=name: EDITABLE_PARAMS_MAPPING_TABLE.get(name, None)
-
-
 class Econet300Api:
     """Client for interacting with the ecoNET-300 API."""
 
@@ -190,14 +185,13 @@ class Econet300Api:
 
     async def set_param(self, param, value) -> bool:
         """Set param value in Econet300 API."""
-        param_idx = get_param_id(param)
-        if param_idx is None:
+        if param is None:
             _LOGGER.warning(
                 "Requested param set for: '{param}' but mapping for this param does not exist"
             )
             return False
 
-        data = await self._client.set_param(param_idx, value)
+        data = await self._client.set_param(param, value)
 
         if data is None or "result" not in data:
             return False
@@ -218,24 +212,23 @@ class Econet300Api:
             self._cache.set(API_EDITABLE_PARAMS_LIMITS_DATA, limits)
 
         limits = self._cache.get(API_EDITABLE_PARAMS_LIMITS_DATA)
-        param_idx = get_param_id(param)
 
-        if param_idx is None:
+        if param is None:
             _LOGGER.warning(
                 "Requested param limits for: '%s' but mapping for this param does not exist",
                 param,
             )
             return None
 
-        if param_idx not in limits:
+        if param not in limits:
             _LOGGER.warning(
-                "Requested param limits for: '%s(%s)' but limits for this param do not exist",
+                "Requested param limits for: '%s' but limits for this param do not exist. Limits: '%s' ",
                 param,
-                param_idx,
+                limits,
             )
             return None
 
-        curr_limits = limits[param_idx]
+        curr_limits = limits[param]
         return Limits(curr_limits["min"], curr_limits["max"])
 
     async def fetch_data(self) -> dict[str, Any]:
