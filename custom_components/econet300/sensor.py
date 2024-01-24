@@ -4,10 +4,7 @@ from dataclasses import dataclass
 import logging
 from typing import Any
 
-from homeassistant.components.sensor import (
-    SensorEntity,
-    SensorEntityDescription,
-)
+from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -23,12 +20,12 @@ from .const import (
     ENTITY_PRECISION,
     ENTITY_UNIT_MAP,
     ENTITY_VALUE_PROCESSOR,
+    MIXER_AVAILABILITY_KEY,
+    MIXER_SET_TEMP,
     SENSOR_MAP,
     SERVICE_API,
     SERVICE_COORDINATOR,
     STATE_CLASS_MAP,
-    MIXER_AVAILABILITY_KEY,
-    MIXER_SET_TEMP,
 )
 from .entity import EconetEntity, MixerEntity
 
