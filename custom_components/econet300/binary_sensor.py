@@ -19,10 +19,10 @@ from .const import (
     ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
     ENTITY_ICON_OFF,
-    SERVICE_API,
-    SERVICE_COORDINATOR,
     MIXER_AVAILABILITY_KEY,
     MIXER_KEY,
+    SERVICE_API,
+    SERVICE_COORDINATOR,
 )
 from .entity import EconetEntity, MixerEntity
 
@@ -147,7 +147,7 @@ def create_mixer_binary_entity_description(
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Creating mixer sensors entities."""
+    """Create mixer sensors entities."""
 
     entities: list[EconetBinarySensor] = []
 
