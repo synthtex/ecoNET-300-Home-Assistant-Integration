@@ -1,6 +1,7 @@
 """Constants from the Home Assistant."""
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
+from homeassistant.components.number import NumberDeviceClass
 from homeassistant.const import (
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
@@ -89,6 +90,7 @@ EDITABLE_PARAMS_MAPPING_TABLE = {
 AVAILABLE_NUMBER_OF_MIXERS = 6
 MIXER_AVAILABILITY_KEY = "mixerTemp"
 MIXER_KEY = "mixerPumpWorks"
+MIXER_SET_TEMP = "mixerSetTemp"
 
 #######################
 ######## REG PARAM MAPS
@@ -116,6 +118,12 @@ SENSOR_MAP = {
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
+    "1281": "tempCWUSet",
+}
+
+NUMBER_MAP = {
+    "1280": "tempCOSet",
+    "1281": "tempCWUSet",
 }
 
 BINARY_SENSOR_MAP = {
@@ -132,6 +140,7 @@ BINARY_SENSOR_MAP = {
 ENTITY_UNIT_MAP = {
     "tempCO": UnitOfTemperature.CELSIUS,
     "tempCOSet": UnitOfTemperature.CELSIUS,
+    "tempCWUSet": UnitOfTemperature.CELSIUS,
     "tempExternalSensor": UnitOfTemperature.CELSIUS,
     "tempFeeder": UnitOfTemperature.CELSIUS,
     "lambdaLevel": PERCENTAGE,
@@ -151,6 +160,8 @@ ENTITY_UNIT_MAP = {
     "quality": PERCENTAGE,
     "valveMixer1": PERCENTAGE,
     "burnerOutput": PERCENTAGE,
+    "mixerTemp": UnitOfTemperature.CELSIUS,
+    "mixerSetTemp": UnitOfTemperature.CELSIUS,
 }
 
 STATE_CLASS_MAP = {
@@ -160,6 +171,7 @@ STATE_CLASS_MAP = {
     "lambdaLevel": SensorStateClass.MEASUREMENT,
     "tempCO": SensorStateClass.MEASUREMENT,
     "tempCOSet": SensorStateClass.MEASUREMENT,
+    "tempCWUSet": SensorStateClass.MEASUREMENT,
     "boiler_power": SensorStateClass.MEASUREMENT,
     "fanPower": SensorStateClass.MEASUREMENT,
     "tempFlueGas": SensorStateClass.MEASUREMENT,
@@ -173,6 +185,8 @@ STATE_CLASS_MAP = {
     "quality": SensorStateClass.MEASUREMENT,
     "valveMixer1": SensorStateClass.MEASUREMENT,
     "burnerOutput": SensorStateClass.MEASUREMENT,
+    "mixerTemp": SensorStateClass.MEASUREMENT,
+    "mixerSetTemp": SensorStateClass.MEASUREMENT,
 }
 
 ENTITY_DEVICE_CLASS_MAP = {
@@ -182,7 +196,8 @@ ENTITY_DEVICE_CLASS_MAP = {
     "tempFeeder": SensorDeviceClass.TEMPERATURE,
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
-    "tempCOSet": SensorDeviceClass.TEMPERATURE,
+    "tempCOSet": NumberDeviceClass.TEMPERATURE,
+    "tempCWUSet": NumberDeviceClass.TEMPERATURE,
     "boilerPower": SensorDeviceClass.POWER_FACTOR,
     "fanPower": SensorDeviceClass.POWER_FACTOR,
     "tempFlueGas": SensorDeviceClass.TEMPERATURE,
@@ -215,7 +230,9 @@ ENTITY_DEVICE_CLASS_MAP = {
     "aditionalFeeder": BinarySensorDeviceClass.RUNNING,
     "pumpFireplaceWorks": BinarySensorDeviceClass.RUNNING,
     "pumpCWUWorks": BinarySensorDeviceClass.RUNNING,
-    "mixerTemp": BinarySensorDeviceClass.RUNNING,
+    "mixerPumpWorks": BinarySensorDeviceClass.RUNNING,
+    "mixerTemp": BinarySensorDeviceClass.TEMPERATURE,
+    "mixerSetTemp": BinarySensorDeviceClass.TEMPERATURE,
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -227,6 +244,7 @@ ENTITY_PRECISION = {
     "lambdaSet": 1,
     "tempCO": 1,
     "tempCOSet": 0,
+    "tempCWUSet": 0,
     "fanPower": 0,
     "mixerSetTemp1": 0,
     "mixerTemp1": 1,
@@ -235,6 +253,8 @@ ENTITY_PRECISION = {
     "tempLowerBuffer": 1,
     "tempCWU": 1,
     "tempFlueGas": 1,
+    "mixerTemp": 0,
+    "mixerSetTemp": 0,
 }
 
 ENTITY_ICON = {
@@ -242,6 +262,7 @@ ENTITY_ICON = {
     "fanPower": "mdi:fan",
     "temCO": "mdi:thermometer-lines",
     "tempCOSet": "mdi:thermometer-chevron-up",
+    "tempCWUSet": "mdi:thermometer-chevron-up",
     "thermostat": "mdi:thermostat",
     "boilerPower": "mdi:gauge",
     "fuelLevel": "mdi:gas-station",
@@ -255,7 +276,9 @@ ENTITY_ICON = {
     "pumpFireplaceWorks": "mdi:pump",
     "pumpCWUWorks": "mdi:pump",
     "main_server": "mdi:server",
-    "mixerTemp": "mdi:pump",
+    "mixerPumpWorks": "mdi:pump",
+    "mixerTemp": "mdi:thermometer",
+    "mixerSetTemp": "mdi:thermometer",
 }
 
 ENTITY_ICON_OFF = {
@@ -294,6 +317,26 @@ ENTITY_CATEGORY = {
     "controllerID": EntityCategory.DIAGNOSTIC,
     "Status_wifi": EntityCategory.DIAGNOSTIC,
     "main_server": EntityCategory.DIAGNOSTIC,
+}
+
+ENTITY_MIN_VALUE = {
+    "tempCOSet": 27,
+    "tempCWUSet": 20,
+}
+
+ENTITY_MAX_VALUE = {
+    "tempCOSet": 68,
+    "tempCWUSet": 55,
+}
+
+ENTITY_STEP = {
+    "tempCOSet": 1,
+    "tempCWUSet": 1,
+}
+
+ENTITY_VISIBLE = {
+    "tempCOSet": True,
+    "tempCWUSet": True,
 }
 
 # Default values for visible 'entity_registry_visible_default=False,' in sensor.py

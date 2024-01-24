@@ -138,9 +138,9 @@ def create_mixer_binary_entity_description(
     entity_description = EconetBinarySensorEntityDescription(
         availability_key=f"{MIXER_AVAILABILITY_KEY}{key}",
         key=f"{MIXER_KEY}{key}",
-        translation_key=f"{MIXER_AVAILABILITY_KEY}{key}",
-        icon=ENTITY_ICON.get(MIXER_AVAILABILITY_KEY, None),
-        device_class=ENTITY_DEVICE_CLASS_MAP.get(MIXER_AVAILABILITY_KEY, None),
+        translation_key=camel_to_snake(f"{MIXER_AVAILABILITY_KEY}{key}"),
+        icon=ENTITY_ICON.get(MIXER_KEY, None),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(MIXER_KEY, None),
     )
     _LOGGER.debug("Created mixer: %s", entity_description)
     return entity_description
@@ -149,7 +149,7 @@ def create_mixer_binary_entity_description(
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Creating mixer sensors entities."""
 
-    entities = []
+    entities: list[EconetBinarySensor] = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         availability_mixer_key = f"{MIXER_AVAILABILITY_KEY}{i}"

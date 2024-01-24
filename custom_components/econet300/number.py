@@ -3,19 +3,30 @@ from dataclasses import dataclass
 import logging
 
 from homeassistant.components.number import (
-    NumberDeviceClass,
     NumberEntity,
     NumberEntityDescription,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .api import Limits
 from .common import Econet300Api, EconetDataCoordinator
-from .const import DOMAIN, SERVICE_API, SERVICE_COORDINATOR
 from .entity import EconetEntity
+from .common_functions import camel_to_snake
+from .const import (
+    DOMAIN,
+    ENTITY_DEVICE_CLASS_MAP,
+    ENTITY_ICON,
+    ENTITY_UNIT_MAP,
+    SERVICE_API,
+    SERVICE_COORDINATOR,
+    NUMBER_MAP,
+    ENTITY_MIN_VALUE,
+    ENTITY_MAX_VALUE,
+    ENTITY_STEP,
+    ENTITY_VISIBLE,
+)
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -28,34 +39,6 @@ class EconetNumberEntityDescription(NumberEntityDescription):
     _attr_native_min_value: float | None = None
     _attr_native_max_value: float | None = None
     _attr_native_step: int = 1
-
-
-NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
-    EconetNumberEntityDescription(
-        key="1280",
-        name="Boiler set temperature",
-        translation_key="temp_co_set",
-        icon="mdi:thermometer",
-        device_class=NumberDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        entity_registry_visible_default=True,
-        min_value=27,
-        max_value=68,
-        native_step=1,
-    ),
-    EconetNumberEntityDescription(
-        key="1281",
-        name="HUW set temperature",
-        translation_key="temp_cwu_set",
-        icon="mdi:thermometer",
-        device_class=NumberDeviceClass.TEMPERATURE,
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        entity_registry_visible_default=True,
-        min_value=20,
-        max_value=55,
-        native_step=1,
-    ),
-)
 
 
 class EconetNumber(EconetEntity, NumberEntity):
@@ -123,19 +106,34 @@ class EconetNumber(EconetEntity, NumberEntity):
         self.async_write_ha_state()
 
 
-def can_add(desc: EconetNumberEntityDescription, coordinator: EconetDataCoordinator):
+def can_add(key: str, coordinator: EconetDataCoordinator):
     """Check if a given entity can be added based on the availability of data in the coordinator."""
-    _LOGGER.debug("Checking if number entity can be added with key: %s", desc.key)
-    _LOGGER.debug(
-        "Checking if number entity can be added with key: %s", coordinator.data
-    )
-    return coordinator.has_data(desc.key) and coordinator.data[desc.key]
+    return coordinator.has_data(key) and coordinator.data[key]
 
 
 def apply_limits(desc: EconetNumberEntityDescription, limits: Limits):
     """Set the native minimum and maximum values for the given entity description."""
     desc.native_min_value = limits.min
     desc.native_max_value = limits.max
+
+
+def create_number_entity_description(key: int) -> EconetNumberEntityDescription:
+    """Create Econect300 mixer sensor entity based on supplied key."""
+    map_key = NUMBER_MAP.get(key, key)
+    _LOGGER.debug("Create number: %s", map_key)
+    entity_description = EconetNumberEntityDescription(
+        key=key,
+        translation_key=camel_to_snake(map_key),
+        icon=ENTITY_ICON.get(map_key, None),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key, None),
+        entity_registry_visible_default=ENTITY_VISIBLE.get(map_key, True),
+        min_value=ENTITY_MIN_VALUE.get(map_key, 20),
+        max_value=ENTITY_MAX_VALUE.get(map_key, 55),
+        native_step=ENTITY_STEP.get(map_key, 1),
+    )
+    _LOGGER.debug("Created number entity description: %s", entity_description)
+    return entity_description
 
 
 async def async_setup_entry(
@@ -150,23 +148,24 @@ async def async_setup_entry(
 
     entities: list[EconetNumber] = []
 
-    for description in NUMBER_TYPES:
-        number_limits = await api.get_param_limits(description.key)
+    for key in NUMBER_MAP:
+        number_limits = await api.get_param_limits(key)
 
         if number_limits is None:
             _LOGGER.warning(
                 "Cannot add number entity: %s, numeric limits for this entity is None",
-                description.key,
+                key,
             )
             continue
 
-        if can_add(description, coordinator):
-            apply_limits(description, number_limits)
-            entities.append(EconetNumber(description, coordinator, api))
+        if can_add(key, coordinator):
+            entity_description = create_number_entity_description(key)
+            apply_limits(entity_description, number_limits)
+            entities.append(EconetNumber(entity_description, coordinator, api))
         else:
             _LOGGER.debug(
                 "Cannot add number entity - availability key: %s does not exist",
-                description.key,
+                key,
             )
 
     return async_add_entities(entities)

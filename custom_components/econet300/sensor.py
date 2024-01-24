@@ -5,13 +5,10 @@ import logging
 from typing import Any
 
 from homeassistant.components.sensor import (
-    SensorDeviceClass,
     SensorEntity,
     SensorEntityDescription,
-    SensorStateClass,
 )
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -30,6 +27,8 @@ from .const import (
     SERVICE_API,
     SERVICE_COORDINATOR,
     STATE_CLASS_MAP,
+    MIXER_AVAILABILITY_KEY,
+    MIXER_SET_TEMP,
 )
 from .entity import EconetEntity, MixerEntity
 
@@ -129,56 +128,59 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
     return entities
 
 
-def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordinator):
-    """Check if it can add the key."""
-    if desc.key not in coordinator.data:
-        _LOGGER.debug("Key %s does not exist in coordinator.data", desc.key)
-        return False
-    return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
+def can_add_mixer(key: str, coordinator: EconetDataCoordinator):
+    """Check if a mixer can be added."""
+    return coordinator.has_data(key) and coordinator.data[key] is not None
 
 
-## Fix  mixer add sensors
+def create_mixer_sensor_entity_description(
+    key: int, entity_type: str
+) -> EconetSensorEntityDescription:
+    """Create Econect300 mixer sensor entity based on supplied key."""
+    _LOGGER.debug(
+        "Creating entity description for key: %s, and type : %s", key, entity_type
+    )
+    entity_description = EconetSensorEntityDescription(
+        key=f"{entity_type}{key}",
+        translation_key=camel_to_snake(f"{entity_type}{key}"),
+        icon=ENTITY_ICON.get(entity_type, None),
+        native_unit_of_measurement=ENTITY_UNIT_MAP.get(entity_type, None),
+        state_class=STATE_CLASS_MAP.get(entity_type, None),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(entity_type, None),
+        suggested_display_precision=ENTITY_PRECISION.get(entity_type, 0),
+        process_val=ENTITY_VALUE_PROCESSOR.get(entity_type, lambda x: x),
+    )
+    _LOGGER.debug("Created entity description: %s", entity_description)
+    return entity_description
+
+
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Create individual sensor descriptions for mixer sensors."""
     entities: list[MixerSensor] = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
-        description = EconetSensorEntityDescription(
-            key=f"mixerTemp{i}",
-            name=f"Mixer {i} temperature",
-            translation_key=f"mixer_temp_{i}",
-            icon="mdi:thermometer",
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.TEMPERATURE,
-            suggested_display_precision=0,
-            process_val=lambda x: x,
-        )
-        if can_add(description, coordinator):
-            entities.append(MixerSensor(description, coordinator, api, i))
-        else:
-            _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description.key,
+        mixer_temp_key = f"{MIXER_AVAILABILITY_KEY}{i}"
+        if can_add_mixer(mixer_temp_key, coordinator):
+            mixer_temp_entity = create_mixer_sensor_entity_description(
+                i, MIXER_AVAILABILITY_KEY
             )
-        description2 = EconetSensorEntityDescription(
-            key=f"mixerSetTemp{i}",
-            name=f"Mixer {i} set temperature",
-            translation_key=f"mixer_{i}_set_temp",
-            icon="mdi:thermometer",
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.TEMPERATURE,
-            suggested_display_precision=0,
-            process_val=lambda x: x,
-        )
-
-        if can_add(description2, coordinator):
-            entities.append(MixerSensor(description2, coordinator, api, i))
+            entities.append(MixerSensor(mixer_temp_entity, coordinator, api, i))
         else:
             _LOGGER.debug(
                 "Availability key: %s does not exist, entity will not be added",
-                description2.key,
+                mixer_temp_key,
+            )
+
+        mixer_set_temp_key = f"{MIXER_SET_TEMP}{i}"
+        if can_add_mixer(mixer_set_temp_key, coordinator):
+            mixer_set_temp_entity = create_mixer_sensor_entity_description(
+                i, MIXER_SET_TEMP
+            )
+            entities.append(MixerSensor(mixer_set_temp_entity, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                "Availability key: %s does not exist, entity will not be added",
+                mixer_set_temp_key,
             )
     return entities
 
