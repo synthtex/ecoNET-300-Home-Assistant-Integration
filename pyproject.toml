@@ -1,9 +1,9 @@
 [tool.black]
 line-length = 88
-target-version = ["py310","py311"]
+target-version = ["py311","py312"]
 
 [tool.pylint.MAIN]
-py-version = "3.11"
+py-version = ["3.11","3.12"]
 
 load-plugins = [
     "pylint.extensions.code_style",
