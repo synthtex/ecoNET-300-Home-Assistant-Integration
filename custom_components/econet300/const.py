@@ -83,7 +83,12 @@ EDITABLE_PARAMS_MAPPING_TABLE = {
     "mixerSetTemp6": "1292",
 }
 
+###################################
+######## NUMBER of AVAILABLE MIXERS
+###################################
 AVAILABLE_NUMBER_OF_MIXERS = 6
+MIXER_AVAILABILITY_KEY = "mixerTemp"
+MIXER_KEY = "mixerPumpWorks"
 
 #######################
 ######## REG PARAM MAPS
@@ -111,7 +116,6 @@ SENSOR_MAP = {
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
-    "0000": "mixerTemp",
 }
 
 BINARY_SENSOR_MAP = {
@@ -211,6 +215,7 @@ ENTITY_DEVICE_CLASS_MAP = {
     "aditionalFeeder": BinarySensorDeviceClass.RUNNING,
     "pumpFireplaceWorks": BinarySensorDeviceClass.RUNNING,
     "pumpCWUWorks": BinarySensorDeviceClass.RUNNING,
+    "mixerTemp": BinarySensorDeviceClass.RUNNING,
 }
 
 """Add only keys where precision more than 0 needed"""
@@ -250,6 +255,7 @@ ENTITY_ICON = {
     "pumpFireplaceWorks": "mdi:pump",
     "pumpCWUWorks": "mdi:pump",
     "main_server": "mdi:server",
+    "mixerTemp": "mdi:pump",
 }
 
 ENTITY_ICON_OFF = {

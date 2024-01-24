@@ -3,7 +3,6 @@ from dataclasses import dataclass
 import logging
 
 from homeassistant.components.binary_sensor import (
-    BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -22,6 +21,8 @@ from .const import (
     ENTITY_ICON_OFF,
     SERVICE_API,
     SERVICE_COORDINATOR,
+    MIXER_AVAILABILITY_KEY,
+    MIXER_KEY,
 )
 from .entity import EconetEntity, MixerEntity
 
@@ -89,6 +90,26 @@ def create_binary_entity_description(key: str) -> EconetBinarySensorEntityDescri
     return entity_description
 
 
+def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Create binary sensors."""
+    entities: list[EconetBinarySensor] = []
+    coordinator_data = coordinator.data
+    for data_key in BINARY_SENSOR_MAP:
+        _LOGGER.debug("Processing data_key: %s", data_key)
+        if data_key in coordinator_data:
+            entity = EconetBinarySensor(
+                create_binary_entity_description(data_key), coordinator, api
+            )
+            entities.append(entity)
+            _LOGGER.debug("Created and appended entity: %s", entity)
+        else:
+            _LOGGER.debug(
+                "key: %s is not mapped, binary sensor entity will not be added",
+                data_key,
+            )
+    return entities
+
+
 class MixerBinarySensor(MixerEntity, EconetBinarySensor):
     """Describes Econet Mixer binary sensor entity."""
 
@@ -109,30 +130,20 @@ def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
     return coordinator.has_data(desc) and coordinator.data[desc] is not None
 
 
-def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Create binary sensors."""
-    _LOGGER.debug("Entering create_binary_sensors function")
-    _LOGGER.debug("api: %s", api)
-    entities: list[EconetBinarySensor] = []
-    _LOGGER.debug("Initialized entities list: %s", entities)
-    coordinator_data = coordinator.data
-    _LOGGER.debug("Updated coordinator with its data: %s", coordinator_data)
-    for data_key in BINARY_SENSOR_MAP:
-        _LOGGER.debug("Processing data_key: %s", data_key)
-        if data_key in coordinator_data:
-            entity = EconetBinarySensor(
-                create_binary_entity_description(data_key), coordinator, api
-            )
-            entities.append(entity)
-            _LOGGER.debug("Created and appended entity: %s", entity)
-            _LOGGER.debug("Key: %s mapped, binary entity will be added", data_key)
-        else:
-            _LOGGER.debug(
-                "key: %s is not mapped, binary sensor entity will not be added",
-                data_key,
-            )
-    _LOGGER.debug("Exiting create_binary_sensors function with entities: %s", entities)
-    return entities
+def create_mixer_binary_entity_description(
+    key: int,
+) -> EconetBinarySensorEntityDescription:
+    """Create Econet300 mixer binary entity description."""
+    _LOGGER.debug("Create mixer : %s", key)
+    entity_description = EconetBinarySensorEntityDescription(
+        availability_key=f"{MIXER_AVAILABILITY_KEY}{key}",
+        key=f"{MIXER_KEY}{key}",
+        translation_key=f"{MIXER_AVAILABILITY_KEY}{key}",
+        icon=ENTITY_ICON.get(MIXER_AVAILABILITY_KEY, None),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(MIXER_AVAILABILITY_KEY, None),
+    )
+    _LOGGER.debug("Created mixer: %s", entity_description)
+    return entity_description
 
 
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
@@ -141,17 +152,12 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     entities = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
-        availability_mixer_key = f"mixerTemp{i}"
+        availability_mixer_key = f"{MIXER_AVAILABILITY_KEY}{i}"
         if can_add_mixer(availability_mixer_key, coordinator):
-            description = EconetBinarySensorEntityDescription(
-                availability_key=availability_mixer_key,
-                key=f"mixerPumpWorks{i}",
-                name=f"Mixer {i}",
-                icon="mdi:pump",
-                device_class=BinarySensorDeviceClass.RUNNING,
+            entity = EconetBinarySensor(
+                create_mixer_binary_entity_description(i), coordinator, api
             )
-
-            entities.append(MixerBinarySensor(description, coordinator, api, i))
+            entities.append(MixerBinarySensor(entity, coordinator, api, i))
         else:
             _LOGGER.debug(
                 "Availability key: %s does not exist, entity will not be added",
