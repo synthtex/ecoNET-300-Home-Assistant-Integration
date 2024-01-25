@@ -1,7 +1,7 @@
 """Constants from the Home Assistant."""
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
-from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.components.number import NumberDeviceClass
+from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
@@ -231,8 +231,6 @@ ENTITY_DEVICE_CLASS_MAP = {
     "pumpFireplaceWorks": BinarySensorDeviceClass.RUNNING,
     "pumpCWUWorks": BinarySensorDeviceClass.RUNNING,
     "mixerPumpWorks": BinarySensorDeviceClass.RUNNING,
-    "mixerTemp": BinarySensorDeviceClass.TEMPERATURE,
-    "mixerSetTemp": BinarySensorDeviceClass.TEMPERATURE,
 }
 
 """Add only keys where precision more than 0 needed"""
