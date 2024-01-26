@@ -135,7 +135,7 @@ def create_mixer_sensor_entity_description(
 ) -> EconetSensorEntityDescription:
     """Create Econect300 mixer sensor entity based on supplied key."""
     _LOGGER.debug(
-        "Creating entity description for key: %s, and type : %s", key, entity_type
+        "Creating Mixer entity description for key: %s, and type : %s", key, entity_type
     )
     entity_description = EconetSensorEntityDescription(
         key=f"{entity_type}{key}",
@@ -147,7 +147,7 @@ def create_mixer_sensor_entity_description(
         suggested_display_precision=ENTITY_PRECISION.get(entity_type, 0),
         process_val=ENTITY_VALUE_PROCESSOR.get(entity_type, lambda x: x),
     )
-    _LOGGER.debug("Created entity description: %s", entity_description)
+    _LOGGER.debug("Created Mixer entity description: %s", entity_description)
     return entity_description
 
 
@@ -164,7 +164,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             entities.append(MixerSensor(mixer_temp_entity, coordinator, api, i))
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
+                "Availability Mixer key: %s does not exist, entity will not be added",
                 mixer_temp_key,
             )
 
@@ -176,7 +176,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             entities.append(MixerSensor(mixer_set_temp_entity, coordinator, api, i))
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
+                "Availability Mixer key: %s does not exist, entity will not be added",
                 mixer_set_temp_key,
             )
     return entities
