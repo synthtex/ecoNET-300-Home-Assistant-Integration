@@ -1,6 +1,3 @@
-[project]
-name = "ecoNET-300-Home-Assistant-Integration"
-
 [tool.mypy]
 python_version = "3.11"
 
