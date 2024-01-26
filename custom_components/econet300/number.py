@@ -32,11 +32,6 @@ _LOGGER = logging.getLogger(__name__)
 class EconetNumberEntityDescription(NumberEntityDescription):
     """Describes Econet number entity."""
 
-    _attr_native_value: float | None = None
-    _attr_native_min_value: float | None = None
-    _attr_native_max_value: float | None = None
-    _attr_native_step: int = 1
-
 
 class EconetNumber(EconetEntity, NumberEntity):
     """Describes Econet binary sensor entity."""
@@ -52,11 +47,6 @@ class EconetNumber(EconetEntity, NumberEntity):
         """Initialize a new ecoNET number entyti."""
         self.entity_description = entity_description
         self.api = api
-        self._attr_is_on = None
-        self._attr_native_value = None
-        self._attr_native_min_value = None
-        self._attr_native_max_value = None
-        self._attr_native_step = 1
         super().__init__(coordinator)
         _LOGGER.debug(
             "EconetNumberEntity initialized with unique_id: %s, entity_description: %s",
@@ -69,8 +59,14 @@ class EconetNumber(EconetEntity, NumberEntity):
         _LOGGER.debug("EconetNumber _sync_state: %s", value)
 
         self._attr_native_value = value
-        self._attr_native_min_value = value - 1
-        self._attr_native_max_value = value + 1
+        # rewrite to get min max value from api
+        self._attr_native_min_value = ENTITY_MIN_VALUE.get(
+            NUMBER_MAP.get(self.entity_description.key)
+        )
+        self._attr_native_max_value = ENTITY_MAX_VALUE.get(
+            NUMBER_MAP.get(self.entity_description.key)
+        )
+        _LOGGER.debug(self.entity_description)
         self.async_write_ha_state()
 
     async def async_set_native_value(self, value: float) -> None:
@@ -112,6 +108,7 @@ def apply_limits(desc: EconetNumberEntityDescription, limits: Limits):
     """Set the native minimum and maximum values for the given entity description."""
     desc.native_min_value = limits.min
     desc.native_max_value = limits.max
+    _LOGGER.debug("Apply limits: %s", desc)
 
 
 def create_number_entity_description(key: int) -> EconetNumberEntityDescription:
