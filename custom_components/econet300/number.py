@@ -157,7 +157,7 @@ async def async_setup_entry(
             apply_limits(entity_description, number_limits)
             entities.append(EconetNumber(entity_description, coordinator, api))
         else:
-            _LOGGER.debug(
+            _LOGGER.warning(
                 "Cannot add number entity - availability key: %s does not exist",
                 key,
             )

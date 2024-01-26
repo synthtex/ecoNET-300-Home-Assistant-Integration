@@ -103,7 +103,7 @@ def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api)
             entities.append(entity)
             _LOGGER.debug("Created and appended entity: %s", entity)
         else:
-            _LOGGER.debug(
+            _LOGGER.warning(
                 "key: %s is not mapped, binary sensor entity will not be added",
                 data_key,
             )
@@ -159,7 +159,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             )
             entities.append(MixerBinarySensor(entity, coordinator, api, i))
         else:
-            _LOGGER.debug(
+            _LOGGER.warning(
                 "Availability key: %s does not exist, entity will not be added",
                 availability_mixer_key,
             )

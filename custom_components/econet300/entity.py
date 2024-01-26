@@ -31,7 +31,7 @@ class EconetEntity(CoordinatorEntity):
 
     @property
     def unique_id(self) -> str | None:
-        """Return the unique_id of the entity"""
+        """Return the unique_id of the entity."""
         return f"{self.api.uid}-{self.entity_description.key}"
 
     @property
@@ -98,6 +98,7 @@ class MixerEntity(EconetEntity):
         api: Econet300Api,
         idx: int,
     ):
+        """Initialize the MixerEntity."""
         super().__init__(description, coordinator, api)
 
         self._idx = idx

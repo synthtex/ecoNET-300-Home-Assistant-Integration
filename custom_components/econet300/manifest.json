@@ -8,7 +8,7 @@
   "homekit": {},
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/pblxptr/ecoNET-300-Home-Assistant-Integration/issues",
-  "requirements": ["voluptuous"],
+  "requirements": [""],
   "ssdp": [],
   "version": "1.0.0",
   "zeroconf": []

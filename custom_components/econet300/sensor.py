@@ -117,7 +117,7 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
             )
             continue
         else:
-            _LOGGER.debug(
+            _LOGGER.warning(
                 "Key: %s is not mapped, sensor entity will not be added",
                 data_key,
             )
@@ -166,8 +166,8 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             )
             entities.append(MixerSensor(mixer_temp_entity, coordinator, api, i))
         else:
-            _LOGGER.debug(
-                "Availability Mixer key: %s does not exist, entity will not be added",
+            _LOGGER.warning(
+                "Availability Mixer temperature key: %s does not exist, entity will not be added",
                 mixer_temp_key,
             )
 
@@ -178,8 +178,8 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             )
             entities.append(MixerSensor(mixer_set_temp_entity, coordinator, api, i))
         else:
-            _LOGGER.debug(
-                "Availability Mixer key: %s does not exist, entity will not be added",
+            _LOGGER.warning(
+                "Availability Mixer set temperature key: %s does not exist, entity will not be added",
                 mixer_set_temp_key,
             )
     return entities

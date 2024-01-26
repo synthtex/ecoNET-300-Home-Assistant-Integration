@@ -5,7 +5,6 @@ import logging
 from typing import Any
 
 from aiohttp import BasicAuth, ClientSession
-
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
@@ -70,7 +69,7 @@ class EconetClient:
         not_contains = all(p not in host for p in proto)
 
         if not_contains:
-            _LOGGER.warning("Manually adding 'http' to host")
+            _LOGGER.info("Manually adding 'http' to host")
             host = "http://" + host
 
         self._host = host
