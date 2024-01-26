@@ -127,6 +127,9 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
 
 def can_add_mixer(key: str, coordinator: EconetDataCoordinator):
     """Check if a mixer can be added."""
+    _LOGGER.debug(
+        "Checking if mixer can be added for key: %s, data %s", key, coordinator.data
+    )
     return coordinator.has_data(key) and coordinator.data[key] is not None
 
 
