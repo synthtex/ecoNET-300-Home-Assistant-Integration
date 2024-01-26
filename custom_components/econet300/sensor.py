@@ -28,6 +28,7 @@ from .const import (
     STATE_CLASS_MAP,
 )
 from .entity import EconetEntity, MixerEntity
+from .common_functions import get_key_by_value
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -160,7 +161,13 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         mixer_temp_key = f"{MIXER_AVAILABILITY_KEY}{i}"
-        if can_add_mixer(mixer_temp_key, coordinator):
+        mixer_temp_id = get_key_by_value(SENSOR_MAP, mixer_temp_key)
+        if mixer_temp_id is None:
+            _LOGGER.warning(
+                "Mixer: %s not found, wont map",
+                mixer_temp_key,
+            )
+        elif can_add_mixer(mixer_temp_id, coordinator):
             mixer_temp_entity = create_mixer_sensor_entity_description(
                 i, MIXER_AVAILABILITY_KEY
             )
@@ -172,7 +179,13 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             )
 
         mixer_set_temp_key = f"{MIXER_SET_TEMP}{i}"
-        if can_add_mixer(mixer_set_temp_key, coordinator):
+        mixer_set_temp_id = get_key_by_value(SENSOR_MAP, mixer_set_temp_key)
+        if mixer_set_temp_id is None:
+            _LOGGER.warning(
+                "Mixer: %s not found, wont map",
+                mixer_temp_key,
+            )
+        elif can_add_mixer(mixer_set_temp_id, coordinator):
             mixer_set_temp_entity = create_mixer_sensor_entity_description(
                 i, MIXER_SET_TEMP
             )

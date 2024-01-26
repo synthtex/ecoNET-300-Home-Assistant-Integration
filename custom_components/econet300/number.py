@@ -57,16 +57,17 @@ class EconetNumber(EconetEntity, NumberEntity):
     def _sync_state(self, value):
         """Sync state."""
         _LOGGER.debug("EconetNumber _sync_state: %s", value)
-
         self._attr_native_value = value
-        # rewrite to get min max value from api
-        self._attr_native_min_value = ENTITY_MIN_VALUE.get(
-            NUMBER_MAP.get(self.entity_description.key)
-        )
-        self._attr_native_max_value = ENTITY_MAX_VALUE.get(
-            NUMBER_MAP.get(self.entity_description.key)
-        )
-        _LOGGER.debug(self.entity_description)
+        limits = self.api.get_param_limits(self.entity_description.key)
+        if limits is None:
+            _LOGGER.warning(
+                "Cannot add number entity: %s, numeric limits for this entity is None",
+                self.entity_description.key,
+            )
+        else:
+            self._attr_native_min_value = limits.min
+            self._attr_native_max_value = limits.max
+            _LOGGER.debug("Apply number limits: %s", self)
         self.async_write_ha_state()
 
     async def async_set_native_value(self, value: float) -> None:
@@ -118,12 +119,12 @@ def create_number_entity_description(key: int) -> EconetNumberEntityDescription:
     entity_description = EconetNumberEntityDescription(
         key=key,
         translation_key=camel_to_snake(map_key),
-        icon=ENTITY_ICON.get(map_key, None),
-        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
-        native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key, None),
+        icon=ENTITY_ICON.get(map_key),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key),
+        native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key),
         entity_registry_visible_default=ENTITY_VISIBLE.get(map_key, True),
-        min_value=ENTITY_MIN_VALUE.get(map_key, 20),
-        max_value=ENTITY_MAX_VALUE.get(map_key, 55),
+        min_value=ENTITY_MIN_VALUE.get(map_key),
+        max_value=ENTITY_MAX_VALUE.get(map_key),
         native_step=ENTITY_STEP.get(map_key, 1),
     )
     _LOGGER.debug("Created number entity description: %s", entity_description)
