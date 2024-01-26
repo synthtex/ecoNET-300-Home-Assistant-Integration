@@ -2,31 +2,28 @@
 from dataclasses import dataclass
 import logging
 
-from homeassistant.components.number import (
-    NumberEntity,
-    NumberEntityDescription,
-)
+from homeassistant.components.number import NumberEntity, NumberEntityDescription
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .api import Limits
 from .common import Econet300Api, EconetDataCoordinator
-from .entity import EconetEntity
 from .common_functions import camel_to_snake
 from .const import (
     DOMAIN,
     ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
+    ENTITY_MAX_VALUE,
+    ENTITY_MIN_VALUE,
+    ENTITY_STEP,
     ENTITY_UNIT_MAP,
+    ENTITY_VISIBLE,
+    NUMBER_MAP,
     SERVICE_API,
     SERVICE_COORDINATOR,
-    NUMBER_MAP,
-    ENTITY_MIN_VALUE,
-    ENTITY_MAX_VALUE,
-    ENTITY_STEP,
-    ENTITY_VISIBLE,
 )
+from .entity import EconetEntity
 
 _LOGGER = logging.getLogger(__name__)
 

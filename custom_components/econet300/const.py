@@ -202,6 +202,8 @@ ENTITY_DEVICE_CLASS_MAP = {
     "fanPower": SensorDeviceClass.POWER_FACTOR,
     "tempFlueGas": SensorDeviceClass.TEMPERATURE,
     "mixerSetTemp1": SensorDeviceClass.TEMPERATURE,
+    "mixerTemp": SensorDeviceClass.TEMPERATURE,
+    "mixerSetTemp": SensorDeviceClass.TEMPERATURE,
     "tempBack": SensorDeviceClass.TEMPERATURE,
     "tempCWU": SensorDeviceClass.TEMPERATURE,
     "mode": "DEVICE_CLASS_OPERATION_MODE",
