@@ -58,7 +58,13 @@ class EconetNumber(EconetEntity, NumberEntity):
         """Sync state."""
         _LOGGER.debug("EconetNumber _sync_state: %s", value)
         self._attr_native_value = value
-        limits = self.api.get_param_limits(self.entity_description.key)
+        self.async_set_limits_values()
+        self.async_write_ha_state()
+
+    async def async_set_limits_values(self):
+        """async Sync number limits."""
+        limits = await self.api.get_param_limits(self.entity_description.key)
+        _LOGGER.debug("Number limits retrieved: %s", limits)
         if limits is None:
             _LOGGER.warning(
                 "Cannot add number entity: %s, numeric limits for this entity is None",
@@ -68,7 +74,6 @@ class EconetNumber(EconetEntity, NumberEntity):
             self._attr_native_min_value = limits.min
             self._attr_native_max_value = limits.max
             _LOGGER.debug("Apply number limits: %s", self)
-        self.async_write_ha_state()
 
     async def async_set_native_value(self, value: float) -> None:
         """Update the current value."""
