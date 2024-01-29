@@ -315,7 +315,7 @@ ENTITY_CATEGORY = {
     "moduleLambdaSoftVer": EntityCategory.DIAGNOSTIC,
     "protocolType": EntityCategory.DIAGNOSTIC,
     "controllerID": EntityCategory.DIAGNOSTIC,
-    "Status_wifi": EntityCategory.DIAGNOSTIC,
+    "status_wifi": EntityCategory.DIAGNOSTIC,
     "main_server": EntityCategory.DIAGNOSTIC,
 }
 
