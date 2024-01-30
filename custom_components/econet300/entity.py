@@ -111,7 +111,7 @@ class MixerEntity(EconetEntity):
     def device_info(self) -> DeviceInfo | None:
         """Return device info of the entity."""
         return DeviceInfo(
-            identifiers={(DOMAIN, f"{self.api.uid}-mixer-{self._idx}")},
+            identifiers={(DOMAIN, f"{self.api.uid}-mixer-device-{self._idx}")},
             name=f"{DEVICE_INFO_MIXER_NAME}{self._idx}",
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,

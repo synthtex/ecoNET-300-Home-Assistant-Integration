@@ -135,14 +135,14 @@ def can_add_mixer(key: str, coordinator: EconetDataCoordinator):
 
 
 def create_mixer_sensor_entity_description(
-    key: int, entity_type: str
+    key: str, entity_type: str
 ) -> EconetSensorEntityDescription:
     """Create Econect300 mixer sensor entity based on supplied key."""
     _LOGGER.debug(
         "Creating Mixer entity description for key: %s, and type : %s", key, entity_type
     )
     entity_description = EconetSensorEntityDescription(
-        key=str(key),
+        key=key,
         translation_key=camel_to_snake(f"{entity_type}{key}"),
         icon=ENTITY_ICON.get(entity_type, None),
         native_unit_of_measurement=ENTITY_UNIT_MAP.get(entity_type, None),
@@ -169,7 +169,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             )
         elif can_add_mixer(mixer_temp_id, coordinator):
             mixer_temp_entity = create_mixer_sensor_entity_description(
-                i, MIXER_AVAILABILITY_KEY
+                mixer_temp_id, MIXER_AVAILABILITY_KEY
             )
             entities.append(MixerSensor(mixer_temp_entity, coordinator, api, i))
         else:
@@ -187,7 +187,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             )
         elif can_add_mixer(mixer_set_temp_id, coordinator):
             mixer_set_temp_entity = create_mixer_sensor_entity_description(
-                i, MIXER_SET_TEMP
+                mixer_set_temp_id, MIXER_SET_TEMP
             )
             entities.append(MixerSensor(mixer_set_temp_entity, coordinator, api, i))
         else:
