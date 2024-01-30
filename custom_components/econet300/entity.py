@@ -73,11 +73,15 @@ class EconetEntity(CoordinatorEntity):
             _LOGGER.error("Coordinator object does not have a 'data' attribute")
             return
 
-        if self.coordinator.data[self.entity_description.key] is None:
+        if (
+            not self.coordinator.has_data(self.entity_description.key)
+            or self.coordinator.data[self.entity_description.key] is None
+        ):
             _LOGGER.warning(
                 "Data key: %s was expected to exist but it doesn't",
                 self.entity_description.key,
             )
+            _LOGGER.debug("Coordinator available data: %s", self.coordinator.data)
 
             _LOGGER.debug("Exiting async_added_to_hass method")
             return
