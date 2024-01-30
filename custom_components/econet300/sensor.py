@@ -142,7 +142,7 @@ def create_mixer_sensor_entity_description(
         "Creating Mixer entity description for key: %s, and type : %s", key, entity_type
     )
     entity_description = EconetSensorEntityDescription(
-        key=f"{entity_type}{key}",
+        key=str(key),
         translation_key=camel_to_snake(f"{entity_type}{key}"),
         icon=ENTITY_ICON.get(entity_type, None),
         native_unit_of_measurement=ENTITY_UNIT_MAP.get(entity_type, None),
