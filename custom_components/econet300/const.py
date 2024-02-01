@@ -90,7 +90,6 @@ EDITABLE_PARAMS_MAPPING_TABLE = {
 AVAILABLE_NUMBER_OF_MIXERS = 6
 MIXER_AVAILABILITY_KEY = "mixerTemp"
 MIXER_KEY = "mixerPumpWorks"
-MIXER_SET_TEMP = "mixerSetTemp"
 
 #######################
 ######## REG PARAM MAPS
@@ -112,13 +111,18 @@ SENSOR_MAP = {
     "1028": "tempUpperBuffer",
     "1029": "tempLowerBuffer",
     "1030": "tempFlueGas",
-    "1031": "mixerTemp1",
-    "1287": "mixerSetTemp1",
     "1792": "mode",
     "1794": "boilerPower",
     "1795": "fanPower",
     "1280": "tempCOSet",
     "1281": "tempCWUSet",
+}
+
+MIXER_MAP = {
+    "1": {
+        "1031": "mixerTemp1",
+        "1287": "mixerSetTemp1",
+    }
 }
 
 NUMBER_MAP = {
