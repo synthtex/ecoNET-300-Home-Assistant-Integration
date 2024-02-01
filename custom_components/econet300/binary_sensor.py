@@ -13,18 +13,15 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .common import Econet300Api, EconetDataCoordinator
 from .common_functions import camel_to_snake
 from .const import (
-    AVAILABLE_NUMBER_OF_MIXERS,
     BINARY_SENSOR_MAP,
     DOMAIN,
     ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
     ENTITY_ICON_OFF,
-    MIXER_AVAILABILITY_KEY,
-    MIXER_KEY,
     SERVICE_API,
     SERVICE_COORDINATOR,
 )
-from .entity import EconetEntity, MixerEntity
+from .entity import EconetEntity
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -110,63 +107,6 @@ def create_binary_sensors(coordinator: EconetDataCoordinator, api: Econet300Api)
     return entities
 
 
-class MixerBinarySensor(MixerEntity, EconetBinarySensor):
-    """Describes Econet Mixer binary sensor entity."""
-
-    def __init__(
-        self,
-        description: EconetBinarySensorEntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-        idx: int,
-    ):
-        """Initialize the MixerBinarySensor object with a description, coordinator, api, and index."""
-
-        super().__init__(description, coordinator, api, idx)
-
-
-def can_add_mixer(desc: str, coordinator: EconetDataCoordinator):
-    """Check if a mixer can be added."""
-    return coordinator.has_data(desc) and coordinator.data[desc] is not None
-
-
-def create_mixer_binary_entity_description(
-    key: int,
-) -> EconetBinarySensorEntityDescription:
-    """Create Econet300 mixer binary entity description."""
-    _LOGGER.debug("Create mixer : %s", key)
-    entity_description = EconetBinarySensorEntityDescription(
-        availability_key=f"{MIXER_AVAILABILITY_KEY}{key}",
-        key=f"{MIXER_KEY}{key}",
-        translation_key=camel_to_snake(f"{MIXER_AVAILABILITY_KEY}{key}"),
-        icon=ENTITY_ICON.get(MIXER_KEY, None),
-        device_class=ENTITY_DEVICE_CLASS_MAP.get(MIXER_KEY, None),
-    )
-    _LOGGER.debug("Created mixer: %s", entity_description)
-    return entity_description
-
-
-def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Create mixer sensors entities."""
-
-    entities: list[EconetBinarySensor] = []
-
-    for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
-        availability_mixer_key = f"{MIXER_AVAILABILITY_KEY}{i}"
-        if can_add_mixer(availability_mixer_key, coordinator):
-            entity = EconetBinarySensor(
-                create_mixer_binary_entity_description(i), coordinator, api
-            )
-            entities.append(MixerBinarySensor(entity, coordinator, api, i))
-        else:
-            _LOGGER.warning(
-                "Availability key: %s does not exist, entity will not be added",
-                availability_mixer_key,
-            )
-
-    return entities
-
-
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -178,5 +118,4 @@ async def async_setup_entry(
 
     entities: list[EconetBinarySensor] = []
     entities.extend(create_binary_sensors(coordinator, api))
-    entities.extend(create_mixer_sensors(coordinator, api))
     return async_add_entities(entities)
