@@ -161,7 +161,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         if str(i) in MIXER_MAP:
-            for key, value in MIXER_MAP[i]:
+            for key, value in MIXER_MAP.get(i):
                 if can_add_mixer(key, coordinator):
                     mixer_sensor_entity = create_mixer_sensor_entity_description(
                         key, value
