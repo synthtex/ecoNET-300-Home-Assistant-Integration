@@ -1,4 +1,5 @@
 """Sensor for Econet300."""
+
 from collections.abc import Callable
 from dataclasses import dataclass
 import logging
@@ -20,11 +21,11 @@ from .const import (
     ENTITY_PRECISION,
     ENTITY_UNIT_MAP,
     ENTITY_VALUE_PROCESSOR,
+    MIXER_MAP,
     SENSOR_MAP,
     SERVICE_API,
     SERVICE_COORDINATOR,
     STATE_CLASS_MAP,
-    MIXER_MAP,
 )
 from .entity import EconetEntity, MixerEntity
 

@@ -1,4 +1,5 @@
 """Functionsd used in Econet300 integration,."""
+
 import re
 
 
@@ -9,7 +10,7 @@ def camel_to_snake(key: str) -> str:
 
 
 def get_key_by_value(search_dict: dict, search_value: str) -> str:
-    """Get a key from a dict by passing its value"""
+    """Get a key from a dict by passing its value."""
     for key, value in search_dict.items():
         if value == search_value:
             return key
