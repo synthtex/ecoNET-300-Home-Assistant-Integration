@@ -196,7 +196,6 @@ voluptuous = "vol"
 [tool.ruff.flake8-pytest-style]
 fixture-parentheses = false
 mark-parentheses = false
-
 [tool.ruff.flake8-tidy-imports.banned-api]
 "async_timeout".msg = "use asyncio.timeout instead"
 "pytz".msg = "use zoneinfo instead"
