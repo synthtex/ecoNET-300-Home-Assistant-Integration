@@ -8,7 +8,7 @@ on:
 
 jobs:
   hacs:
-    name: HACS Action
+    name: Validate hacs
     runs-on: "ubuntu-latest"
     steps:
       - name: HACS Action

@@ -1,7 +1,10 @@
 {
   "domain": "econet300",
   "name": "ecoNET300",
-  "codeowners": ["@pblxptr","@jontofront"],
+  "codeowners": [
+    "@pblxptr",
+    "@jontofront"
+  ],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/pblxptr/ecoNET-300-Home-Assistant-Integration",
@@ -10,6 +13,6 @@
   "issue_tracker": "https://github.com/pblxptr/ecoNET-300-Home-Assistant-Integration/issues",
   "requirements": [],
   "ssdp": [],
-  "version": "1.0.0",
+  "version": "v1.0.0-beta-11",
   "zeroconf": []
 }

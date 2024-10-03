@@ -1,4 +1,5 @@
 """Base entity number for Econet300."""
+
 from dataclasses import dataclass
 import logging
 
@@ -62,7 +63,7 @@ class EconetNumber(EconetEntity, NumberEntity):
         self._attr_native_min_value = ENTITY_MIN_VALUE.get(map_key)
         self._attr_native_max_value = ENTITY_MAX_VALUE.get(map_key)
         self.async_write_ha_state()
-        self.async_set_limits_values()
+        self.hass.async_create_task(self.async_set_limits_values())
 
     async def async_set_limits_values(self):
         """async Sync number limits."""
