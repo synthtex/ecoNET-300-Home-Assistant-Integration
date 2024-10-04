@@ -1,4 +1,5 @@
 """Econet300 API class class describint methods of getting and setting data."""
+
 import asyncio
 from http import HTTPStatus
 import logging
@@ -111,8 +112,7 @@ class EconetClient:
             except TimeoutError:
                 _LOGGER.warning("Timeout error, retry(%i/%i)", attempt, max_attempts)
                 await asyncio.sleep(1)
-            finally:
-                attempt += 1
+            attempt += 1
 
 
 class Econet300Api:
