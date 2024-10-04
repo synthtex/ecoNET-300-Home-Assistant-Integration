@@ -29,7 +29,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     try:
         _LOGGER.debug("entry.data contents: %s", entry.data)
-        data: dict[Any, Any] = dict(entry.data)
+        data: dict[str, str] = dict(entry.data)
         api = await make_api(hass, cache, data)
 
         coordinator = EconetDataCoordinator(hass, api)
