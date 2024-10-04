@@ -119,4 +119,5 @@ async def async_setup_entry(
 
     entities: list[EconetBinarySensor] = []
     entities.extend(create_binary_sensors(coordinator, api))
-    return async_add_entities(entities)
+    async_add_entities(entities)
+    return True
