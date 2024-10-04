@@ -1,5 +1,23 @@
+# https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+
+[project]
+name = "ecoNET-300-Home-Assistant-Integration"
+version = "0.1.0"  # Add a version for the project
+description = "Plum econet300 boiler controller integration for Home Assistant."
+authors = [
+    { name = "Jon", email = "jontofront@gmail.com" }
+]
+license = { text = "MIT License" }
+
 [tool.mypy]
 python_version = "3.12"
+show_error_codes = true
+follow_imports = "normal"
+disable_error_code = [
+    "annotation-unchecked",
+    "import-not-found",
+    "import-untyped"
+]
 
 [tool.black]
 line-length = 88
