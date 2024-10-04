@@ -1,4 +1,5 @@
 """Econet binary sensor."""
+
 from dataclasses import dataclass
 import logging
 
@@ -26,7 +27,7 @@ from .entity import EconetEntity
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Describes Econet binary sensor entity."""
 

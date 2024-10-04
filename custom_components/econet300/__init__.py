@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from homeassistant.config_entries import ConfigEntry
@@ -16,6 +17,8 @@ from .mem_cache import MemCache
 
 PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER]
 
+_LOGGER = logging.getLogger(__name__)
+
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Econet300 Integration from a config entry."""
@@ -25,6 +28,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     cache = MemCache()
 
     try:
+        _LOGGER.debug("entry.data contents: %s", entry.data)
         data: dict[Any, Any] = dict(entry.data)
         api = await make_api(hass, cache, data)
 

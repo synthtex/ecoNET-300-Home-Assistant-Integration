@@ -32,7 +32,7 @@ from .entity import EconetEntity, MixerEntity
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
 
@@ -84,6 +84,7 @@ class MixerSensor(MixerEntity, EconetSensor):
 
 def create_entity_description(key: str) -> EconetSensorEntityDescription:
     """Create Econect300 sensor entity based on supplied key."""
+    # Retrieve map_key from SENSOR_MAP, falling back to the key itself
     map_key = SENSOR_MAP.get(key, key)
     _LOGGER.debug("SENSOR_MAP: %s", SENSOR_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)

@@ -29,7 +29,7 @@ from .entity import EconetEntity
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class EconetNumberEntityDescription(NumberEntityDescription):
     """Describes Econet number entity."""
 
@@ -66,7 +66,7 @@ class EconetNumber(EconetEntity, NumberEntity):
         self.hass.async_create_task(self.async_set_limits_values())
 
     async def async_set_limits_values(self):
-        """async Sync number limits."""
+        """Async Sync number limits."""
         limits = await self.api.get_param_limits(self.entity_description.key)
         _LOGGER.debug("Number limits retrieved: %s", limits)
         if limits is None:
