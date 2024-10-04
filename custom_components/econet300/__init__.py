@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -23,7 +25,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     cache = MemCache()
 
     try:
-        api = await make_api(hass, cache, entry.data)
+        data: dict[Any, Any] = dict(entry.data)
+        api = await make_api(hass, cache, data)
 
         coordinator = EconetDataCoordinator(hass, api)
         await coordinator.async_config_entry_first_refresh()
