@@ -29,7 +29,7 @@ from .entity import EconetEntity
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass(frozen=True)
+@dataclass
 class EconetNumberEntityDescription(NumberEntityDescription):
     """Describes Econet number entity."""
 
