@@ -1,4 +1,5 @@
 """Econet300 API class class describint methods of getting and setting data."""
+
 import asyncio
 from http import HTTPStatus
 import logging
@@ -111,8 +112,7 @@ class EconetClient:
             except TimeoutError:
                 _LOGGER.warning("Timeout error, retry(%i/%i)", attempt, max_attempts)
                 await asyncio.sleep(1)
-            finally:
-                attempt += 1
+            attempt += 1
 
 
 class Econet300Api:
@@ -232,10 +232,9 @@ class Econet300Api:
 
     async def fetch_data(self) -> dict[str, Any]:
         """Fetch data from regParamsData."""
-        reg_params = await self._fetch_reg_key(
+        return await self._fetch_reg_key(
             API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA
         )
-        return reg_params
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):
         """Fetch a key from the json-encoded data returned by the API for a given registry If key is None, then return whole data."""

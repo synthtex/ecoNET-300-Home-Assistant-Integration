@@ -1,4 +1,5 @@
 """Constants from the Home Assistant."""
+
 from homeassistant.components.binary_sensor import BinarySensorDeviceClass
 from homeassistant.components.number import NumberDeviceClass
 from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
@@ -131,6 +132,7 @@ NUMBER_MAP = {
 }
 
 BINARY_SENSOR_MAP = {
+    "1": "lighter",
     "111": "weatherControl",
     "113": "unseal",
     "117": "thermostat",
@@ -228,6 +230,7 @@ ENTITY_DEVICE_CLASS_MAP = {
     #############################
     ###### BINARY SENSORS #######
     #############################
+    "lighter": BinarySensorDeviceClass.RUNNING,
     "weatherControl": BinarySensorDeviceClass.RUNNING,
     "unseal": BinarySensorDeviceClass.RUNNING,
     "thermostat": BinarySensorDeviceClass.RUNNING,
@@ -296,14 +299,18 @@ ENTITY_ICON_OFF = {
 ENTITY_VALUE_PROCESSOR = {
     "mode": lambda x: OPERATION_MODE_NAMES.get(x, "unknown"),
     "thermostat": (
-        lambda x: "ON"
-        if str(x).strip() == "true"
-        else ("OFF" if str(x).strip() == "false" else None)
+        lambda x: (
+            "ON"
+            if str(x).strip() == "true"
+            else ("OFF" if str(x).strip() == "false" else None)
+        )
     ),
     "lambdaStatus": (
-        lambda x: "stop"
-        if x == 0
-        else ("start" if x == 1 else ("working" if x == 2 else "unknown"))
+        lambda x: (
+            "stop"
+            if x == 0
+            else ("start" if x == 1 else ("working" if x == 2 else "unknown"))
+        )
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",

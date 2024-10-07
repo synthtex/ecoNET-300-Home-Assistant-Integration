@@ -1,4 +1,5 @@
 """Econet binary sensor."""
+
 from dataclasses import dataclass
 import logging
 
@@ -26,7 +27,7 @@ from .entity import EconetEntity
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class EconetBinarySensorEntityDescription(BinarySensorEntityDescription):
     """Describes Econet binary sensor entity."""
 
@@ -118,4 +119,5 @@ async def async_setup_entry(
 
     entities: list[EconetBinarySensor] = []
     entities.extend(create_binary_sensors(coordinator, api))
-    return async_add_entities(entities)
+    async_add_entities(entities)
+    return True
