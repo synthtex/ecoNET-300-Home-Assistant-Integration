@@ -75,5 +75,8 @@ Thank for @pblxptr add new code line from him
 - Added: `boiler_status` sensor key `boiler_status_text`
 - Added: `boiler_status` binary_sensor key `boiler_status_text`
 
+## [v1.0.1-beta] 2024-10-03
+- Small code changes update repo
+
 
 
