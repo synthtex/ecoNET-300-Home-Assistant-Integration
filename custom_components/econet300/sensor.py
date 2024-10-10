@@ -1,393 +1,187 @@
 """Sensor for Econet300."""
+
 from collections.abc import Callable
 from dataclasses import dataclass
 import logging
 from typing import Any
 
-from homeassistant.components.sensor import (
-    SensorDeviceClass,
-    SensorEntity,
-    SensorEntityDescription,
-    SensorStateClass,
-)
+from homeassistant.components.sensor import SensorEntity, SensorEntityDescription
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import (
-    PERCENTAGE,
-    SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
-    UnitOfTemperature,
-)
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .common import Econet300Api, EconetDataCoordinator
+from .common_functions import camel_to_snake
 from .const import (
     AVAILABLE_NUMBER_OF_MIXERS,
     DOMAIN,
-    OPERATION_MODE_NAMES,
-    REG_PARAM_PRECICION,
+    ENTITY_CATEGORY,
+    ENTITY_DEVICE_CLASS_MAP,
+    ENTITY_ICON,
+    ENTITY_PRECISION,
+    ENTITY_UNIT_MAP,
+    ENTITY_VALUE_PROCESSOR,
+    MIXER_MAP,
+    SENSOR_MAP,
     SERVICE_API,
     SERVICE_COORDINATOR,
+    STATE_CLASS_MAP,
 )
 from .entity import EconetEntity, MixerEntity
 
 _LOGGER = logging.getLogger(__name__)
 
 
-@dataclass
+@dataclass(frozen=True)
 class EconetSensorEntityDescription(SensorEntityDescription):
     """Describes Econet sensor entity."""
 
     process_val: Callable[[Any], Any] = lambda x: x
 
 
-SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
-    EconetSensorEntityDescription(
-        key="fanPower",
-        translation_key="fanPower",
-        name="Fan output",
-        icon="mdi:fan",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.POWER_FACTOR,
-        process_val=lambda x: round(x, 2),
-    ),
-    EconetSensorEntityDescription(
-        key="tempCO",
-        translation_key="tempCO",
-        name="Boiler temperature",
-        icon="mdi:thermometer-lines",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempCO"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="tempCOSet",
-        name="Boiler set temperature",
-        translation_key="tempCOSet",
-        icon="mdi:thermometer-chevron-up",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        process_val=lambda x: round(x, 2),
-    ),
-    EconetSensorEntityDescription(
-        key="tempFeeder",
-        translation_key="tempFeeder",
-        name="Feeder temperature",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempFeeder"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="tempFlueGas",
-        translation_key="tempFlueGas",
-        name="Flue gas temperature",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempFlueGas"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="tempBack",
-        translation_key="tempBack",
-        name="Water back temperature ",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        process_val=lambda x: round(x, 2),
-    ),
-    EconetSensorEntityDescription(
-        key="tempCWU",
-        translation_key="tempCWU",
-        name="HUW temperature",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempCWU"],
-        process_val=lambda x: x,
-    ),
-   EconetSensorEntityDescription(
-        key="tempCWUSet",
-        translation_key="CWU_SET_TEMP",
-        name="HUW temperature",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempCWUSet"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="tempExternalSensor",
-        translation_key="tempExternalSensor",
-        name="Outside temperature",
-        icon="mdi:thermometer",
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempExternalSensor"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="boilerPower",
-        translation_key="boilerPower",
-        name="Boiler output",
-        icon="mdi:gauge",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.POWER_FACTOR,
-        suggested_display_precision=REG_PARAM_PRECICION["boilerPower"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="fuelLevel",
-        translation_key="fuelLevel",
-        name="Fuel level",
-        icon="mdi:gas-station",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        process_val=lambda x: round(x, 1),
-    ),
-    EconetSensorEntityDescription(
-        key="mode",
-        translation_key="mode",
-        name="Operation mode",
-        icon="mdi:sync",
-        device_class="DEVICE_CLASS_OPERATION_MODE",  # custom class for boiler status
-        process_val=lambda x: OPERATION_MODE_NAMES.get(x, "Unknown"),
-    ),
-    EconetSensorEntityDescription(
-        key="lambdaSet",
-        translation_key="lambdaSet",
-        name="Oxygen set level",
-        icon="mdi:lambda",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        process_val=lambda x: x / 10,
-    ),
-    EconetSensorEntityDescription(
-        key="lambdaLevel",
-        translation_key="lambdaLevel",
-        name="Oxygen level",
-        icon="mdi:lambda",
-        native_unit_of_measurement=PERCENTAGE,
-        state_class=SensorStateClass.MEASUREMENT,
-        process_val=lambda x: x / 10,
-    ),
-    EconetSensorEntityDescription(
-        key="thermostat",
-        translation_key="thermostat",
-        name="Boiler thermostat",
-        icon="mdi:thermostat",
-        process_val=lambda x: "ON"
-        if str(x).strip() == "1"
-        else ("OFF" if str(x).strip() == "0" else None),
-    ),
-    EconetSensorEntityDescription(
-        key="lambdaStatus",
-        translation_key="lambdaStatus",
-        name="Lamda status",
-        icon="mdi:lambda",
-        process_val=lambda x: "STOP"
-        if x == 0
-        else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
-    ),
-        EconetSensorEntityDescription(
-        key="tempUpperBuffer",
-        translation_key="tempUpperBuffer",
-        name="Upper buffer temperature",
-        icon="mdi:thermometer",
-        entity_registry_visible_default=False,
-        entity_registry_enabled_default=False,
-        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-        state_class=SensorStateClass.MEASUREMENT,
-        device_class=SensorDeviceClass.TEMPERATURE,
-        suggested_display_precision=REG_PARAM_PRECICION["tempUpperBuffer"],
-        process_val=lambda x: x,
-    ),
-    EconetSensorEntityDescription(
-        key="signal",
-        translation_key="signal",
-        name="Signal strength",
-        device_class=SensorDeviceClass.SIGNAL_STRENGTH,
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="quality",
-        translation_key="quality",
-        name="Signal quality",
-        icon="mdi:signal",
-        state_class=SensorStateClass.MEASUREMENT,
-        native_unit_of_measurement=PERCENTAGE,
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="softVer",
-        name="Module ecoNET software version",
-        device_class="econet_software_version",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="moduleASoftVer",
-        name="Module A version",
-        device_class="module_a_software_version",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="moduleBSoftVer",
-        name="Module B version",
-        device_class="Module_b_software_version",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="modulePanelSoftVer",
-        name="Module Panel version",
-        icon="mdi:raspberry-pi",
-        device_class="module_panel_software_version",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="moduleLambdaSoftVer",
-        name="Module Lambda version",
-        device_class="module_lamda_software_version",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="protocolType",  #  "em" or "gm3_pomp"
-        name="Protocol",
-        device_class="protocol_type",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-    EconetSensorEntityDescription(
-        key="controllerID",
-        name="Controler name",
-        device_class="controller_ID",
-        entity_category=EntityCategory.DIAGNOSTIC,
-    ),
-)
-
-
-class EconetSensor(SensorEntity):
+class EconetSensor(EconetEntity, SensorEntity):
     """Econet Sensor."""
 
-    def __init__(self, entity_description, name, unique_id):
-        """Initialize the sensor."""
-        super().__init__(name=name, unique_id=unique_id)
+    entity_description: EconetSensorEntityDescription
+
+    def __init__(
+        self,
+        entity_description: EconetSensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+    ):
+        """Initialize a new ecoNET sensor."""
         self.entity_description = entity_description
+        self.api = api
         self._attr_native_value = None
+        super().__init__(coordinator)
+        _LOGGER.debug(
+            "EconetSensor initialized with unique_id: %s, entity_description: %s",
+            self.unique_id,
+            self.entity_description,
+        )
 
     def _sync_state(self, value):
         """Sync state."""
         _LOGGER.debug("Update EconetSensor entity: %s", self.entity_description.name)
-
         self._attr_native_value = self.entity_description.process_val(value)
-
         self.async_write_ha_state()
-
-
-class ControllerSensor(EconetEntity, EconetSensor):
-    """class controller."""
-
-    def __init__(
-        self,
-        description: EconetSensorEntityDescription,
-        coordinator: EconetDataCoordinator,
-        api: Econet300Api,
-    ):
-        """Initialize a new instance of the EconetSensor class."""
-        super().__init__(description, coordinator, api)
 
 
 class MixerSensor(MixerEntity, EconetSensor):
     """Mixer sensor class."""
 
     def __init__(
-            self,
-            description: EconetSensorEntityDescription,
-            coordinator: EconetDataCoordinator,
-            api: Econet300Api,
-            idx: int,
-        ):
-            """Initialize a new instance of the EconetSensor class."""
-            super().__init__(description, coordinator, api, idx)
+        self,
+        description: EconetSensorEntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+        idx: int,
+    ):
+        """Initialize a new instance of the EconetSensor class."""
+        super().__init__(description, coordinator, api, idx)
 
 
-def can_add(desc: EconetSensorEntityDescription, coordinator: EconetDataCoordinator):
-    """Check if it can add the key."""
-    if desc.key not in coordinator.data:
-        _LOGGER.debug("Key %s does not exist in coordinator.data", desc.key)
-        return False
-    return coordinator.has_data(desc.key) and coordinator.data[desc.key] is not None
+def create_entity_description(key: str) -> EconetSensorEntityDescription:
+    """Create Econect300 sensor entity based on supplied key."""
+    # Retrieve map_key from SENSOR_MAP, falling back to the key itself
+    map_key = SENSOR_MAP.get(key, key)
+    _LOGGER.debug("SENSOR_MAP: %s", SENSOR_MAP)
+    _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
+    entity_description = EconetSensorEntityDescription(
+        key=key,
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        entity_category=ENTITY_CATEGORY.get(map_key, None),
+        translation_key=camel_to_snake(map_key),
+        icon=ENTITY_ICON.get(map_key, None),
+        native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key, None),
+        state_class=STATE_CLASS_MAP.get(map_key, None),
+        suggested_display_precision=ENTITY_PRECISION.get(map_key, None),
+        process_val=ENTITY_VALUE_PROCESSOR.get(map_key, lambda x: x),
+    )
+    _LOGGER.debug("Created entity description: %s", entity_description)
+    return entity_description
 
 
 def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
-    """Add key."""
-    entities = []
-
-    for description in SENSOR_TYPES:
-        if can_add(description, coordinator):
-            entities.append(ControllerSensor(description, coordinator, api))
-        else:
+    """Create controller sensor entities."""
+    entities: list[EconetSensor] = []
+    coordinator_data = coordinator.data
+    for data_key in SENSOR_MAP:
+        if data_key in coordinator_data:
+            entities.append(
+                EconetSensor(create_entity_description(data_key), coordinator, api)
+            )
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description.key,
+                "Key: %s mapped, sensor entity will be added",
+                data_key,
+            )
+            continue
+        else:
+            _LOGGER.warning(
+                "Key: %s is not mapped, sensor entity will not be added",
+                data_key,
             )
 
     return entities
 
 
+def can_add_mixer(key: str, coordinator: EconetDataCoordinator):
+    """Check if a mixer can be added."""
+    _LOGGER.debug(
+        "Checking if mixer can be added for key: %s, data %s", key, coordinator.data
+    )
+    return coordinator.has_data(key) and coordinator.data[key] is not None
+
+
+def create_mixer_sensor_entity_description(
+    key: str, map_key: str
+) -> EconetSensorEntityDescription:
+    """Create Econect300 mixer sensor entity based on supplied key."""
+    _LOGGER.debug(
+        "Creating Mixer entity sensor description for key: %s, and type : %s",
+        key,
+        map_key,
+    )
+    entity_description = EconetSensorEntityDescription(
+        key=key,
+        translation_key=camel_to_snake(map_key),
+        icon=ENTITY_ICON.get(map_key, None),
+        native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key, None),
+        state_class=STATE_CLASS_MAP.get(map_key, None),
+        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        suggested_display_precision=ENTITY_PRECISION.get(map_key, 0),
+        process_val=ENTITY_VALUE_PROCESSOR.get(map_key, lambda x: x),
+    )
+    _LOGGER.debug("Created Mixer entity description: %s", entity_description)
+    return entity_description
+
+
 def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
     """Create individual sensor descriptions for mixer sensors."""
-    entities = []
+    entities: list[MixerSensor] = []
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
-        description = EconetSensorEntityDescription(
-            key=f"mixerTemp{i}",
-            name=f"Mixer {i} temperature",
-            icon="mdi:thermometer",
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.TEMPERATURE,
-            process_val=lambda x: round(x, 2),
-        )
-        if can_add(description, coordinator):
-            entities.append(MixerSensor(description, coordinator, api, i))
+        string_mix = str(i)
+        if string_mix in MIXER_MAP:
+            for key, value in MIXER_MAP.get(string_mix).items():
+                if can_add_mixer(key, coordinator):
+                    mixer_sensor_entity = create_mixer_sensor_entity_description(
+                        key, value
+                    )
+                    entities.append(
+                        MixerSensor(mixer_sensor_entity, coordinator, api, i)
+                    )
+                else:
+                    _LOGGER.warning(
+                        "Mixer: %s , Sensor: %s %s wont be added", i, key, value
+                    )
         else:
             _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description.key,
+                "Mixer: %s not defined in const, wont be added",
+                i,
             )
-        description2 = EconetSensorEntityDescription(
-            key=f"mixerSetTemp{i}",
-            name=f"Mixer {i} temperature",
-            icon="mdi:thermometer",
-            entity_registry_enabled_default=False,
-            entity_registry_visible_default=False,
-            native_unit_of_measurement=UnitOfTemperature.CELSIUS,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.TEMPERATURE,
-            process_val=lambda x: round(x, 2),
-        )
 
-        if can_add(description2, coordinator):
-            entities.append(MixerSensor(description2, coordinator, api, i))
-        else:
-            _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description2.key,
-            )
     return entities
 
 
@@ -397,12 +191,11 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> bool:
     """Set up the sensor platform."""
-
     coordinator = hass.data[DOMAIN][entry.entry_id][SERVICE_COORDINATOR]
     api = hass.data[DOMAIN][entry.entry_id][SERVICE_API]
 
     entities: list[EconetSensor] = []
-    entities = entities + create_controller_sensors(coordinator, api)
-    entities = entities + create_mixer_sensors(coordinator, api)
+    entities.extend(create_controller_sensors(coordinator, api))
+    entities.extend(create_mixer_sensors(coordinator, api))
 
     return async_add_entities(entities)

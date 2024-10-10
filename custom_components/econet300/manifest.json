@@ -1,15 +1,18 @@
 {
   "domain": "econet300",
   "name": "ecoNET300",
-  "codeowners": ["@pblxptr","@jontofront"],
+  "codeowners": [
+    "@pblxptr",
+    "@jontofront"
+  ],
   "config_flow": true,
-  "documentation": "https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration",
-  "issue_tracker": "https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/issues",
-  "requirements": ["voluptuous"],
-  "ssdp": [],
-  "zeroconf": [],
-  "homekit": {},
   "dependencies": [],
+  "documentation": "https://github.com/pblxptr/ecoNET-300-Home-Assistant-Integration",
+  "homekit": {},
   "iot_class": "local_polling",
-  "version": "v0.3.1"
+  "issue_tracker": "https://github.com/pblxptr/ecoNET-300-Home-Assistant-Integration/issues",
+  "requirements": [],
+  "ssdp": [],
+  "version": "v1.0.0-beta-11",
+  "zeroconf": []
 }

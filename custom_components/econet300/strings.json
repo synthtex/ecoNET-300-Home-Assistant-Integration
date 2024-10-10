@@ -19,70 +19,148 @@
     }
   },
   "entity": {
-    "sensor": {
-        "pumpCWU": { "name": "HUW pump" },
-        "quality": { "name": "Signal quality" },
-        "signal": { "name": "Signal strength" },
-        "lambdaStatus": { "name": "Signal strength" },
-        "termostat": { "name": "Thermostat" },
-        "tempCOSet":{ "name": "Boiler set temperature" },
-        "mixerSetTemp1":{"name": "Mixer 1 set temperature" },
-        "lambdaSet":{"name": "Oxygen set level" },        
-        "tempCO": { "name": "Boiler temperature" },
-        "fuelLevel": { "name": "Fuel level" },
-        "tempCWU": { "name": "HUW temperature" },
-        "tempOpticalSensor": { "name": "Flame" },
-        "fanPower": { "name": "Fan output" },
-        "tempFeeder": { "name": "Feeder temperature" },
-        "tempFlueGas": { "name": "Flue gas temperature" },
-        "tempExternalSensor": { "name": "Outside temperature" },
-        "tempBack": { "name": "Return temperature" },
-        "tempUpperBuffer": { "name": "Upper buffer temperature" },
-        "tempLowerBuffer": { "name": "Lower buffer temperature" },
-        "tempUpperSolar": { "name": "Upper solar temperature" },
-        "tempLowerSolar": { "name": "Lower solar temperature" },
-        "tempFireplace": { "name": "Fireplace temperature" },
-        "ecoSterTemp1": { "name": "Room temperature 1" },
-        "ecoSterTemp2": { "name": "Room temperature 2" },
-        "ecoSterTemp3": { "name": "Room temperature 3" },
-        "ecoSterTemp4": { "name": "Room temperature 4" },
-        "ecoSterTemp5": { "name": "Room temperature 5" },
-        "ecoSterTemp6": { "name": "Room temperature 6" },
-        "ecoSterTemp7": { "name": "Room temperature 7" },
-        "ecoSterTemp8": { "name": "Room temperature 8" },
-        "mixerTemp1": { "name": "Mixer 1 temperature" },
-        "mixerTemp2": { "name": "Mixer 2 temperature" },
-        "mixerTemp3": { "name": "Mixer 3 temperature" },
-        "mixerTemp4": { "name": "Mixer 4 temperature" },
-        "mixerTemp5": { "name": "Mixer 5 temperature" },
-        "mixerTemp6": { "name": "Mixer 6 temperature" },
-        "mixerTemp7": { "name": "Mixer 7 temperature" },
-        "mixerTemp8": { "name": "Mixer 8 temperature" },
-        "circuitTemp1": { "name": "Circuit 1 temperature" },
-        "circuitTemp2": { "name": "Circuit 2 temperature" },
-        "circuitTemp3": { "name": "Circuit 3 temperature" },
-        "circuitTemp4": { "name": "Circuit 4 temperature" },
-        "circuitTemp5": { "name": "Circuit 5 temperature" },
-        "circuitTemp6": { "name": "Circuit 6 temperature" },
-        "circuitTemp7": { "name": "Circuit 7 temperature" },
-        "circuitTemp8": { "name": "Circuit 8 temperature" },
-        "lambdaLevel": { "name": "Lambda - oxygen level" },
-        "fuelStream": { "name": "Fuel stream" },
-        "boilerPower": { "name": "Boiler output" },
-        "fanPowerExhaust": { "name": "Exhaust Fan output" },
-        "mode": { "name": "Operation mode" },
-        "blowFan1BlowPower": { "name": "Blower Fan no.1 power" },
-        "blowFan2BlowPower": { "name": "Blower Fan no.2 power" },
-        "tempExchanger": { "name": "Exchanger temperature" },
-        "tempAirIn": { "name": "Intake air temperature" },
-        "tempAirOut": { "name": "Exhaust air temperature" },
-        "thermoTemp": { "name": "Thermostat temperature" },
-        "correctionLambda": { "name": "Lambda correction factor" },
-        "pressure": { "name": "Pressure" } 
-        },
     "binary_sensor": {
-        "pumpCWU": { "name": "HUW pump" },
-        "pumpCirculation": { "name": "Circulation pump" }
+      "lighter": {
+        "name": "Lighter"
+      },
+      "weather_control": {
+        "name": "Weather control the boiler"
+      },
+      "unseal": {
+        "name": "Unseal"
+      },
+      "thermostat": {
+        "name": "Boiler thermostat"
+      },
+      "pump_co_works": {
+        "name": "Pump CO"
+      },
+      "fan_works": {
+        "name": "Fan"
+      },
+      "aditional_feeder": {
+        "name": "Aditional feeder"
+      },
+      "pump_fireplace_works": {
+        "name": "Boiler Pump"
+      },
+      "pump_cwu_works": {
+        "name": "Pump CWU"
+      },
+      "mixer_pump1": {
+        "name": "Mixer 1 pump"
+      },
+      "boiler_pump": {
+        "name": "Boiler pump"
+      }
+    },
+    "sensor": {
+      "boiler_power": {
+        "name": "Boiler output"
+      },
+      "fuel_level": {
+        "name": "Fuel level"
+      },
+      "fan_power": {
+        "name": "Fan power"
+      },
+      "fan_works": {
+        "name": "Fan"
+      },
+      "lambda_status": {
+        "name": "Lambda status",
+        "state": {
+          "stop": "Stop",
+          "start": "Start",
+          "working": "Working",
+          "unknown": "Unknown"
+        }
+      },
+      "lambda_set": {
+        "name": "Lambda set"
+      },
+      "lambda_level": {
+        "name": "Lambda level"
+      },
+      "main_server": {
+        "name": "Main server"
+      },
+      "mode": {
+        "name": "Boiler mode",
+        "state": {
+          "off": "[%key:common::state::off%]",
+          "fire_up": "Fire up",
+          "work": "Work",
+          "supervision": "Supervision",
+          "halted": "Halted",
+          "stop": "Stop",
+          "burning_off": "Burning off",
+          "manual": "Manual",
+          "alarm": "Alarm",
+          "unsealing": "Unsealing",
+          "chimney": "Chimney",
+          "stabilization": "Stabilization",
+          "no_transmission": "No transmission",
+          "unknown": "Unknown"
+        }
+      },
+      "mixer_temp1": {
+        "name": "Mixer 1 temperature"
+      },
+      "mixer_set_temp1": {
+        "name": "Mixer target temperature"
+      },
+      "pump_cwu_works": {
+        "name": "HUW pump"
+      },
+      "pump_fireplace_works": {
+        "name": "Boiler pump"
+      },
+      "signal": {
+        "name": "Signal quality"
+      },
+      "servo_mixer1": {
+        "name": "Mixer 1 servo position"
+      },
+      "status_wifi": {
+        "name": "Wireless network connected"
+      },
+      "temp_co": {
+        "name": "Heating temperature"
+      },
+      "temp_cwu": {
+        "name": "Water heater temperature"
+      },
+      "temp_upper_buffer": {
+        "name": "Upper buffer temperature"
+      },
+      "temp_lower_buffer": {
+        "name": "Lower buffer temperature"
+      },
+      "temp_flue_gas": {
+        "name": "Flue gas temperature"
+      },
+      "temp_external_sensor": {
+        "name": "Outside temperature"
+      },
+      "temp_feeder": {
+        "name": "Feeder temperature"
+      },
+      "temp_co_set": {
+        "name": "Heating target temperature"
+      },
+      "thermostat": {
+        "name": "Thermostat"
+      },
+      "unseal": {
+        "name": "Unseal"
+      },
+      "valve_mixer1": {
+        "name": "Mixer 1 valve % open"
+      },
+      "weather_control": {
+        "name": "Weather control the boiler"
+      }
     }
   }
 }

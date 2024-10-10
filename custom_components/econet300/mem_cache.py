@@ -1,11 +1,8 @@
-
 """Module provides a memory cache implementation."""
 import logging
 import time
 
 _LOGGER = logging.getLogger(__name__)
-
-
 
 
 class MemCacheItem:
@@ -33,6 +30,7 @@ class MemCacheItem:
             self.expiry(),
             self.expiry() < time.time(),
         )
+
 
 class MemCache:
     """Class representing a memory cache."""

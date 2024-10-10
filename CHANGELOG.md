@@ -62,5 +62,18 @@ Thank for @pblxptr add new code line from him
 - Added: `HUW temperature` sensor key `tempCWUSet`
 - Added: `Upper buffer temperature` sensor (by defoult off)
 
+## [v0.3.3] 2023-12-14
+- Change readme pictures links
+- cleaned translation files and rename keys by requrements
+- Added: alarm constants for future
+
+## [v1.0.0-beta-11] 2024-10-03
+- Added: `boiler_status` sensor
+- Added: `boiler_status` binary_sensor
+- Added: `boiler_status` sensor key `boiler_status`
+- Added: `boiler_status` binary_sensor key `boiler_status`
+- Added: `boiler_status` sensor key `boiler_status_text`
+- Added: `boiler_status` binary_sensor key `boiler_status_text`
+
 
 

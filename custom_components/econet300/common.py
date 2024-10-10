@@ -1,8 +1,7 @@
 """Common code for econet300 integration."""
+import asyncio
 from datetime import timedelta
 import logging
-
-import async_timeout
 
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
@@ -14,7 +13,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class EconetDataCoordinator(DataUpdateCoordinator):
-    """My custom coordinator."""
+    """Econet data coordinator."""
 
     def __init__(self, hass, api: Econet300Api):
         """Initialize my coordinator."""
@@ -28,8 +27,8 @@ class EconetDataCoordinator(DataUpdateCoordinator):
         self._api = api
 
     def has_data(self, key: str):
-            """Check if the specified key exists in the data dictionary."""
-            return key in self.data
+        """Check if datakey is present in data."""
+        return key in self.data
 
     async def _async_update_data(self):
         """Fetch data from API endpoint.
@@ -43,7 +42,7 @@ class EconetDataCoordinator(DataUpdateCoordinator):
         try:
             # Note: asyncio.TimeoutError and aiohttp.ClientError are already
             # handled by the data update coordinator.
-            async with async_timeout.timeout(10):
+            async with asyncio.timeout(10):
                 return await self._api.fetch_data()
         except AuthError as err:
             raise ConfigEntryAuthFailed from err

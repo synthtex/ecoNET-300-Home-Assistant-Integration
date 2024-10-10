@@ -1,2 +1,5 @@
 __pycache__
 draft
+.idea/
+.vscode/*
+.ruff_cache
