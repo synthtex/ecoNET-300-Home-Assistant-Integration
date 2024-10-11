@@ -68,6 +68,7 @@ class EconetNumber(EconetEntity, NumberEntity):
     async def async_set_limits_values(self):
         """Async Sync number limits."""
         limits = await self.api.get_param_limits(self.entity_description.key)
+        alarms = await self.api.get_alarms(self)
         _LOGGER.debug("Number limits retrieved: %s", limits)
         if limits is None:
             _LOGGER.warning(
@@ -145,7 +146,7 @@ async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
-) -> bool:
+) -> None:
     """Set up the sensor platform."""
 
     coordinator = hass.data[DOMAIN][entry.entry_id][SERVICE_COORDINATOR]
