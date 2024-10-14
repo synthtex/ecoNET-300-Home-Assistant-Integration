@@ -29,11 +29,11 @@ body:
       value: |
         ## Environment
   - type: input
-    id: tech_version
+    id: econet300_version
     validations:
       required: true
     attributes:
-      label: What version of Tech Controllers integration has the issue?
+      label: What version of ecoNET300 integration has the issue?
   - type: input
     id: ha_version
     validations:
@@ -47,7 +47,7 @@ body:
         [![Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/badges/system_health.svg)](https://my.home-assistant.io/redirect/system_health/)
   - type: input
     attributes:
-      label: What was the last working version of Tech Controller integration?
+      label: What was the last working version of ecoNET300 integration?
       description: >
         If known, otherwise leave blank.
 
