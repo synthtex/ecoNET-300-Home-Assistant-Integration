@@ -113,6 +113,7 @@ class EconetClient:
                 _LOGGER.warning("Timeout error, retry(%i/%i)", attempt, max_attempts)
                 await asyncio.sleep(1)
             attempt += 1
+        return None
 
 
 class Econet300Api:
