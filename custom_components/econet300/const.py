@@ -99,8 +99,6 @@ SENSOR_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
     "97": "fuelLevel",
-    "139": "valveMixer1",
-    "143": "servoMixer1",
     "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
@@ -121,6 +119,8 @@ SENSOR_MAP = {
 
 MIXER_MAP = {
     "1": {
+        "139": "valveMixer1",
+        "143": "servoMixer1",
         "1031": "mixerTemp1",
         "1287": "mixerSetTemp1",
     }
@@ -294,6 +294,8 @@ ENTITY_ICON = {
     "mixerPumpWorks": "mdi:pump",
     "mixerTemp": "mdi:thermometer",
     "mixerSetTemp": "mdi:thermometer",
+    "valveMixer1": "mdi:valve",
+    "mixerSetTemp1": "mdi:thermometer",
 }
 
 ENTITY_ICON_OFF = {
@@ -322,6 +324,14 @@ ENTITY_VALUE_PROCESSOR = {
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
+    ## TODO check HA status maybe there are somthink STATE_OFF, OPENING CLOSING
+    "servoMixer1": (
+        lambda x: (
+            "Off"
+            if x == 0
+            else ("closing" if x == 1 else ("opening" if x == 2 else "unknown"))
+        )
+    ),
 }
 
 ENTITY_CATEGORY = {
