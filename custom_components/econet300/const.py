@@ -210,7 +210,6 @@ ENTITY_SENSOR_DEVICE_CLASS_MAP: dict[str, SensorDeviceClass | None] = {
     "mixerSetTemp": SensorDeviceClass.TEMPERATURE,
     "tempBack": SensorDeviceClass.TEMPERATURE,
     "tempCWU": SensorDeviceClass.TEMPERATURE,
-    "mode": "DEVICE_CLASS_OPERATION_MODE",
     "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
     "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
     "signal": SensorDeviceClass.SIGNAL_STRENGTH,
