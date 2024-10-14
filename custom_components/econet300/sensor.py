@@ -117,10 +117,11 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
                 data_key,
             )
             continue
-        _LOGGER.warning(
-            "Key: %s is not mapped, sensor entity will not be added",
-            data_key,
-        )
+        else:
+            _LOGGER.warning(
+                "Key: %s is not mapped, sensor entity will not be added",
+                data_key,
+            )
 
     return entities
 
