@@ -13,10 +13,10 @@ from .common import Econet300Api, EconetDataCoordinator
 from .common_functions import camel_to_snake
 from .const import (
     DOMAIN,
-    ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
     ENTITY_MAX_VALUE,
     ENTITY_MIN_VALUE,
+    ENTITY_NUMBER_SENSOR_DEVICE_CLASS_MAP,
     ENTITY_STEP,
     ENTITY_UNIT_MAP,
     ENTITY_VISIBLE,
@@ -130,7 +130,7 @@ def create_number_entity_description(key: int) -> EconetNumberEntityDescription:
         key=key,
         translation_key=camel_to_snake(map_key),
         icon=ENTITY_ICON.get(map_key),
-        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key),
+        device_class=ENTITY_NUMBER_SENSOR_DEVICE_CLASS_MAP.get(map_key),
         native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key),
         entity_registry_visible_default=ENTITY_VISIBLE.get(map_key, True),
         min_value=ENTITY_MIN_VALUE.get(map_key),

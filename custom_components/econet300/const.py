@@ -195,15 +195,13 @@ STATE_CLASS_MAP = {
     "mixerSetTemp": SensorStateClass.MEASUREMENT,
 }
 
-ENTITY_DEVICE_CLASS_MAP = {
+ENTITY_SENSOR_DEVICE_CLASS_MAP: dict[str, SensorDeviceClass | None] = {
     #############################
-    ######### SENSORS ##########
+    #          SENSORS
     #############################
     "tempFeeder": SensorDeviceClass.TEMPERATURE,
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
-    "tempCOSet": NumberDeviceClass.TEMPERATURE,
-    "tempCWUSet": NumberDeviceClass.TEMPERATURE,
     "boilerPower": SensorDeviceClass.POWER_FACTOR,
     "fanPower": SensorDeviceClass.POWER_FACTOR,
     "tempFlueGas": SensorDeviceClass.TEMPERATURE,
@@ -216,20 +214,31 @@ ENTITY_DEVICE_CLASS_MAP = {
     "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
     "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
     "signal": SensorDeviceClass.SIGNAL_STRENGTH,
-    "softVer": "econet_software_version",
-    "moduleASoftVer": "module_a_software_version",
-    "moduleBSoftVer": "Module_b_software_version",
-    "modulePanelSoftVer": "module_panel_software_version",
-    "moduleLambdaSoftVer": "module_lamda_software_version",
-    "protocolType": "protocol_type",
-    "controllerID": "controller_ID",
-    "valveMixer1": "valve_mixer_1",
-    "servoMixer1": "servo_mixer_1",
-    "Status_wifi": "wifi_status",
-    "main_server": "main_server",
+    "softVer": None,
+    "moduleASoftVer": None,
+    "moduleBSoftVer": None,
+    "modulePanelSoftVer": None,
+    "moduleLambdaSoftVer": None,
+    "protocolType": None,
+    "controllerID": None,
+    "valveMixer1": None,
+    "servoMixer1": None,
+    "Status_wifi": None,
+    "main_server": None,
+}
+
+ENTITY_NUMBER_SENSOR_DEVICE_CLASS_MAP = {
     #############################
-    ###### BINARY SENSORS #######
+    #       NUMBER SENSORS
     #############################
+    "tempCOSet": NumberDeviceClass.TEMPERATURE,
+    "tempCWUSet": NumberDeviceClass.TEMPERATURE,
+}
+
+#############################
+#      BINARY SENSORS
+#############################
+ENTITY_BINARY_DEVICE_CLASS_MAP = {
     "lighter": BinarySensorDeviceClass.RUNNING,
     "weatherControl": BinarySensorDeviceClass.RUNNING,
     "unseal": BinarySensorDeviceClass.RUNNING,
