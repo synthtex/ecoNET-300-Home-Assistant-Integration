@@ -295,7 +295,7 @@ ENTITY_ICON = {
     "mixerTemp": "mdi:thermometer",
     "mixerSetTemp": "mdi:thermometer",
     "valveMixer1": "mdi:valve",
-    "mixerSetTemp1": "mdi:thermometer",
+    "mixerSetTemp1": "mdi:thermometer-chevron-up",
 }
 
 ENTITY_ICON_OFF = {
