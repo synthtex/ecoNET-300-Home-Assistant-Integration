@@ -233,15 +233,17 @@ class Econet300Api:
 
     async def fetch_data(self) -> dict[str, Any]:
         """Fetch data from regParamsData."""
-        return await self._fetch_reg_key(
+        regParamsData = await self._fetch_reg_key(
             API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA
         )
+        _LOGGER.debug("Fetched regParamsData: %s", regParamsData)
+        return regParamsData
 
     async def get_alarms(self):
         """Fetch and return the alarms data from sysParams."""
         _LOGGER.info("Calling get_alarms method")
         sys_params = await self._client.get_params(API_SYS_PARAMS_URI)
-        _LOGGER.debug("Fetched sysParams: %s", sys_params)
+        _LOGGER.debug("Fetched from sysParams alarms: %s", sys_params)
 
         if "alarms" not in sys_params:
             _LOGGER.warning("Alarms not found in system parameters")
