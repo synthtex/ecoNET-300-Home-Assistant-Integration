@@ -36,7 +36,7 @@ def map_param(param_name):
 class Limits:
     """Class difining entity value set limits."""
 
-    def __init__(self, min_v: int | None, max_v: int | None ):
+    def __init__(self, min_v: int | None, max_v: int | None):
         """Construct the necessary attributes for the Limits object."""
         self.min = min_v
         self.max = max_v
@@ -113,6 +113,7 @@ class EconetClient:
                 _LOGGER.warning("Timeout error, retry(%i/%i)", attempt, max_attempts)
                 await asyncio.sleep(1)
             attempt += 1
+        return None
 
 
 class Econet300Api:
@@ -232,9 +233,23 @@ class Econet300Api:
 
     async def fetch_data(self) -> dict[str, Any]:
         """Fetch data from regParamsData."""
-        return await self._fetch_reg_key(
+        regParamsData = await self._fetch_reg_key(
             API_REG_PARAMS_DATA_URI, API_REG_PARAMS_DATA_PARAM_DATA
         )
+        _LOGGER.debug("Fetched regParamsData: %s", regParamsData)
+        return regParamsData
+
+    async def get_alarms(self):
+        """Fetch and return the alarms data from sysParams."""
+        _LOGGER.info("Calling get_alarms method")
+        sys_params = await self._client.get_params(API_SYS_PARAMS_URI)
+        _LOGGER.debug("Fetched from sysParams alarms: %s", sys_params)
+
+        if "alarms" not in sys_params:
+            _LOGGER.warning("Alarms not found in system parameters")
+            return None
+        _LOGGER.debug("Fetched alarms: %s", sys_params["alarms"])
+        return sys_params["alarms"]
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):
         """Fetch a key from the json-encoded data returned by the API for a given registry If key is None, then return whole data."""

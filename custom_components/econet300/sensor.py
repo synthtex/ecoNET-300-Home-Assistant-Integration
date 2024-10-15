@@ -16,9 +16,9 @@ from .const import (
     AVAILABLE_NUMBER_OF_MIXERS,
     DOMAIN,
     ENTITY_CATEGORY,
-    ENTITY_DEVICE_CLASS_MAP,
     ENTITY_ICON,
     ENTITY_PRECISION,
+    ENTITY_SENSOR_DEVICE_CLASS_MAP,
     ENTITY_UNIT_MAP,
     ENTITY_VALUE_PROCESSOR,
     MIXER_MAP,
@@ -84,13 +84,12 @@ class MixerSensor(MixerEntity, EconetSensor):
 
 def create_entity_description(key: str) -> EconetSensorEntityDescription:
     """Create Econect300 sensor entity based on supplied key."""
-    # Retrieve map_key from SENSOR_MAP, falling back to the key itself
     map_key = SENSOR_MAP.get(key, key)
     _LOGGER.debug("SENSOR_MAP: %s", SENSOR_MAP)
     _LOGGER.debug("Creating entity description for key: %s, map_key: %s", key, map_key)
     entity_description = EconetSensorEntityDescription(
         key=key,
-        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        device_class=ENTITY_SENSOR_DEVICE_CLASS_MAP.get(map_key, None),
         entity_category=ENTITY_CATEGORY.get(map_key, None),
         translation_key=camel_to_snake(map_key),
         icon=ENTITY_ICON.get(map_key, None),
@@ -117,11 +116,10 @@ def create_controller_sensors(coordinator: EconetDataCoordinator, api: Econet300
                 data_key,
             )
             continue
-        else:
-            _LOGGER.warning(
-                "Key: %s is not mapped, sensor entity will not be added",
-                data_key,
-            )
+        _LOGGER.warning(
+            "Key: %s is not mapped, sensor entity will not be added",
+            data_key,
+        )
 
     return entities
 
@@ -149,7 +147,7 @@ def create_mixer_sensor_entity_description(
         icon=ENTITY_ICON.get(map_key, None),
         native_unit_of_measurement=ENTITY_UNIT_MAP.get(map_key, None),
         state_class=STATE_CLASS_MAP.get(map_key, None),
-        device_class=ENTITY_DEVICE_CLASS_MAP.get(map_key, None),
+        device_class=ENTITY_SENSOR_DEVICE_CLASS_MAP.get(map_key, None),
         suggested_display_precision=ENTITY_PRECISION.get(map_key, 0),
         process_val=ENTITY_VALUE_PROCESSOR.get(map_key, lambda x: x),
     )
@@ -163,8 +161,9 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
 
     for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
         string_mix = str(i)
-        if string_mix in MIXER_MAP:
-            for key, value in MIXER_MAP.get(string_mix).items():
+        mixer_map_value = MIXER_MAP.get(string_mix)
+        if mixer_map_value is not None:
+            for key, value in mixer_map_value.items():
                 if can_add_mixer(key, coordinator):
                     mixer_sensor_entity = create_mixer_sensor_entity_description(
                         key, value

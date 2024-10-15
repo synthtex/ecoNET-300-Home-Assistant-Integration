@@ -78,5 +78,11 @@ Thank for @pblxptr add new code line from him
 ## [v1.0.1-beta] 2024-10-03
 - Small code changes update repo
 
+## [v1.0.2-beta] 2024-10-15
+- Tests file structure according to documentation
+- Code style chcnges by ruff recomendation
+- Separated entity by types for better management
+- Moved Mixer sensors to the Mixer sensor group and added icons
+
 
 

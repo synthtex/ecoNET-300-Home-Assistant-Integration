@@ -99,8 +99,6 @@ SENSOR_MAP = {
     "26": "tempFeeder",
     "28": "tempExternalSensor",
     "97": "fuelLevel",
-    "139": "valveMixer1",
-    "143": "servoMixer1",
     "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
@@ -121,6 +119,8 @@ SENSOR_MAP = {
 
 MIXER_MAP = {
     "1": {
+        "139": "valveMixer1",
+        "143": "servoMixer1",
         "1031": "mixerTemp1",
         "1287": "mixerSetTemp1",
     }
@@ -170,7 +170,7 @@ ENTITY_UNIT_MAP = {
     "mixerSetTemp": UnitOfTemperature.CELSIUS,
 }
 
-STATE_CLASS_MAP = {
+STATE_CLASS_MAP: dict[str, SensorStateClass] = {
     "tempFeeder": SensorStateClass.MEASUREMENT,
     "tempExternalSensor": SensorStateClass.MEASUREMENT,
     "lambdaSet": SensorStateClass.MEASUREMENT,
@@ -195,15 +195,13 @@ STATE_CLASS_MAP = {
     "mixerSetTemp": SensorStateClass.MEASUREMENT,
 }
 
-ENTITY_DEVICE_CLASS_MAP = {
+ENTITY_SENSOR_DEVICE_CLASS_MAP: dict[str, SensorDeviceClass | None] = {
     #############################
-    ######### SENSORS ##########
+    #          SENSORS
     #############################
     "tempFeeder": SensorDeviceClass.TEMPERATURE,
     "tempExternalSensor": SensorDeviceClass.TEMPERATURE,
     "tempCO": SensorDeviceClass.TEMPERATURE,
-    "tempCOSet": NumberDeviceClass.TEMPERATURE,
-    "tempCWUSet": NumberDeviceClass.TEMPERATURE,
     "boilerPower": SensorDeviceClass.POWER_FACTOR,
     "fanPower": SensorDeviceClass.POWER_FACTOR,
     "tempFlueGas": SensorDeviceClass.TEMPERATURE,
@@ -212,24 +210,34 @@ ENTITY_DEVICE_CLASS_MAP = {
     "mixerSetTemp": SensorDeviceClass.TEMPERATURE,
     "tempBack": SensorDeviceClass.TEMPERATURE,
     "tempCWU": SensorDeviceClass.TEMPERATURE,
-    "mode": "DEVICE_CLASS_OPERATION_MODE",
     "tempUpperBuffer": SensorDeviceClass.TEMPERATURE,
     "tempLowerBuffer": SensorDeviceClass.TEMPERATURE,
     "signal": SensorDeviceClass.SIGNAL_STRENGTH,
-    "softVer": "econet_software_version",
-    "moduleASoftVer": "module_a_software_version",
-    "moduleBSoftVer": "Module_b_software_version",
-    "modulePanelSoftVer": "module_panel_software_version",
-    "moduleLambdaSoftVer": "module_lamda_software_version",
-    "protocolType": "protocol_type",
-    "controllerID": "controller_ID",
-    "valveMixer1": "valve_mixer_1",
-    "servoMixer1": "servo_mixer_1",
-    "Status_wifi": "wifi_status",
-    "main_server": "main_server",
+    "softVer": None,
+    "moduleASoftVer": None,
+    "moduleBSoftVer": None,
+    "modulePanelSoftVer": None,
+    "moduleLambdaSoftVer": None,
+    "protocolType": None,
+    "controllerID": None,
+    "valveMixer1": None,
+    "servoMixer1": None,
+    "Status_wifi": None,
+    "main_server": None,
+}
+
+ENTITY_NUMBER_SENSOR_DEVICE_CLASS_MAP = {
     #############################
-    ###### BINARY SENSORS #######
+    #       NUMBER SENSORS
     #############################
+    "tempCOSet": NumberDeviceClass.TEMPERATURE,
+    "tempCWUSet": NumberDeviceClass.TEMPERATURE,
+}
+
+#############################
+#      BINARY SENSORS
+#############################
+ENTITY_BINARY_DEVICE_CLASS_MAP = {
     "lighter": BinarySensorDeviceClass.RUNNING,
     "weatherControl": BinarySensorDeviceClass.RUNNING,
     "unseal": BinarySensorDeviceClass.RUNNING,
@@ -286,6 +294,8 @@ ENTITY_ICON = {
     "mixerPumpWorks": "mdi:pump",
     "mixerTemp": "mdi:thermometer",
     "mixerSetTemp": "mdi:thermometer",
+    "valveMixer1": "mdi:valve",
+    "mixerSetTemp1": "mdi:thermometer-chevron-up",
 }
 
 ENTITY_ICON_OFF = {
@@ -314,6 +324,8 @@ ENTITY_VALUE_PROCESSOR = {
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
+    ## TODO check HA status maybe there are somthink STATE_OFF, OPENING CLOSING
+    "servoMixer1": (lambda x: {0: "Off", 1: "closing", 2: "opening"}.get(x, "unknown")),
 }
 
 ENTITY_CATEGORY = {
