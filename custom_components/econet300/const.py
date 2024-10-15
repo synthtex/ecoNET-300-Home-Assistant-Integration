@@ -170,7 +170,7 @@ ENTITY_UNIT_MAP = {
     "mixerSetTemp": UnitOfTemperature.CELSIUS,
 }
 
-STATE_CLASS_MAP = {
+STATE_CLASS_MAP: dict[str, SensorStateClass] = {
     "tempFeeder": SensorStateClass.MEASUREMENT,
     "tempExternalSensor": SensorStateClass.MEASUREMENT,
     "lambdaSet": SensorStateClass.MEASUREMENT,
@@ -325,13 +325,7 @@ ENTITY_VALUE_PROCESSOR = {
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
     ## TODO check HA status maybe there are somthink STATE_OFF, OPENING CLOSING
-    "servoMixer1": (
-        lambda x: (
-            "Off"
-            if x == 0
-            else ("closing" if x == 1 else ("opening" if x == 2 else "unknown"))
-        )
-    ),
+    "servoMixer1": (lambda x: {0: "Off", 1: "closing", 2: "opening"}.get(x, "unknown")),
 }
 
 ENTITY_CATEGORY = {
