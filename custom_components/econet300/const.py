@@ -9,9 +9,16 @@ from homeassistant.const import (
     STATE_CLOSING,
     STATE_OFF,
     STATE_OPENING,
+    STATE_UNKNOWN,
     EntityCategory,
     UnitOfTemperature,
 )
+
+SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
+    0: STATE_OFF,
+    1: STATE_CLOSING,
+    2: STATE_OPENING,
+}
 
 # Constant for the econet Integration integration
 DOMAIN = "econet300"
@@ -47,7 +54,7 @@ API_RM_CURRENT_DATA_PARAMS_URI = "rmCurrentDataParams"
 ## Mapunits for params data map API_RM_CURRENT_DATA_PARAMS_URI
 API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 
-## Boiler staus keys map
+# Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
 OPERATION_MODE_NAMES = {
     0: "off",
@@ -89,14 +96,14 @@ EDITABLE_PARAMS_MAPPING_TABLE = {
 }
 
 ###################################
-######## NUMBER of AVAILABLE MIXERS
+#    NUMBER of AVAILABLE MIXERS
 ###################################
 AVAILABLE_NUMBER_OF_MIXERS = 6
 MIXER_AVAILABILITY_KEY = "mixerTemp"
 MIXER_KEY = "mixerPumpWorks"
 
 #######################
-######## REG PARAM MAPS
+#    REG PARAM MAPS
 #######################
 SENSOR_MAP = {
     "26": "tempFeeder",
@@ -237,10 +244,11 @@ ENTITY_NUMBER_SENSOR_DEVICE_CLASS_MAP = {
     "tempCWUSet": NumberDeviceClass.TEMPERATURE,
 }
 
-#############################
-#      BINARY SENSORS
-#############################
+
 ENTITY_BINARY_DEVICE_CLASS_MAP = {
+    #############################
+    #      BINARY SENSORS
+    #############################
     "lighter": BinarySensorDeviceClass.RUNNING,
     "weatherControl": BinarySensorDeviceClass.RUNNING,
     "unseal": BinarySensorDeviceClass.RUNNING,
@@ -327,14 +335,7 @@ ENTITY_VALUE_PROCESSOR = {
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
-    ## TODO check HA status maybe there are somthink STATE_OFF, OPENING CLOSING
-    # "servoMixer1": (lambda x: {0: "Off", 1: "closing", 2: "opening"}.get(x, "unknown")),
-}
-
-SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
-    0: STATE_OFF,
-    1: STATE_CLOSING,
-    2: STATE_OPENING,
+    "servoMixer1": lambda x: SERVO_MIXER_VALVE_HA_STATE.get(x, STATE_UNKNOWN),
 }
 
 
