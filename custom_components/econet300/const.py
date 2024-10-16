@@ -231,7 +231,7 @@ ENTITY_SENSOR_DEVICE_CLASS_MAP: dict[str, SensorDeviceClass | None] = {
     "protocolType": None,
     "controllerID": None,
     "valveMixer1": None,
-    "servoMixer1": None,
+    "servoMixer1": SensorDeviceClass.ENUM,
     "Status_wifi": None,
     "main_server": None,
 }
@@ -307,6 +307,8 @@ ENTITY_ICON = {
     "mixerSetTemp": "mdi:thermometer",
     "valveMixer1": "mdi:valve",
     "mixerSetTemp1": "mdi:thermometer-chevron-up",
+    "servoMixer1": "mdi:valve",
+    "mixerTemp1": "mdi:thermometer",
 }
 
 ENTITY_ICON_OFF = {
