@@ -6,6 +6,9 @@ from homeassistant.components.sensor import SensorDeviceClass, SensorStateClass
 from homeassistant.const import (
     PERCENTAGE,
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
+    STATE_CLOSING,
+    STATE_OFF,
+    STATE_OPENING,
     EntityCategory,
     UnitOfTemperature,
 )
@@ -325,8 +328,15 @@ ENTITY_VALUE_PROCESSOR = {
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
     "main_server": lambda x: "Server available" if x == 1 else "Server not available",
     ## TODO check HA status maybe there are somthink STATE_OFF, OPENING CLOSING
-    "servoMixer1": (lambda x: {0: "Off", 1: "closing", 2: "opening"}.get(x, "unknown")),
+    # "servoMixer1": (lambda x: {0: "Off", 1: "closing", 2: "opening"}.get(x, "unknown")),
 }
+
+SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
+    0: STATE_OFF,
+    1: STATE_CLOSING,
+    2: STATE_OPENING,
+}
+
 
 ENTITY_CATEGORY = {
     "signal": EntityCategory.DIAGNOSTIC,
