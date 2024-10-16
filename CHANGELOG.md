@@ -84,5 +84,17 @@ Thank for @pblxptr add new code line from him
 - Separated entity by types for better management
 - Moved Mixer sensors to the Mixer sensor group and added icons
 
+## [v1.0.3-beta] 2024-10-15
+### Added
+- Introduced new `ServoMixer1` state handling with predefined Home Assistant states (`STATE_OFF`, `STATE_CLOSING`, `STATE_OPENING`).
+- Added logging for non-numeric values in sensor processing to improve debugging.
+
+### Changed
+- Updated `ENTITY_VALUE_PROCESSOR` to use predefined Home Assistant states for `ServoMixer1`.
+- Improved error handling in `create_controller_sensors` to skip non-numeric values and log warnings.
+
+### Fixed
+- Fixed `ValueError` caused by non-numeric values in sensor state processing.
+- Resolved Mypy type incompatibility issue in `STATE_CLASS_MAP` by removing the `servoMixer1` entry with `None` value.
 
 
