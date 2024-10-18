@@ -14,12 +14,6 @@ from homeassistant.const import (
     UnitOfTemperature,
 )
 
-SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
-    0: STATE_OFF,
-    1: STATE_CLOSING,
-    2: STATE_OPENING,
-}
-
 # Constant for the econet Integration integration
 DOMAIN = "econet300"
 
@@ -33,6 +27,12 @@ DEVICE_INFO_MIXER_NAME = "Mixer device"
 
 CONF_ENTRY_TITLE = "ecoNET300"
 CONF_ENTRY_DESCRIPTION = "PLUM Econet300"
+
+SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
+    0: STATE_CLOSING,
+    1: STATE_OFF,
+    2: STATE_OPENING,
+}
 
 ## Sys params
 API_SYS_PARAMS_URI = "sysParams"
