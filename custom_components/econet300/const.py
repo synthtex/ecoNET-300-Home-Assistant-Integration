@@ -8,7 +8,10 @@ from homeassistant.const import (
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     STATE_CLOSING,
     STATE_OFF,
+    STATE_ON,
     STATE_OPENING,
+    STATE_PAUSED,
+    STATE_PROBLEM,
     STATE_UNKNOWN,
     EntityCategory,
     UnitOfTemperature,
@@ -57,16 +60,16 @@ API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 # Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
 OPERATION_MODE_NAMES = {
-    0: "off",
+    0: STATE_OFF,
     1: "fire_up",
     2: "fire_up",
     3: "work",
     4: "supervision",
-    5: "halted",
+    5: STATE_PAUSED,  # "halted",
     6: "stop",
     7: "burning_off",
     8: "manual",
-    9: "alarm",
+    9: STATE_PROBLEM,  # "alarm",
     10: "unsealing",
     11: "chimney",
     12: "stabilization",
@@ -320,19 +323,19 @@ ENTITY_ICON_OFF = {
 }
 
 ENTITY_VALUE_PROCESSOR = {
-    "mode": lambda x: OPERATION_MODE_NAMES.get(x, "unknown"),
+    "mode": lambda x: OPERATION_MODE_NAMES.get(x, STATE_UNKNOWN),
     "thermostat": (
         lambda x: (
-            "ON"
+            STATE_ON
             if str(x).strip() == "true"
-            else ("OFF" if str(x).strip() == "false" else None)
+            else (STATE_OFF if str(x).strip() == "false" else None)
         )
     ),
     "lambdaStatus": (
         lambda x: (
             "stop"
             if x == 0
-            else ("start" if x == 1 else ("working" if x == 2 else "unknown"))
+            else ("start" if x == 1 else ("working" if x == 2 else STATE_UNKNOWN))
         )
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
