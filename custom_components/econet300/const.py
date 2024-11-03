@@ -41,6 +41,7 @@ SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
 ## Sys params
 API_SYS_PARAMS_URI = "sysParams"
 API_SYS_PARAMS_PARAM_UID = "uid"
+API_SYS_PARAMS_PARAM_MODEL_ID = "controllerID"
 API_SYS_PARAMS_PARAM_SW_REV = "softVer"
 API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 
