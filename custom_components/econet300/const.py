@@ -63,7 +63,7 @@ API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 OPERATION_MODE_NAMES = {
     0: STATE_OFF,
     1: "fire_up",
-    2: "fire_up",
+    2: "operation",
     3: "work",
     4: "supervision",
     5: STATE_PAUSED,  # "halted",

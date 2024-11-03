@@ -105,6 +105,7 @@
         "state": {
           "off": "Off",
           "fire_up": "Fire up",
+          "operation": "Operation",
           "work": "Work",
           "supervision": "Supervision",
           "halted": "Halted",
