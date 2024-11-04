@@ -78,8 +78,8 @@ class EconetClient:
         self._host = host
         self._session = session
         self._auth = BasicAuth(username, password)
-        self._model_id = None
-        self._sw_revision = None
+        self._model_id = "default-model-id"
+        self._sw_revision = "default-sw-revision"
 
     @property
     def host(self) -> str:
