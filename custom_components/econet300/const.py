@@ -8,17 +8,15 @@ from homeassistant.const import (
     SIGNAL_STRENGTH_DECIBELS_MILLIWATT,
     STATE_CLOSING,
     STATE_OFF,
+    STATE_ON,
     STATE_OPENING,
+    STATE_PAUSED,
+    STATE_PROBLEM,
     STATE_UNKNOWN,
     EntityCategory,
     UnitOfTemperature,
+    UnitOfTime,
 )
-
-SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
-    0: STATE_OFF,
-    1: STATE_CLOSING,
-    2: STATE_OPENING,
-}
 
 # Constant for the econet Integration integration
 DOMAIN = "econet300"
@@ -34,9 +32,16 @@ DEVICE_INFO_MIXER_NAME = "Mixer device"
 CONF_ENTRY_TITLE = "ecoNET300"
 CONF_ENTRY_DESCRIPTION = "PLUM Econet300"
 
+SERVO_MIXER_VALVE_HA_STATE: dict[int, str] = {
+    0: STATE_CLOSING,
+    1: STATE_OFF,
+    2: STATE_OPENING,
+}
+
 ## Sys params
 API_SYS_PARAMS_URI = "sysParams"
 API_SYS_PARAMS_PARAM_UID = "uid"
+API_SYS_PARAMS_PARAM_MODEL_ID = "controllerID"
 API_SYS_PARAMS_PARAM_SW_REV = "softVer"
 API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 
@@ -57,16 +62,16 @@ API_RM_PARAMSUNITSNAMES_URI = "rmParamsUnitsNames"
 # Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
 OPERATION_MODE_NAMES = {
-    0: "off",
+    0: STATE_OFF,
     1: "fire_up",
-    2: "fire_up",
+    2: "operation",
     3: "work",
     4: "supervision",
-    5: "halted",
+    5: STATE_PAUSED,  # "halted",
     6: "stop",
     7: "burning_off",
     8: "manual",
-    9: "alarm",
+    9: STATE_PROBLEM,  # "alarm",
     10: "unsealing",
     11: "chimney",
     12: "stabilization",
@@ -112,6 +117,11 @@ SENSOR_MAP = {
     "151": "lambdaStatus",
     "153": "lambdaSet",
     "154": "lambdaLevel",
+    "155": "workAt100",
+    "156": "workAt50",
+    "157": "workAt30",
+    "158": "FeederWork",
+    "159": "FiringUpCount",
     "168": "main_server",
     "170": "signal",
     "171": "status_wifi",
@@ -161,6 +171,11 @@ ENTITY_UNIT_MAP = {
     "tempFeeder": UnitOfTemperature.CELSIUS,
     "lambdaLevel": PERCENTAGE,
     "lambdaSet": PERCENTAGE,
+    "workAt100": UnitOfTime.HOURS,
+    "workAt50": UnitOfTime.HOURS,
+    "workAt30": UnitOfTime.HOURS,
+    "FeederWork": UnitOfTime.HOURS,
+    "FiringUpCount": None,
     "thermoTemp": UnitOfTemperature.CELSIUS,
     "fanPower": PERCENTAGE,
     "tempFlueGas": UnitOfTemperature.CELSIUS,
@@ -185,6 +200,11 @@ STATE_CLASS_MAP: dict[str, SensorStateClass] = {
     "tempExternalSensor": SensorStateClass.MEASUREMENT,
     "lambdaSet": SensorStateClass.MEASUREMENT,
     "lambdaLevel": SensorStateClass.MEASUREMENT,
+    "workAt100": SensorStateClass.MEASUREMENT,
+    "workAt50": SensorStateClass.MEASUREMENT,
+    "workAt30": SensorStateClass.MEASUREMENT,
+    "FeederWork": SensorStateClass.MEASUREMENT,
+    "FiringUpCount": SensorStateClass.MEASUREMENT,
     "tempCO": SensorStateClass.MEASUREMENT,
     "tempCOSet": SensorStateClass.MEASUREMENT,
     "tempCWUSet": SensorStateClass.MEASUREMENT,
@@ -295,6 +315,11 @@ ENTITY_ICON = {
     "lambdaLevel": "mdi:lambda",
     "lambdaSet": "mdi:lambda",
     "lambdaStatus": "mdi:lambda",
+    "workAt100": "mdi:counter",
+    "workAt50": "mdi:counter",
+    "workAt30": "mdi:counter",
+    "FeederWork": "mdi:counter",
+    "FiringUpCount": "mdi:counter",
     "quality": "mdi:signal",
     "pumpCOWorks": "mdi:pump",
     "fanWorks": "mdi:fan",
@@ -320,19 +345,19 @@ ENTITY_ICON_OFF = {
 }
 
 ENTITY_VALUE_PROCESSOR = {
-    "mode": lambda x: OPERATION_MODE_NAMES.get(x, "unknown"),
+    "mode": lambda x: OPERATION_MODE_NAMES.get(x, STATE_UNKNOWN),
     "thermostat": (
         lambda x: (
-            "ON"
+            STATE_ON
             if str(x).strip() == "true"
-            else ("OFF" if str(x).strip() == "false" else None)
+            else (STATE_OFF if str(x).strip() == "false" else None)
         )
     ),
     "lambdaStatus": (
         lambda x: (
             "stop"
             if x == 0
-            else ("start" if x == 1 else ("working" if x == 2 else "unknown"))
+            else ("start" if x == 1 else ("working" if x == 2 else STATE_UNKNOWN))
         )
     ),
     "status_wifi": lambda x: "Connected" if x == 1 else "Disconnected",
@@ -353,6 +378,11 @@ ENTITY_CATEGORY = {
     "controllerID": EntityCategory.DIAGNOSTIC,
     "status_wifi": EntityCategory.DIAGNOSTIC,
     "main_server": EntityCategory.DIAGNOSTIC,
+    "workAt100": EntityCategory.DIAGNOSTIC,
+    "workAt50": EntityCategory.DIAGNOSTIC,
+    "workAt30": EntityCategory.DIAGNOSTIC,
+    "FeederWork": EntityCategory.DIAGNOSTIC,
+    "FiringUpCount": EntityCategory.DIAGNOSTIC,
 }
 
 ENTITY_MIN_VALUE = {

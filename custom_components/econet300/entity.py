@@ -1,4 +1,5 @@
 """Base econet entity class."""
+
 import logging
 
 from homeassistant.core import callback
@@ -42,6 +43,7 @@ class EconetEntity(CoordinatorEntity):
             name=DEVICE_INFO_CONTROLLER_NAME,
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
+            model_id=self.api.model_id,
             configuration_url=self.api.host,
             sw_version=self.api.sw_rev,
             hw_version=self.api.hw_ver,
@@ -115,6 +117,7 @@ class MixerEntity(EconetEntity):
             name=f"{DEVICE_INFO_MIXER_NAME}{self._idx}",
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
+            model_id=self.api.model_id,
             configuration_url=self.api.host,
             sw_version=self.api.sw_rev,
             via_device=(DOMAIN, self.api.uid),

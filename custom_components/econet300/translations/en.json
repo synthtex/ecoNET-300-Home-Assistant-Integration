@@ -85,11 +85,27 @@
       "main_server": {
         "name": "Main server"
       },
+      "work_at100": {
+        "name": "Work at 100%"
+      },
+      "work_at50": {
+        "name": "Work at 50%"
+      },
+      "work_at30": {
+        "name": "Work at 30%"
+      },
+      "feeder_work": {
+        "name": "Feeder work"
+      },
+      "firing_up_count": {
+        "name": "Firing up count"
+      },
       "mode": {
         "name": "Boiler mode",
         "state": {
           "off": "Off",
           "fire_up": "Fire up",
+          "operation": "Operation",
           "work": "Work",
           "supervision": "Supervision",
           "halted": "Halted",

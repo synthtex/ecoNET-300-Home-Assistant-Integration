@@ -5,6 +5,7 @@ from http import HTTPStatus
 import logging
 from typing import Any
 
+import aiohttp
 from aiohttp import BasicAuth, ClientSession
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -15,6 +16,7 @@ from .const import (
     API_REG_PARAMS_DATA_PARAM_DATA,
     API_REG_PARAMS_DATA_URI,
     API_SYS_PARAMS_PARAM_HW_VER,
+    API_SYS_PARAMS_PARAM_MODEL_ID,
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_UID,
     API_SYS_PARAMS_URI,
@@ -90,6 +92,11 @@ class EconetClient:
 
     async def get_params(self, reg: str):
         """Call for getting api param."""
+        _LOGGER.debug(
+            "get_params called: Fetching parameters for registry '%s' from host '%s'",
+            reg,
+            self._host,
+        )
         return await self._get(f"{self._host}/econet/{reg}")
 
     async def _get(self, url):
@@ -98,21 +105,45 @@ class EconetClient:
 
         while attempt <= max_attempts:
             try:
+                _LOGGER.debug("Fetching data from URL: %s (Attempt %d)", url, attempt)
+                _LOGGER.debug(
+                    "Using model_id: %s, sw_revision: %s",
+                    self._model_id,
+                    self._sw_revision,
+                )
                 async with await self._session.get(
                     url, auth=self._auth, timeout=10
                 ) as resp:
+                    _LOGGER.debug("Received response with status: %s", resp.status)
                     if resp.status == HTTPStatus.UNAUTHORIZED:
+                        _LOGGER.error("Unauthorized access to URL: %s", url)
                         raise AuthError
 
                     if resp.status != HTTPStatus.OK:
+                        try:
+                            error_message = await resp.text()
+                        except (aiohttp.ClientError, aiohttp.ClientResponseError) as e:
+                            error_message = f"Could not retrieve error message: {e}"
+
+                        _LOGGER.error(
+                            "Failed to fetch data from URL: %s (Status: %s) - Response: %s",
+                            url,
+                            resp.status,
+                            error_message,
+                        )
                         return None
 
-                    return await resp.json()
+                    data = await resp.json()
+                    _LOGGER.debug("Fetched data: %s", data)
+                    return data
 
             except TimeoutError:
                 _LOGGER.warning("Timeout error, retry(%i/%i)", attempt, max_attempts)
                 await asyncio.sleep(1)
             attempt += 1
+        _LOGGER.error(
+            "Failed to fetch data from %s after %d attempts", url, max_attempts
+        )
         return None
 
 
@@ -124,8 +155,18 @@ class Econet300Api:
         self._client = client
         self._cache = cache
         self._uid = "default-uid"
+        self._model_id = "default-model"
         self._sw_revision = "default-sw-revision"
         self._hw_version = "default-hw-version"
+
+        _LOGGER.debug("Econet300Api initialized with client: %s", client)
+        _LOGGER.debug("Econet300Api initialized with cache: %s", cache)
+        _LOGGER.debug("Econet300Api initialized with uid: %s", self._uid)
+        _LOGGER.debug("Econet300Api initialized with model_id: %s", self._model_id)
+        _LOGGER.debug(
+            "Econet300Api initialized with sw_revision: %s", self._sw_revision
+        )
+        _LOGGER.debug("Econet300Api initialized with hw_version: %s", self._hw_version)
 
     @classmethod
     async def create(cls, client: EconetClient, cache: MemCache):
@@ -144,6 +185,11 @@ class Econet300Api:
     def uid(self) -> str:
         """Get uid."""
         return self._uid
+
+    @property
+    def model_id(self) -> str:
+        """Get model name."""
+        return self._model_id
 
     @property
     def sw_rev(self) -> str:
@@ -166,6 +212,14 @@ class Econet300Api:
             )
         else:
             self._uid = sys_params[API_SYS_PARAMS_PARAM_UID]
+
+        if API_SYS_PARAMS_PARAM_MODEL_ID not in sys_params:
+            _LOGGER.warning(
+                "%s not in sys_params - cannot set proper controller model name",
+                API_SYS_PARAMS_PARAM_MODEL_ID,
+            )
+        else:
+            self._model_id = sys_params[API_SYS_PARAMS_PARAM_MODEL_ID]
 
         if API_SYS_PARAMS_PARAM_SW_REV not in sys_params:
             _LOGGER.warning(
