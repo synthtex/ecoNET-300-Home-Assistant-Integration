@@ -78,6 +78,8 @@ class EconetClient:
         self._host = host
         self._session = session
         self._auth = BasicAuth(username, password)
+        self._model_id = "default-model-id"
+        self._sw_revision = "default-sw-revision"
 
     @property
     def host(self) -> str:
@@ -155,7 +157,7 @@ class Econet300Api:
         self._client = client
         self._cache = cache
         self._uid = "default-uid"
-        self._model_id = "default-model"
+        self._model_id = "default-model-id"
         self._sw_revision = "default-sw-revision"
         self._hw_version = "default-hw-version"
 
