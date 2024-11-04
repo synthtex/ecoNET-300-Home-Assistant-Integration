@@ -1,6 +1,6 @@
-name: Report an issue with Econet300 home assistant integration
+name: Econet300 Integration Bug Report
 description: Report an issue with Econet300 home assistant integration.
-title: "[Bug]: "
+title: "[Bug]: <short description>"
 labels: ["bug", "triage"]
 assignees:
   - jontofront
@@ -15,6 +15,7 @@ body:
         [feature request]: https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/issues/new/choose
 
   - type: textarea
+    id: problem_description
     validations:
       required: true
     attributes:
@@ -24,30 +25,44 @@ body:
         maintainers. Tell us what you were trying to do and what happened.
 
         Provide a clear and concise description of what the problem is.
+  - type: checkboxes
+    attributes:
+      label: "Connected devices"
+      description: "I have the following devices connected. For more information, see [ecoNET300_DTR_1.0_ENG](https://thermostahl.ro/wp-content/uploads/2020/08/ecoNET300_DTR_1.0_ENG.pdf)."
+    options:
+      - label: ecoMAX800 series
+      - label: ecoMAX850 series
+      - label: ecoMAX860 series
+      - label: ecoSTER
+      - label: ecoNET 300
+
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: |
         ## Environment
   - type: input
-    id: tech_version
+    id: econet300_version
     validations:
       required: true
     attributes:
-      label: What version of Tech Controllers integration has the issue?
+      label: What version of Econet300 integration has the issue?
   - type: input
     id: ha_version
     validations:
       required: true
     attributes:
       label: What version of Home Assistant Core has the issue?
-      placeholder: core-
       description: >
-        Can be found in: [Settings ⇒ System ⇒ Repairs ⇒ Three Dots in Upper Right ⇒ System information](https://my.home-assistant.io/redirect/system_health/).
+        Can be found in the System information section of Home Assistant.
 
+        [Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/redirect/system_health/)
         [![Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/badges/system_health.svg)](https://my.home-assistant.io/redirect/system_health/)
   - type: input
+    id: last_working_version
     attributes:
-      label: What was the last working version of Tech Controller integration?
+      label: What was the last working version of Econet300 integration?
       description: >
         If known, otherwise leave blank.
 
@@ -58,7 +73,7 @@ body:
   - type: textarea
     attributes:
       label: Diagnostics information
-      placeholder: "drag-and-drop the diagnostics data file here (do not copy-and-paste the content)"
+      placeholder: "Drag-and-drop diagnostics data file here"
       description: >-
         Follow HA guide to [download diagnostic data](https://www.home-assistant.io/docs/configuration/troubleshooting/#debug-logs-and-diagnostics).
 
