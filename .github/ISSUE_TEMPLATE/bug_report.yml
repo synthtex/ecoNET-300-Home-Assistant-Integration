@@ -1,53 +1,96 @@
-name: Econet300 Integration Bug Report
-description: Report an issue with Econet300 home assistant integration.
-title: "[Bug]: <short description>"
-labels: ["bug", "triage"]
-assignees:
-  - jontofront
+name: Bug Report
+description: Report a bug with the ecoNET-300 Home Assistant Integration
+title: "[Bug]: "
+labels: ["bug"]
+assignees: ["jontofront"]
+
 body:
   - type: markdown
     attributes:
       value: |
-        This issue form is for reporting bugs only!
+        Thanks for taking the time to fill out this bug report!
 
-        If you have a feature or enhancement request, please use the feature request issue type.
-
-        [feature request]: https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/issues/new/choose
+  - type: input
+    id: title
+    attributes:
+      label: Bug Title
+      description: A brief description of the bug.
+      placeholder: "Enter the bug title here"
 
   - type: textarea
-    id: problem_description
-    validations:
-      required: true
+    id: description
     attributes:
-      label: The problem
+      label: Bug Description
       description: >-
         Describe the issue you are experiencing here, to communicate to the
         maintainers. Tell us what you were trying to do and what happened.
 
         Provide a clear and concise description of what the problem is.
+      placeholder: "Enter the bug description here"
+
   - type: checkboxes
+    id: devices
     attributes:
       label: "Connected devices"
       description: "I have the following devices connected. For more information, see [ecoNET300_DTR_1.0_ENG](https://thermostahl.ro/wp-content/uploads/2020/08/ecoNET300_DTR_1.0_ENG.pdf)."
-    options:
-      - label: ecoMAX800 series
-      - label: ecoMAX850 series
-      - label: ecoMAX860 series
-      - label: ecoSTER
-      - label: ecoNET 300
+      options:
+        - label: ecoMAX800 series
+        - label: ecoMAX850 series
+        - label: ecoMAX860 series
+        - label: ecoSTER
+        - label: ecoNET 300
+    validations:
+      required: true
 
-    validations:
-      required: true
-  - type: markdown
+  - type: dropdown
+    id: series
     attributes:
-      value: |
-        ## Environment
+      label: Affected Series
+      description: Select the series of the ecoMAX controller affected by this bug.
+      options:
+        - label: Select a series
+        - label: ecoMAX800 series
+          description: "ecoMAX800 series controllers"
+        - label: ecoMAX850 series
+          description: "ecoMAX850 series controllers"
+        - label: ecoMAX860 series
+          description: "ecoMAX860 series controllers"
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: Detailed steps to reproduce the bug.
+      placeholder: "Enter the steps to reproduce the bug here"
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: Describe what you expected to happen.
+      placeholder: "Enter the expected behavior here"
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: Describe what actually happened.
+      placeholder: "Enter the actual behavior here"
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Include any relevant logs or error messages.
+      placeholder: "Enter the logs or error messages here"
+
   - type: input
-    id: econet300_version
-    validations:
-      required: true
+    id: version
     attributes:
       label: What version of Econet300 integration has the issue?
+      description: >
+        Enter the version of the ecoNET-300 Home Assistant Integration you are using.
+
   - type: input
     id: ha_version
     validations:
@@ -59,6 +102,7 @@ body:
 
         [Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/redirect/system_health/)
         [![Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/badges/system_health.svg)](https://my.home-assistant.io/redirect/system_health/)
+
   - type: input
     id: last_working_version
     attributes:
@@ -70,7 +114,9 @@ body:
     attributes:
       value: |
         # Details
+
   - type: textarea
+    id: diagnostics
     attributes:
       label: Diagnostics information
       placeholder: "Drag-and-drop diagnostics data file here"
@@ -81,13 +127,3 @@ body:
         and <ins>drag-and-drop that file into the textbox below.</ins>**
 
         It generally allows pinpointing defects and thus resolving issues faster.
-  - type: textarea
-    attributes:
-      label: Anything in the logs that might be useful for us?
-      description: For example, error message, or stack traces.
-      render: text
-  - type: textarea
-    attributes:
-      label: Additional information
-      description: >
-        If you have any additional information for us, use the field below.
