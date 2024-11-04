@@ -5,6 +5,7 @@ from http import HTTPStatus
 import logging
 from typing import Any
 
+import aiohttp
 from aiohttp import BasicAuth, ClientSession
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
@@ -119,10 +120,16 @@ class EconetClient:
                         raise AuthError
 
                     if resp.status != HTTPStatus.OK:
+                        try:
+                            error_message = await resp.text()
+                        except (aiohttp.ClientError, aiohttp.ClientResponseError) as e:
+                            error_message = f"Could not retrieve error message: {e}"
+
                         _LOGGER.error(
-                            "Failed to fetch data from URL: %s (Status: %s)",
+                            "Failed to fetch data from URL: %s (Status: %s) - Response: %s",
                             url,
                             resp.status,
+                            error_message,
                         )
                         return None
 

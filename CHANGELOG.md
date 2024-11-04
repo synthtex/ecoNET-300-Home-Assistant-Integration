@@ -97,4 +97,16 @@ Thank for @pblxptr add new code line from him
 - Fixed `ValueError` caused by non-numeric values in sensor state processing.
 - Resolved Mypy type incompatibility issue in `STATE_CLASS_MAP` by removing the `servoMixer1` entry with `None` value.
 
+## [v1.0.4-beta] 2024-11-04
+#### New Features
+- **New Sensors Added**: Introduced new sensors for enhanced monitoring.
+  - Added sensors: workAt100, workAt50, workAt30, FeederWork, FiringUpCount. (Commit: e41f882)
+
+#### Improvements
+- **Valve State Constant**: Changed the valve STATE constant for better consistency. (Commit: 3835797)
+- **Entity Value Processor**: Updated ENTITY_VALUE_PROCESSOR to use STATE_ON and STATE_OFF constants for improved state handling. (Commit: 17959c6)
+- **Controller Name**: Added 'Controller name' to 'model_id' device info for better support and identification. (Commit: b5cf889)
+
+#### Bug Fixes
+- **Boiler Status Keys**: Fixed the mapping of boiler status keys to include operation status. (Commit: a486402)
 
