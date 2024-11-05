@@ -1,6 +1,6 @@
-name: Econet300 Integration Bug Report
+name: Report an issue with Econet300 home assistant integration
 description: Report an issue with Econet300 home assistant integration.
-title: "[Bug]: <short description>"
+title: "[Bug]: "
 labels: ["bug", "triage"]
 assignees:
   - jontofront
@@ -9,16 +9,12 @@ body:
     attributes:
       value: |
         This issue form is for reporting bugs only!
+
         If you have a feature or enhancement request, please use the feature request issue type.
+
         [feature request]: https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/issues/new/choose
+
   - type: textarea
-    id: title
-    attributes:
-      label: Bug Title
-      description: A brief description of the bug.
-      placeholder: "Enter the bug title here"
-  - type: textarea
-    id: problem_description
     validations:
       required: true
     attributes:
@@ -26,32 +22,8 @@ body:
       description: >-
         Describe the issue you are experiencing here, to communicate to the
         maintainers. Tell us what you were trying to do and what happened.
+
         Provide a clear and concise description of what the problem is.
-  - type: checkboxes
-    attributes:
-      label: "Connected devices"
-      description: "I have the following devices connected. For more information, see [ecoNET300_DTR_1.0_ENG](https://thermostahl.ro/wp-content/uploads/2020/08/ecoNET300_DTR_1.0_ENG.pdf)."
-    options:
-      - label: ecoMAX800 series
-      - label: ecoMAX850 series
-      - label: ecoMAX860 series
-      - label: ecoSTER
-      - label: ecoNET 300
-    validations:
-      required: true
-  - type: dropdown
-    id: series
-    attributes:
-      label: Affected Series
-      description: Select the series of the ecoMAX controller affected by this bug.
-      options:
-        - label: Select a series
-        - label: ecoMAX800 series
-          description: "ecoMAX800 series controllers"
-        - label: ecoMAX850 series
-          description: "ecoMAX850 series controllers"
-        - label: ecoMAX860 series
-          description: "ecoMAX860 series controllers"
   - type: markdown
     attributes:
       value: |
@@ -61,36 +33,38 @@ body:
     validations:
       required: true
     attributes:
-      label: What version of Econet300 integration has the issue?
+      label: What version of ecoNET300 integration has the issue?
   - type: input
     id: ha_version
     validations:
       required: true
     attributes:
       label: What version of Home Assistant Core has the issue?
+      placeholder: core-
       description: >
-        Can be found in the System information section of Home Assistant.
-        [Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/redirect/system_health/)
+        Can be found in: [Settings ⇒ System ⇒ Repairs ⇒ Three Dots in Upper Right ⇒ System information](https://my.home-assistant.io/redirect/system_health/).
+
         [![Open your Home Assistant instance and show the system information.](https://my.home-assistant.io/badges/system_health.svg)](https://my.home-assistant.io/redirect/system_health/)
   - type: input
-    id: last_working_version
     attributes:
-      label: What was the last working version of Econet300 integration?
+      label: What was the last working version of ecoNET300 integration?
       description: >
         If known, otherwise leave blank.
+
   - type: markdown
     attributes:
       value: |
         # Details
   - type: textarea
-    id: diagnostics
     attributes:
       label: Diagnostics information
-      placeholder: "Drag-and-drop diagnostics data file here"
+      placeholder: "drag-and-drop the diagnostics data file here (do not copy-and-paste the content)"
       description: >-
         Follow HA guide to [download diagnostic data](https://www.home-assistant.io/docs/configuration/troubleshooting/#debug-logs-and-diagnostics).
+
         **It would really help if you could download the diagnostics data for the device you are having issues with,
         and <ins>drag-and-drop that file into the textbox below.</ins>**
+
         It generally allows pinpointing defects and thus resolving issues faster.
   - type: textarea
     attributes:
