@@ -1,5 +1,6 @@
 """Module provides the API functionality for ecoNET-300 Home Assistant Integration."""
 import asyncio
+import time
 from http import HTTPStatus
 import logging
 from typing import Any
@@ -14,7 +15,10 @@ from .const import (
     API_EDITABLE_PARAMS_LIMITS_URI,
     API_REG_PARAMS_PARAM_DATA,
     API_REG_PARAMS_URI,
+    API_EDIT_PARAMS_URI,
+    API_EDIT_PARAMS_DATA,
     API_SYS_PARAMS_PARAM_HW_VER,
+    API_SYS_PARAMS_PARAM_MODEL_ID,
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_UID,
     API_SYS_PARAMS_URI,
@@ -35,11 +39,10 @@ def map_param(param_name):
 
 class Limits:
     """Construct all the necessary attributes for the Limits object."""
-
-    def __init__(self, min_v: float, max_v: float):
+    def __init__(self, min_v: int | None, max_v: int | None):
         """Construct the necessary attributes for the Limits object."""
-        self.min = min_v
-        self.max = max_v
+        self.minv = min_v
+        self.maxv = max_v
 
     class AuthError(Exception):
         """Raised when authentication fails."""
@@ -63,7 +66,7 @@ class EconetClient:
     def __init__(
         self, host: str, username: str, password: str, session: ClientSession
     ) -> None:
-        """Initializethe EconetClient."""
+        """Initialize the EconetClient."""
 
         proto = ["http://", "https://"]
 
@@ -76,16 +79,21 @@ class EconetClient:
         self._host = host
         self._session = session
         self._auth = BasicAuth(username, password)
+        self._model_id = "default-model-id"
+        self._sw_revision = "default-sw-revision"
 
     def host(self):
         """Get the host."""
         return self._host
 
+
     async def set_param(self, key: str, value: str):
         """Set a parameter."""
-        url = f"{self._host}/econet/rmCurrNewParam?newParamKey={key}&newParamValue={value}"
-
+        # newParam?newParamName=BOILER_CONTROL&newParamValue=0
+        url = f"{self._host}/econet/newParam?newParamName={key}&newParamValue={value}"
+        _LOGGER.debug("Set Param URL: %s", url)
         return await self._get(url)
+
 
     async def get_params(self, reg: str):
         """Get parameters for a given registry.
@@ -106,22 +114,46 @@ class EconetClient:
 
         while attempt <= max_attempts:
             try:
+                _LOGGER.debug("Fetching data from URL: %s (Attempt %d)", url, attempt)
+                _LOGGER.debug(
+                    "Using model_id: %s, sw_revision: %s",
+                    self._model_id,
+                    self._sw_revision,
+                )
                 async with await self._session.get(
                     url, auth=self._auth, timeout=10
                 ) as resp:
+                    _LOGGER.debug("Received response with status: %s", resp.status)
                     if resp.status == HTTPStatus.UNAUTHORIZED:
+                        _LOGGER.error("Unauthorized access to URL: %s", url)
                         raise AuthError
 
-                    elif resp.status != HTTPStatus.OK:
+                    if resp.status != HTTPStatus.OK:
+                        try:
+                            error_message = await resp.text()
+                        except (aiohttp.ClientError, aiohttp.ClientResponseError) as e:
+                            error_message = f"Could not retrieve error message: {e}"
+
+                        _LOGGER.error(
+                            "Failed to fetch data from URL: %s (Status: %s) - Response: %s",
+                            url,
+                            resp.status,
+                            error_message,
+                        )
                         return None
 
-                    return await resp.json()
+                    data = await resp.json()
+                    _LOGGER.debug("Fetched data: %s", data)
+                    return data
 
             except TimeoutError:
                 _LOGGER.warning("Timeout error, retry(%i/%i)", attempt, max_attempts)
                 await asyncio.sleep(1)
-            finally:
-                attempt += 1
+            attempt += 1
+        _LOGGER.error(
+            "Failed to fetch data from %s after %d attempts", url, max_attempts
+        )
+        return None
 
 
 class Econet300Api:
@@ -190,6 +222,10 @@ class Econet300Api:
     async def set_param(self, param, value) -> bool:
         """Set a parameter value via the Econet 300 API."""
         param_idx = map_param(param)
+
+        valuecheck = str(value).replace(".0", "")
+        value = valuecheck
+        
         if param_idx is None:
             _LOGGER.warning(
                 "Requested param set for: '{param}' but mapping for this param does not exist"
@@ -197,7 +233,7 @@ class Econet300Api:
             return False
 
         data = await self._client.set_param(param_idx, value)
-
+            
         if data is None or "result" not in data:
             return False
 
@@ -207,6 +243,7 @@ class Econet300Api:
         self._cache.set(param, value)
 
         return True
+
 
     async def get_param_limits(self, param: str):
         """Fetch and return the limits for a particular parameter from the Econet 300 API, using a cache for efficient retrieval if available."""
@@ -218,7 +255,7 @@ class Econet300Api:
 
         limits = self._cache.get(API_EDITABLE_PARAMS_LIMITS_DATA)
         param_idx = map_param(param)
-
+        
         if param_idx is None:
             _LOGGER.warning(
                 "Requested param limits for: '%s' but mapping for this param does not exist",
@@ -228,26 +265,51 @@ class Econet300Api:
 
         if param_idx not in limits:
             _LOGGER.warning(
-                "Requested param limits for: '%s(%s)' but limits for this param do not exist",
+                "Requested param limits for: '%s(%s)' not in limits",
                 param,
                 param_idx,
             )
             return None
 
         curr_limits = limits[param_idx]
-        return Limits(curr_limits["min"], curr_limits["max"])
+        
+        min_temp = curr_limits['minv']
+        max_temp = curr_limits['maxv']
+        _LOGGER.debug("Data for %s: min = %s, max = %s,", 
+        param_idx,
+        min_temp,
+        max_temp
+        )
+
+        return Limits(curr_limits['minv'], curr_limits['maxv'])
+
 
     async def fetch_data(self) -> dict[str, Any]:
-        """Fetch merged reg_params and sys_params data."""
+        """Fetch merged reg_params, sys_params and edit_params data."""
         reg_params = await self._fetch_reg_key(
             API_REG_PARAMS_URI, API_REG_PARAMS_PARAM_DATA
         )
         sys_params = await self._fetch_reg_key(API_SYS_PARAMS_URI)
-        return {**reg_params, **sys_params}
+        
+        edit_params = await self._fetch_reg_key(
+            API_EDIT_PARAMS_URI, API_EDIT_PARAMS_DATA
+        )
+        """ Edit Params values"""
+        for key, value in edit_params.items():
+            edit_params[key] = value['value']
+        
+        # _LOGGER.warning("Edits Params data: %s", edit_params)
+        return {**reg_params, **sys_params, **edit_params}
+
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):
         """Fetch a key from the json-encoded data returned by the API for a given registry If key is None, then return whole data."""
         data = await self._client.get_params(reg)
+
+        if 'error' in data:
+            _LOGGER.warning("Error in DATA: %s", data)
+            """Retrive data again"""
+            data = await self._client.get_params(reg)
 
         if data is None:
             raise DataError(f"Data fetched by API for reg: {reg} is None")
