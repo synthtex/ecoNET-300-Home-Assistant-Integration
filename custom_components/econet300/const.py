@@ -9,6 +9,7 @@ DEVICE_INFO_MANUFACTURER = "PLUM"
 DEVICE_INFO_MODEL = "ecoNET300"
 DEVICE_INFO_CONTROLLER_NAME = "PLUM ecoNET300"
 DEVICE_INFO_MIXER_NAME = "Mixer"
+DEVICE_INFO_ECOSTER_NAME = "EcoSTER Touch"
 
 CONF_ENTRY_TITLE = "ecoNET300"
 CONF_ENTRY_DESCRIPTION = "PLUM Econet300"
@@ -16,6 +17,7 @@ CONF_ENTRY_DESCRIPTION = "PLUM Econet300"
 ## Sys params
 API_SYS_PARAMS_URI = "sysParams"
 API_SYS_PARAMS_PARAM_UID = "uid"
+API_SYS_PARAMS_PARAM_MODEL_ID = "controllerID"
 API_SYS_PARAMS_PARAM_SW_REV = "softVer"
 API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 
@@ -23,43 +25,96 @@ API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 API_REG_PARAMS_URI = "regParams"
 API_REG_PARAMS_PARAM_DATA = "curr"
 
+## Edit params
+API_EDIT_PARAMS_URI = "editParams"
+API_EDIT_PARAMS_DATA = "data"
+
 ## Editable params limits
-API_EDIT_PARAM_URI = "rmCurrNewParam"
-API_EDITABLE_PARAMS_LIMITS_URI = "rmCurrentDataParamsEdits"
+# API_EDIT_PARAM_URI = "rmCurrNewParam"
+# other data params edits 
+# API_EDITABLE_PARAMS_LIMITS_URI = "rmCurrentDataParamsEdits"
+API_EDITABLE_PARAMS_LIMITS_URI = "editParams"
 API_EDITABLE_PARAMS_LIMITS_DATA = "data"
 
 ## Params mapping
 EDITABLE_PARAMS_MAPPING_TABLE = {
-    "tempCOSet": "1280",
-    "tempCWUSet": "1281",
+    "CO_TEMP_SET": "CO_TEMP_SET",
+    "CWU_SET_TEMP": "CWU_SET_TEMP",
     "mixerSetTemp1": "1287",
     "mixerSetTemp2": "1288",
     "mixerSetTemp3": "1289",
-    "mixerSetTemp4": "1290",
-    "mixerSetTemp5": "1291",
+    "mixerSetTemp4": "MIX_SET_TEMP_4",
+    "mixerSetTemp5": "MIX_SET_TEMP_5",
     "mixerSetTemp6": "1292",
+    "CALORIFIC_KWH_KG": "CALORIFIC_KWH_KG",
+    "FUEL_KG_H": "FUEL_KG_H",
+    "mode": "BOILER_CONTROL"
 }
 
-AVAILABLE_NUMBER_OF_MIXERS = 6
+AVAILABLE_NUMBER_OF_MIXERS = 5
+AVAILABLE_NUMBER_OF_ECOSTERS = 3
+
+ENTITY_MIN_VALUE = {
+    "tempCOSet": 60,
+    "CALORIFIC_KWH_KG": 0.1,
+    "CWU_SET_TEMP": 20,
+    "FUEL_KG_H":0.1
+}
+
+ENTITY_MAX_VALUE = {
+    "tempCOSet": 85,
+    "CALORIFIC_KWH_KG": 25,
+    "CWU_SET_TEMP": 70,
+    "FUEL_KG_H":25,
+}
+
+# Switch states
+
+# STATE_ON: Final = "on"
+# STATE_OFF: Final = "off"
 
 ## Boiler staus keys map
 # boiler mode names from  endpoint http://LocalIP/econet/rmParamsEnums?
 OPERATION_MODE_NAMES = {
     0: "TURNED OFF",
-    1: "FIRE UP",
+    1: "STOPPED",
     2: "FIRE UP",
     3: "WORK",
     4: "SUPERVISION",
     5: "Halted",
-    6: "STOP",
+    6: "Cleaning",
     7: "BURNING OFF",
-    8: "MANUAL",
-    9: "ALARM",
+    8: "ALARM",
+    9: "Manual",
     10: "UNSEALING",
-    11: "CHIMNEY",
+    11: "Other",
     12: "STABILIZATION",
-    13: "NO TRANSMISSION",
+    13: "Purge",
+    19: "Calibration",
+    20: "Maintain",
+    21: "Afterburning",
+    22: "Chimney-sweep",
+    23: "Kindling",
+    24: "OpenDoor",
+    25: "Cooling",
+    26: "Safe",
 }
+
+ECOSTER_MODE_NAMES = {
+    0: "Schedule mode",
+    1: "Economy mode",
+    2: "Comfort mode",
+    3: "Outside mode",
+    4: "Ventilation mode",
+    5: "Party mode",
+    6: "Holiday mode",
+    7: "Frost protection mode",
+    8: "Heat now mode",
+    9: "HUW charging mode",
+    10: "Off Mode",
+    11: "Turn off heating",
+}
+
 
 # add constants to future
 PRODUCT_TYPE = {
@@ -82,9 +137,10 @@ REG_PARAM_PRECICION = {
     "tempFeeder": 0,
     "tempCO": 0,
     "tempFlueGas": 0,
-    "tempCWU": 0,
+    "tempCWU": 1,
     "tempCWUSet": 0,
     "tempUpperBuffer": 0,
+    "tempOpticalSensor": 0,
 }
 
 ALARMS_NAMES = {
@@ -144,5 +200,5 @@ ALARMS_NAMES = {
     53: "Clogged auger Alarm",
     54: "Temperature above maximum for the thermocouple.",
     55: "Thermocouple wired improperly.",
-    255: "Alarm unknown",
+    255: "Alarm unknown"
 }
