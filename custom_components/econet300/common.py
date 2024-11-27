@@ -28,8 +28,9 @@ class EconetDataCoordinator(DataUpdateCoordinator):
         self._api = api
 
     def has_data(self, key: str):
-        """Check if the specified key exists in the data dictionary."""
-        return key in self.data
+            """Check if the specified key exists in the data dictionary."""
+            _LOGGER.debug("Key from has_data: %s", key)
+            return key in self.data
 
     async def _async_update_data(self):
         """Fetch data from API endpoint.
@@ -43,7 +44,7 @@ class EconetDataCoordinator(DataUpdateCoordinator):
         try:
             # Note: asyncio.TimeoutError and aiohttp.ClientError are already
             # handled by the data update coordinator.
-            async with async_timeout.timeout(10):
+            async with async_timeout.timeout(90):
                 return await self._api.fetch_data()
         except AuthError as err:
             raise ConfigEntryAuthFailed from err
