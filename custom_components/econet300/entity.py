@@ -11,12 +11,19 @@ from .const import (
     DEVICE_INFO_CONTROLLER_NAME,
     DEVICE_INFO_MANUFACTURER,
     DEVICE_INFO_MIXER_NAME,
+    DEVICE_INFO_ECOSTER_NAME,
     DEVICE_INFO_MODEL,
     DOMAIN,
 )
 
 _LOGGER = logging.getLogger(__name__)
 
+
+class EconetEditParamsValue:
+    """Read value param from the JSON payload with param value: ."""
+    def __init__(self, editvalue: float):
+        """Construct the necessary attributes for the Limits object."""
+        self.editval = editvalue
 
 class EconetEntity(CoordinatorEntity):
     """Representes EconetEntity."""
@@ -30,7 +37,6 @@ class EconetEntity(CoordinatorEntity):
         super().__init__(coordinator)
 
         self.entity_description = description
-
         self._api = api
         self._coordinator = coordinator
 
@@ -61,28 +67,34 @@ class EconetEntity(CoordinatorEntity):
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
         _LOGGER.debug(
-            "Update EconetEntity, entity name: %s", self.entity_description.name
+            "Update EconetEntity, entity name: %s : %s,", 
+            self.entity_description.name,
+            self.entity_description.key
         )
-
+        
         if self._coordinator.data[self.entity_description.key] is None:
+            _LOGGER.warning(
+                "Data key: %s was expected to exist but it doesn't",
+                self.entity_description.key,
+            )
             return
-
+            
         value = self._coordinator.data[self.entity_description.key]
-
+        
+        # _LOGGER.debug("handle coordinator data value: %s", value)
         self._sync_state(value)
 
     async def async_added_to_hass(self):
         """Handle added to hass."""
-        _LOGGER.debug("Added to HASS: %s", self.entity_description.name)
 
         if self._coordinator.data[self.entity_description.key] is None:
             _LOGGER.warning(
                 "Data key: %s was expected to exist but it doesn't",
                 self.entity_description.key,
             )
-
+            
             return
-
+            
         value = self._coordinator.data[self.entity_description.key]
 
         await super().async_added_to_hass()
@@ -109,6 +121,34 @@ class MixerEntity(EconetEntity):
         return DeviceInfo(
             identifiers={(DOMAIN, f"{self._api.uid()}-mixer-{self._idx}")},
             name=f"{DEVICE_INFO_MIXER_NAME}{self._idx}",
+            manufacturer=DEVICE_INFO_MANUFACTURER,
+            model=DEVICE_INFO_MODEL,
+            configuration_url=self._api.host(),
+            sw_version=self._api.sw_rev(),
+            via_device=(DOMAIN, self._api.uid()),
+        )
+
+
+class EcosterEntity(EconetEntity):
+    """Represents EcosterEntity."""
+
+    def __init__(
+        self,
+        description: EntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+        idx: int,
+    ):
+        super().__init__(description, coordinator, api)
+
+        self._idx = idx
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        """Return device info of the entity."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, f"{self._api.uid()}-ecoster-{self._idx}")},
+            name=f"{DEVICE_INFO_ECOSTER_NAME} {self._idx}",
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
             configuration_url=self._api.host(),
