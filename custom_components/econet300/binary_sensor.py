@@ -205,6 +205,7 @@ def can_add(
     """Check can add key."""
     return (
         coordinator.has_data(desc.availability_key)
+##        and coordinator.data[desc.availability_key] is not False
     )
 
 
@@ -255,6 +256,7 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
         else:
             _LOGGER.debug(
                 f"Availability key: mixerPumpWorks {i} does not exist, entity will not be added",
+##                description.key, #!!! UnboundLocalError: cannot access local variable 'description' where it is not associated with a value
             )
 
     return entities
@@ -276,6 +278,7 @@ def create_ecoster_sensors(coordinator: EconetDataCoordinator, api: Econet300Api
         else:
             _LOGGER.debug(
                 f"Availability key: ecoSterContacts {i} does not exist, entity will not be added",
+##                description.key, #!!! UnboundLocalError: cannot access local variable 'description' where it is not associated with a value
             )
 
     return entities

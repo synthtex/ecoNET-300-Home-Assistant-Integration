@@ -59,7 +59,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.POWER_FACTOR,
-        process_val=lambda x: round(x, 2),
+        process_val=lambda x: round(x),
     ),
     EconetSensorEntityDescription(
         key="tempCO",
@@ -70,7 +70,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
         suggested_display_precision=REG_PARAM_PRECICION["tempCO"],
-        process_val=lambda x: x,
+        process_val=lambda x: round(x, 1),
     ),
     EconetSensorEntityDescription(
         key="tempCOSet",
@@ -123,7 +123,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         device_class=SensorDeviceClass.TEMPERATURE,
-        process_val=lambda x: round(x),
+        process_val=lambda x: round(x, 1),
     ),
     EconetSensorEntityDescription(
         key="tempCWU",
@@ -455,6 +455,25 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
             _LOGGER.debug(
                 "Availability key: %s does not exist, entity will not be added",
                 description2.key,
+            )
+        description3 = EconetSensorEntityDescription(
+            key=f"15{i - 1}",
+            name=f"Mixer {i} valve open",
+            translation_key=f"mixer_{i}_valve_state",
+            icon="mdi:valve",
+            native_unit_of_measurement=PERCENTAGE,
+            state_class=SensorStateClass.MEASUREMENT,
+            device_class=SensorDeviceClass.POWER_FACTOR,
+            suggested_display_precision=0,
+            process_val=lambda x: x,
+        )
+
+        if can_add(description, coordinator) and can_add(description3, coordinator):
+            entities.append(MixerSensor(description3, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                "Availability key: %s does not exist, entity will not be added",
+                description3.name,
             )
     return entities
 

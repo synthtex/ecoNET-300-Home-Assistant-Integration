@@ -24,13 +24,16 @@ API_SYS_PARAMS_PARAM_HW_VER = "routerType"
 ## Reg params
 API_REG_PARAMS_URI = "regParams"
 API_REG_PARAMS_PARAM_DATA = "curr"
+API_REG_PARAMSDATA_URI = "regParamsData"
+API_REG_PARAMSDATA_PARAM_DATA = "data"
+
 
 ## Edit params
 API_EDIT_PARAMS_URI = "editParams"
 API_EDIT_PARAMS_DATA = "data"
 
 ## Editable params limits
-# API_EDIT_PARAM_URI = "rmCurrNewParam"
+API_EDIT_PARAM_URI = "rmCurrNewParam"
 # other data params edits 
 # API_EDITABLE_PARAMS_LIMITS_URI = "rmCurrentDataParamsEdits"
 API_EDITABLE_PARAMS_LIMITS_URI = "editParams"

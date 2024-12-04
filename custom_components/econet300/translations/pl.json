@@ -1,65 +1,92 @@
 {
-    "config": {
-        "abort": {
-            "already_configured": "Urządzenie zostało już skonfigutowane"
-        },
-        "error": {
-            "cannot_connect": "Błąd połączenia",
-            "invalid_auth": "Błąd autoryzacji",
-            "unknown": "Niespodziewany błąd"
-        },
-        "step": {
-            "user": {
-                "data": {
-                    "host": "Host",
-                    "password": "Hasło",
-                    "username": "Nazwa użytkownika"
-                }
-            }
+  "config": {
+    "step": {
+      "user": {
+        "data": {
+          "host": "Host",
+          "username": "Hasło",
+          "password": "Nazwa użytkownika"
         }
+      }
     },
-    "entity": {
-        "sensor": {
-            "boiler_power": { "name":  "Moc kotła" },
-            "lambda_set": {"name": "Oxygen set level" }, 
-            "lambda_level": {"name": "Czujnik Lambda" },
-            "lambda_status": { "name": "Lamda status" },
-            "mode": {"name": "Tryb pracy"},
-            "mixer_temp1": { "name":  "Temperatura mieszacza 1" },
-            "mixer_temp2": { "name":  "Temperatura mieszacza 2" },
-            "mixer_temp3": { "name":  "Temperatura mieszacza 3" },
-            "mixer_temp4": { "name":  "Temperatura mieszacza 4" },
-            "mixer_temp5": { "name":  "Temperatura mieszacza 5" },
-            "mixer_temp6": { "name":  "Temperatura mieszacza 6" },
-            "mixer_temp7": { "name":  "Temperatura mieszacza 7" },
-            "mixer_temp8": { "name":  "Temperatura mieszacza 8" },
-            "mixer_1_set_temp": { "name": "Mixer 1 set temperature" },
-            "mixer_2_set_temp": { "name": "Mixer 2 set temperature" },
-            "mixer_3_set_temp": { "name": "Mixer 3 set temperature" },
-            "mixer_4_set_temp": { "name": "Mixer 4 set temperature" },
-            "mixer_5_set_temp": { "name": "Mixer 5 set temperature" },
-            "mixer_6_set_temp": { "name": "Mixer 6 set temperature" },
-            "mixer_7_set_temp": { "name": "Mixer 7 set temperature" },
-            "mixer_8_set_temp": { "name": "Mixer 8 set temperature" },
-            "temp_upper_buffer": { "name":  "Temperatura bufora górna" },
-            "temp_lower_buffer": { "name":  "Temperatura bufora dolna" },
-            "temp_co": { "name":  "Temperatura kotła" },
-            "temp_co_set":{ "name": "Boiler set temperature" },
-            "temp_feeder": {"name": "Temperatura podajnika"},
-            "temp_flue_gas": { "name":  "Temperatura spalin" },
-            "temp_back": { "name":  "Temperatura powrotu" },
-            "temp_cwu": { "name":  "Temperatura CWU" },
-            "temp_cwu_set": {"name": "Temperatura zadana zasobnika CWU "},
-            "temp_external_sensor": { "name":  "Temperatura zewnętrzna" },
-            "thermostat": { "name": "The room thermostat" },
-            "fan_power": { "name":  "Moc nadmuchu" },
-            "fuel_Level": { "name":  "Poziom paliwa" },
-            "signal": { "name": "Siła sygnału" },
-            "quality": { "name": "Jakość sygnału" }
-        },
-        "binary_sensor": {
-            "pump_cwu": { "name": "HUW pump" },
-            "pump_circulation": { "name":  "Pompa cyrkulacyjna" }
-        }
+    "error": {
+        "cannot_connect": "Błąd połączenia",
+        "invalid_auth": "Błąd autoryzacji",
+        "unknown": "Niespodziewany błąd"
+    },
+    "abort": {
+      "already_configured": "Urządzenie zostało już skonfigutowane"
     }
+  },
+  "entity":{
+    "binary_sensor": {
+      "weather_control": {"name": "Weather control the boiler"},
+      "unseal": { "name": "Unseal" },
+      "thermostat": { "name": "Boiler thermostat" },
+      "pump_co_works": { "name": "Pump CO" },
+      "fan_works": { "name": "Fan" },           
+      "aditional_feeder": { "name": "Aditional feeder" },
+      "pump_fireplace_works": { "name": "Boiler Pump" },
+      "pump_cwu_works": { "name": "Pump CWU" }, 
+      "mixer_pump1": { "name": "Mixer 1 pump" },
+      "boiler_pump": { "name": "Boiler pump" }
+    },
+    "sensor": {
+      "boiler_power": { "name": "Moc kotła" },
+      "burner_power": { "name": "Burner output" },
+      "fuel_level": { "name": "Poziom paliwa" },
+      "fan_works": { "name": "Fan" },
+      "fan_power": { "name": "Moc nadmuchu" },
+      "lambda_status": {
+        "name": "Lambda status",
+        "state": {
+          "stop": "Stop",
+          "start": "Start",
+          "working": "Working",
+          "unknown": "Unknown"
+        }
+      },
+      "lambda_set": { "name": "Lambda set" },
+      "lambda_level": { "name": "Czujnik Lambda" },
+      "mixer_temp1": { "name": "Temp. mieszacza 1" },
+      "mixer_set_temp1": { "name": "Temp. zadana mieszacza 1" },
+      "main_server": { "name": "Główny serwer" },
+      "mode": {
+        "name": "Tryb pracy",
+        "state": {
+          "off": "Off",
+          "fire_up": "Fire up",
+          "work": "Work",
+          "supervision": "Supervision",
+          "halted": "Halted",
+          "stop": "Stop",
+          "burning_off": "Burning off",
+          "manual": "Manual",
+          "alarm": "Alarm",
+          "unsealing": "Unsealing",
+          "chimney": "Chimney",
+          "stabilization": "Stabilization",
+          "no_transmission": "No transmission",
+          "unknown": "Unknown"
+        }
+      },
+      "pump_cwu_works": { "name": "HUW pump" },
+      "pump_fireplace_works": { "name": "Boiler pump" },
+      "valve_mixer1": { "name": "Zawór mieszacza 1" },
+      "servo_Mixer1": { "name": "Siłownik mieszacza 1" },
+      "signal": { "name": "Siła sygnału" },
+      "status_wifi": { "name": "Połączenie z siecią bezprzewodową" },
+      "temp_co_set": { "name": "Heating target temperature" },
+      "temp_co": { "name": "Temperatura kotła" },
+      "temp_cwu": { "name": "Temperatura CWU" },
+      "temp_upper_buffer": { "name": "Temperatura bufora górna" },
+      "temp_lower_buffer": { "name": "Temperatura bufora dolna" },
+      "temp_flue_gas": { "name": "Temperatura spalin" },
+      "temp_external_sensor": { "name": "Temperatura zewnętrzna" },
+      "temp_feeder": {"name": "Temperatura podajnika"},
+      "unseal": { "name": "Unseal" },
+      "thermostat": { "name": "Thermostat" },
+      "weather_control": {"name": "Weather control the boiler"}
+    }
+  }
 }

@@ -3,11 +3,18 @@ Due to a stall on the original [pblxptr/ecoNET-300-Home-Assistant-Integration](h
 Most of the work was done by pblxpt, for which we're very thankful as the community.
 
 # ecoNET300 Home Assistant integration
+
+[![Code_formatter](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
+[![HACS Action](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hacs.yml/badge.svg)](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hacs.yml)
+[![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://guidelines.denpa.pro/stability#alpha)
+[![Validate with hassfest](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hassfest.yaml)
+
 <div align="center">
 
-| Home Assistant  | ecoNET300     |
-| --------------- | ------------- |
-| <img src="https://raw.githubusercontent.com/jontofront/ecoNET-300-Home-Assistant-Integration/master/images/ha.png" width="100" height="100" />                |   <img src="https://raw.githubusercontent.com/jontofront/ecoNET-300-Home-Assistant-Integration/master/images/econet.webp" width="95" height="95" />            |
+| Home Assistant  | ecoNET300     | device        |
+| --------------- | ------------- | ------------- |
+| <img src="images/ha.png" width="100" height="100" />                |   <img src="images/econet.webp" width="95" height="95" />            | <img src="images/econet300_device.jpg" width="100" height="100" /> |
 
 </div>
 
@@ -21,10 +28,26 @@ It works locally, which means it connects directly to your local device using lo
 
 This integration is available from the Lovelace frontend without the need to configure the devices in the file configuration.yaml
 
+Integration tested with ecoMAX controller ecoMAX810P-L TOUCH manufactured by [Plum Sp. z o.o.](https://www.plum.pl/)
+
+Integration also reformatted and tested with PellasX sControl MK1(not TUCH!) controller manufactured by [Plum Sp. z o.o.](https://www.plum.pl/)
+
 **Bear in mind that the project is in a very early, pre-alpha phase.**
 
-Plans for first relase:
-- support for some of readonly properties (like mixer temp, ext sensor temp)
+## versions
+* v0.3.3 - version is stable. Most of the work was done by @pblxpt, for which we're very thankful as the community.
+* v0.3.4 - is a new dev version based on an earlier project v0.3.3. It fetched more data from the API. The SControl MK1 controller (non-touch version) does not have remote menu data in the API. Therefore, the code was rewritten according to the new data parameters. The standard regParams and sysParams remained. Data for the system control editParams was added. 
+
+
+## Example
+Here is an example setup showing econet300 device entities:
+
+<div align="center">
+
+
+<img src="images/sensors.png" />             
+
+</div>
 
 ## HACS Installation ##
 Follow [this guide](https://hacs.xyz/docs/faq/custom_repositories/) to add ecoNET-300-Home-Assistant-Integration as a custom repository to the HACS.
@@ -105,11 +128,17 @@ __Password__: Local password (NOT the password that you use to login to econet24
 - Fan (fanWorks)
 - Feeder (fanWorks)
 
-## Contribution
+## Contributing
 
-I work on this project only in my very-limited free time. At this moment I have opened a few other projects which are on a bit higher priority than this one, but I'm going to work on this quite regularlly as I use it in my home automation. However, if you want to help and contribute to this project **it will be highly appreciated.**
+This is HA integration open-source project. We are always open to people who want to use the code or contribute to it.
 
-Also if you see a need for a particular feature, don't hesitate to let me know.
+
+### Contributors
+Many thanks to @denpamusic for his help and pointing me in the right direction
+
+<a href="https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=jontofront/ecoNET-300-Home-Assistant-Integration" />
+</a>
 
 ---
 ## DISCLAIMER

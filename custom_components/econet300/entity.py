@@ -21,6 +21,7 @@ _LOGGER = logging.getLogger(__name__)
 
 class EconetEditParamsValue:
     """Read value param from the JSON payload with param value: ."""
+## определение объектов класса и ссылка на экземпляры
     def __init__(self, editvalue: float):
         """Construct the necessary attributes for the Limits object."""
         self.editval = editvalue

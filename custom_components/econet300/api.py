@@ -15,6 +15,8 @@ from .const import (
     API_EDITABLE_PARAMS_LIMITS_URI,
     API_REG_PARAMS_PARAM_DATA,
     API_REG_PARAMS_URI,
+    API_REG_PARAMSDATA_URI,
+    API_REG_PARAMSDATA_PARAM_DATA,
     API_EDIT_PARAMS_URI,
     API_EDIT_PARAMS_DATA,
     API_SYS_PARAMS_PARAM_HW_VER,
@@ -155,7 +157,6 @@ class EconetClient:
         )
         return None
 
-
 class Econet300Api:
     """Client for interacting with the ecoNET-300 API."""
 
@@ -289,6 +290,9 @@ class Econet300Api:
         reg_params = await self._fetch_reg_key(
             API_REG_PARAMS_URI, API_REG_PARAMS_PARAM_DATA
         )
+        reg_paramsdata = await self._fetch_reg_key(
+            API_REG_PARAMSDATA_URI, API_REG_PARAMSDATA_PARAM_DATA
+        )
         sys_params = await self._fetch_reg_key(API_SYS_PARAMS_URI)
         
         edit_params = await self._fetch_reg_key(
@@ -297,9 +301,8 @@ class Econet300Api:
         """ Edit Params values"""
         for key, value in edit_params.items():
             edit_params[key] = value['value']
-        
-        # _LOGGER.warning("Edits Params data: %s", edit_params)
-        return {**reg_params, **sys_params, **edit_params}
+
+        return {**reg_params, **reg_paramsdata, **sys_params, **edit_params}
 
 
     async def _fetch_reg_key(self, reg, data_key: str | None = None):

@@ -3,4 +3,10 @@
     "files.associations": {
         "*.yaml": "home-assistant"
     },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "python.globalModuleInstallation": false,
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
 }
