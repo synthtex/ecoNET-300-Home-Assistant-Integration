@@ -6,9 +6,9 @@ Most of the work was done by pblxpt, for which we're very thankful as the commun
 
 [![Code_formatter](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-41BDF5.svg)](https://github.com/hacs/integration)
-[![HACS Action](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hacs.yml/badge.svg)](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hacs.yml)
+[![HACS Action](https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration/actions/workflows/hacs.yml/badge.svg)](https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration/actions/workflows/hacs.yml)
 [![stability-alpha](https://img.shields.io/badge/stability-alpha-f4d03f.svg)](https://guidelines.denpa.pro/stability#alpha)
-[![Validate with hassfest](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/actions/workflows/hassfest.yaml)
+[![Validate with hassfest](https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration/actions/workflows/hassfest.yaml/badge.svg)](https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration/actions/workflows/hassfest.yaml)
 
 <div align="center">
 
@@ -53,7 +53,7 @@ Here is an example setup showing econet300 device entities:
 Follow [this guide](https://hacs.xyz/docs/faq/custom_repositories/) to add ecoNET-300-Home-Assistant-Integration as a custom repository to the HACS.
 Use this url as a repo: 
 ```
-https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration
+https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration
 ```
 
 ## Manual Installation
@@ -134,11 +134,8 @@ This is HA integration open-source project. We are always open to people who wan
 
 
 ### Contributors
-Many thanks to @denpamusic for his help and pointing me in the right direction
+Many thanks to @denpamusic and @jontofront for their help and pointing me in the right direction
 
-<a href="https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=jontofront/ecoNET-300-Home-Assistant-Integration" />
-</a>
 
 ---
 ## DISCLAIMER
