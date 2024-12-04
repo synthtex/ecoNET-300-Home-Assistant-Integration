@@ -67,46 +67,10 @@ Thank for @pblxptr add new code line from him
 - cleaned translation files and rename keys by requrements
 - Added: alarm constants for future
 
-## [v1.0.0-beta-11] 2024-10-03
-- Added: `boiler_status` sensor
-- Added: `boiler_status` binary_sensor
-- Added: `boiler_status` sensor key `boiler_status`
-- Added: `boiler_status` binary_sensor key `boiler_status`
-- Added: `boiler_status` sensor key `boiler_status_text`
-- Added: `boiler_status` binary_sensor key `boiler_status_text`
-
-## [v1.0.1-beta] 2024-10-03
-- Small code changes update repo
-
-## [v1.0.2-beta] 2024-10-15
-- Tests file structure according to documentation
-- Code style chcnges by ruff recomendation
-- Separated entity by types for better management
-- Moved Mixer sensors to the Mixer sensor group and added icons
-
-## [v1.0.3-beta] 2024-10-15
-### Added
-- Introduced new `ServoMixer1` state handling with predefined Home Assistant states (`STATE_OFF`, `STATE_CLOSING`, `STATE_OPENING`).
-- Added logging for non-numeric values in sensor processing to improve debugging.
-
-### Changed
-- Updated `ENTITY_VALUE_PROCESSOR` to use predefined Home Assistant states for `ServoMixer1`.
-- Improved error handling in `create_controller_sensors` to skip non-numeric values and log warnings.
-
-### Fixed
-- Fixed `ValueError` caused by non-numeric values in sensor state processing.
-- Resolved Mypy type incompatibility issue in `STATE_CLASS_MAP` by removing the `servoMixer1` entry with `None` value.
-
-## [v1.0.4-beta] 2024-11-04
-#### New Features
-- **New Sensors Added**: Introduced new sensors for enhanced monitoring.
-  - Added sensors: workAt100, workAt50, workAt30, FeederWork, FiringUpCount. (Commit: e41f882)
-
-#### Improvements
-- **Valve State Constant**: Changed the valve STATE constant for better consistency. (Commit: 3835797)
-- **Entity Value Processor**: Updated ENTITY_VALUE_PROCESSOR to use STATE_ON and STATE_OFF constants for improved state handling. (Commit: 17959c6)
-- **Controller Name**: Added 'Controller name' to 'model_id' device info for better support and identification. (Commit: b5cf889)
-
-#### Bug Fixes
-- **Boiler Status Keys**: Fixed the mapping of boiler status keys to include operation status. (Commit: a486402)
+## [v0.3.4] 2024-12-04
+- Repair binnary sensors
+- Added new sensors
+- Added editParams for Controls 
+- Rewrite code for connected devices. EcoSTERS and Mixers.
+- Adopt code for PellasX SControl MK1 controller
 
