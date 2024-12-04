@@ -30,14 +30,13 @@ This integration is available from the Lovelace frontend without the need to con
 
 Integration tested with ecoMAX controller ecoMAX810P-L TOUCH manufactured by [Plum Sp. z o.o.](https://www.plum.pl/)
 
+Integration also reformatted and tested with PellasX sControl MK1(not TUCH!) controller manufactured by [Plum Sp. z o.o.](https://www.plum.pl/)
+
 **Bear in mind that the project is in a very early, pre-alpha phase.**
 
 ## versions
 * v0.3.3 - version is stable. Most of the work was done by @pblxpt, for which we're very thankful as the community.
-* v1.0.0_beta - is a new dev integration version that fetches more data from API, I don't know yet if it will be better or worse :). It's my first work.
-
-## :arrow_up: Migration to version 2 (v1.0.0_beta)
-❗ This is a "version reset" release ❗ Migrations are not supported from previous versions! Please remove the integration and start anew with this version.
+* v0.3.4 - is a new dev version based on an earlier project v0.3.3. It fetched more data from the API. The SControl MK1 controller (non-touch version) does not have remote menu data in the API. Therefore, the code was rewritten according to the new data parameters. The standard regParams and sysParams remained. Data for the system control editParams was added. 
 
 
 ## Example
