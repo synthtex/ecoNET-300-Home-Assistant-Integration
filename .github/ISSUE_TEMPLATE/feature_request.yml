@@ -3,7 +3,7 @@ description: Request a feature from Econet300 home assistant integration.
 title: "[Feat]: "
 labels: ["feature", "triage"]
 assignees:
-  - jontofront
+  - synthtex
 body:
   - type: markdown
     attributes:
@@ -12,7 +12,7 @@ body:
 
         If you have a bug report, please use the [bug report] issue type.
 
-        [bug report]: https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/issues/new/choose
+        [bug report]: https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration/issues/new/choose
   - type: textarea
     validations:
       required: true
