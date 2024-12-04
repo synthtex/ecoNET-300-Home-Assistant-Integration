@@ -1,0 +1,32 @@
+{
+    "currentDataParamsEditsVer": 2,
+    "data": {
+        "1798": {
+            "type": 10
+        },
+        "1281": {
+            "max": 70,
+            "type": 4,
+            "value": 60,
+            "min": 20
+        },
+        "1280": {
+            "max": 85,
+            "type": 4,
+            "value": 65,
+            "min": 60
+        },
+        "2048": {
+            "max": 2,
+            "type": 4,
+            "value": 2,
+            "min": 0
+        },
+        "2049": {
+            "max": 2,
+            "type": 4,
+            "value": 2,
+            "min": 0
+        }
+    }
+}

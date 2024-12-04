@@ -1,0 +1,1105 @@
+{
+    "editableParamsVer": 19,
+    "data": {
+        "AIRFLOW_BRAKE_EXTINGUISH": {
+            "value": 15,
+            "maxv": 250,
+            "minv": 10,
+            "edit": true,
+            "unit": 2,
+            "mult": 1.0,
+            "sec": 106,
+            "pos": 5
+        },
+        "AIRFLOW_CORRECTION_100": {
+            "value": 0.0,
+            "maxv": 50.0,
+            "minv": -28.0,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 2,
+            "pos": 226
+        },
+        "AIRFLOW_CORRECTION_30": {
+            "value": 0.0,
+            "maxv": 13.0,
+            "minv": -50.0,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 2,
+            "pos": 222
+        },
+        "AIRFLOW_CORRECTION_50": {
+            "value": 0.0,
+            "maxv": 39.0,
+            "minv": -12.0,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 2,
+            "pos": 224
+        },
+        "AIRFLOW_POWER_AFTER_KINDLE": {
+            "value": 900.0,
+            "maxv": 2850.0,
+            "minv": 400.0,
+            "edit": true,
+            "unit": 15,
+            "mult": 10.0,
+            "sec": 102,
+            "pos": 9
+        },
+        "AIRFLOW_POWER_CLEAN": {
+            "value": 2800.0,
+            "maxv": 2850.0,
+            "minv": 400.0,
+            "edit": true,
+            "unit": 15,
+            "mult": 10.0,
+            "sec": 108,
+            "pos": 3
+        },
+        "AIRFLOW_POWER_EXTINGUISH": {
+            "value": 2200.0,
+            "maxv": 2850.0,
+            "minv": 500.0,
+            "edit": true,
+            "unit": 15,
+            "mult": 10.0,
+            "sec": 106,
+            "pos": 3
+        },
+        "AIRFLOW_POWER_KINDLE": {
+            "value": 900.0,
+            "maxv": 2850.0,
+            "minv": 400.0,
+            "edit": true,
+            "unit": 15,
+            "mult": 10.0,
+            "sec": 102,
+            "pos": 1
+        },
+        "AIRFLOW_WORK_EXTINGUISH": {
+            "value": 40,
+            "maxv": 100,
+            "minv": 1,
+            "edit": true,
+            "unit": 2,
+            "mult": 1.0,
+            "sec": 106,
+            "pos": 4
+        },
+        "AL_BOILER_TEMP": {
+            "value": 90,
+            "maxv": 95,
+            "minv": 85,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 8
+        },
+        "AUTO_SUMMER": {
+            "value": 2,
+            "maxv": 2,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 22,
+            "sec": 30,
+            "pos": 5
+        },
+        "BOILER_HYSTERESIS": {
+            "value": 10,
+            "maxv": 30,
+            "minv": 1,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 2,
+            "pos": 12
+        },
+        "CALORIFIC_KWH_KG": {
+            "value": 5.2999999999999998,
+            "maxv": 25.0,
+            "minv": 0.10000000000000001,
+            "edit": true,
+            "unit": 14,
+            "mult": 0.10000000000000001,
+            "sec": 104,
+            "pos": 5
+        },
+        "CIRCULATION_PAUSE_TIME": {
+            "value": 20,
+            "maxv": 255,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 116,
+            "pos": 1
+        },
+        "CIRCULATION_WORK_TIME": {
+            "value": 150,
+            "maxv": 255,
+            "minv": 0,
+            "edit": true,
+            "unit": 2,
+            "mult": 1.0,
+            "sec": 116,
+            "pos": 2
+        },
+        "CLEAN_BEGIN_TIME": {
+            "value": 50,
+            "maxv": 250,
+            "minv": 10,
+            "edit": true,
+            "unit": 2,
+            "mult": 1.0,
+            "sec": 108,
+            "pos": 1
+        },
+        "CONTROL_MODE": {
+            "value": 1,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 2,
+            "sec": 0,
+            "pos": 7
+        },
+        "CO_HEAT_CURVE": {
+            "value": 1.0,
+            "maxv": 4.0,
+            "minv": 0.10000000000000001,
+            "edit": true,
+            "unit": 0,
+            "mult": 0.10000000000000001,
+            "sec": 0,
+            "pos": 4
+        },
+        "CO_TEMP_SET": {
+            "value": 65,
+            "maxv": 85,
+            "minv": 60,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 0,
+            "pos": 1
+        },
+        "CTRL_WEATHER_MIX_4": {
+            "value": 1,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 9,
+            "pos": 4
+        },
+        "CTRL_WEATHER_MIX_5": {
+            "value": 1,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 10,
+            "pos": 4
+        },
+        "CWU_DISINFECTION": {
+            "value": 0,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 4,
+            "pos": 4
+        },
+        "CWU_FEEDING_EXTENSION": {
+            "value": 5,
+            "maxv": 99,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 114,
+            "pos": 3
+        },
+        "CWU_HYSTERESIS": {
+            "value": 8,
+            "maxv": 30,
+            "minv": 1,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 4,
+            "pos": 3
+        },
+        "CWU_SET_TEMP": {
+            "value": 60,
+            "maxv": 70,
+            "minv": 20,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 4,
+            "pos": 1
+        },
+        "CWU_WORK_MODE": {
+            "value": 2,
+            "maxv": 2,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 1,
+            "sec": 4,
+            "pos": 2
+        },
+        "EXTERN_BOILER_TEMP": {
+            "value": 55,
+            "maxv": 60,
+            "minv": 25,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 10
+        },
+        "EXTINGUISH_CLEAN_TIME": {
+            "value": 4,
+            "maxv": 30,
+            "minv": 1,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 108,
+            "pos": 2
+        },
+        "FINISH_KINDLE_THRESHOLD": {
+            "value": 30,
+            "maxv": 100,
+            "minv": 1,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 102,
+            "pos": 6
+        },
+        "FUEL_DETECTION_TIME": {
+            "value": 1,
+            "maxv": 5,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 104,
+            "pos": 6
+        },
+        "FUEL_KG_H": {
+            "value": 12.6,
+            "maxv": 25.0,
+            "minv": 0.10000000000000001,
+            "edit": true,
+            "unit": 11,
+            "mult": 0.10000000000000001,
+            "sec": 104,
+            "pos": 3
+        },
+        "H1_HYSTERESIS": {
+            "value": 1,
+            "maxv": 30,
+            "minv": 1,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 2,
+            "pos": 8
+        },
+        "H2_HYSTERESIS": {
+            "value": 2,
+            "maxv": 30,
+            "minv": 1,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 2,
+            "pos": 4
+        },
+        "INCREASE_TEMP_CO": {
+            "value": 5,
+            "maxv": 15,
+            "minv": 2,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 5
+        },
+        "KINDLE_TIME": {
+            "value": 6,
+            "maxv": 20,
+            "minv": 1,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 102,
+            "pos": 4
+        },
+        "LAMBDA_CORRECTION_RANGE": {
+            "value": 9,
+            "maxv": 50,
+            "minv": 0,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 112,
+            "pos": 2
+        },
+        "LAMBDA_WORK": {
+            "value": 1,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 112,
+            "pos": 1
+        },
+        "LOW_MIX_SET_TEMP_4": {
+            "value": 4,
+            "maxv": 30,
+            "minv": 0,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 9,
+            "pos": 3
+        },
+        "LOW_MIX_SET_TEMP_5": {
+            "value": 10,
+            "maxv": 30,
+            "minv": 0,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 10,
+            "pos": 3
+        },
+        "MAX_CWU_SET_TEMP": {
+            "value": 70,
+            "maxv": 80,
+            "minv": 21,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 114,
+            "pos": 2
+        },
+        "MAX_EXTINGUISH_TIME": {
+            "value": 30,
+            "maxv": 60,
+            "minv": 1,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 106,
+            "pos": 1
+        },
+        "MAX_FEED_TEMP": {
+            "value": 60,
+            "maxv": 90,
+            "minv": 40,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 9
+        },
+        "MAX_MIX_SET_TEMP_4": {
+            "value": 50,
+            "maxv": 90,
+            "minv": 21,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 123,
+            "pos": 2
+        },
+        "MAX_MIX_SET_TEMP_5": {
+            "value": 70,
+            "maxv": 90,
+            "minv": 21,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 124,
+            "pos": 2
+        },
+        "MAX_SET_CO_TEMP": {
+            "value": 85,
+            "maxv": 90,
+            "minv": 30,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 2
+        },
+        "MIN_CWU_SET_TEMP": {
+            "value": 20,
+            "maxv": 69,
+            "minv": 20,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 114,
+            "pos": 1
+        },
+        "MIN_EXTINGUISH_TIME": {
+            "value": 3,
+            "maxv": 60,
+            "minv": 1,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 106,
+            "pos": 2
+        },
+        "MIN_FAN_POWER": {
+            "value": 25,
+            "maxv": 100,
+            "minv": 10,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 104,
+            "pos": 2
+        },
+        "MIN_KINDLE_POWER_TIME": {
+            "value": 3,
+            "maxv": 100,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 102,
+            "pos": 7
+        },
+        "MIN_MIX_SET_TEMP_4": {
+            "value": 20,
+            "maxv": 49,
+            "minv": 20,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 123,
+            "pos": 1
+        },
+        "MIN_MIX_SET_TEMP_5": {
+            "value": 20,
+            "maxv": 69,
+            "minv": 20,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 124,
+            "pos": 1
+        },
+        "MIN_SET_CO_TEMP": {
+            "value": 60,
+            "maxv": 80,
+            "minv": 30,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 1
+        },
+        "MIX_HEAT_CURVE_4": {
+            "value": 0.20000000000000001,
+            "maxv": 4.0,
+            "minv": 0.10000000000000001,
+            "edit": true,
+            "unit": 0,
+            "mult": 0.10000000000000001,
+            "sec": 9,
+            "pos": 5
+        },
+        "MIX_HEAT_CURVE_5": {
+            "value": 1.2,
+            "maxv": 4.0,
+            "minv": 0.10000000000000001,
+            "edit": true,
+            "unit": 0,
+            "mult": 0.10000000000000001,
+            "sec": 10,
+            "pos": 5
+        },
+        "MIX_INSENSITIVITY_4": {
+            "value": 0.5,
+            "maxv": 4.0,
+            "minv": 0.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 123,
+            "pos": 4
+        },
+        "MIX_INSENSITIVITY_5": {
+            "value": 0.69999999999999996,
+            "maxv": 4.0,
+            "minv": 0.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 124,
+            "pos": 4
+        },
+        "MIX_OFF_THERM_PUMP_4": {
+            "value": 0,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 123,
+            "pos": 6
+        },
+        "MIX_OFF_THERM_PUMP_5": {
+            "value": 0,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 124,
+            "pos": 6
+        },
+        "MIX_OPERATION_4": {
+            "value": 2,
+            "maxv": 3,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 6,
+            "sec": 123,
+            "pos": 3
+        },
+        "MIX_OPERATION_5": {
+            "value": 1,
+            "maxv": 3,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 6,
+            "sec": 124,
+            "pos": 3
+        },
+        "MIX_SET_TEMP_4": {
+            "value": 37,
+            "maxv": 50,
+            "minv": 20,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 9,
+            "pos": 1
+        },
+        "MIX_SET_TEMP_5": {
+            "value": 55,
+            "maxv": 70,
+            "minv": 20,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 10,
+            "pos": 1
+        },
+        "MIX_THERM_MODE_4": {
+            "value": 2,
+            "maxv": 3,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 23,
+            "sec": 9,
+            "pos": 2
+        },
+        "MIX_THERM_MODE_5": {
+            "value": 3,
+            "maxv": 3,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 23,
+            "sec": 10,
+            "pos": 2
+        },
+        "PARALLEL_CO_HEAT_CURVE": {
+            "value": 0.0,
+            "maxv": 20.0,
+            "minv": -20.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 0,
+            "pos": 5
+        },
+        "PARALLEL_OFFSET_HEAT_CURV_4": {
+            "value": 3.0,
+            "maxv": 20.0,
+            "minv": -20.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 9,
+            "pos": 6
+        },
+        "PARALLEL_OFFSET_HEAT_CURV_5": {
+            "value": 0.0,
+            "maxv": 20.0,
+            "minv": -20.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 10,
+            "pos": 6
+        },
+        "PAUSE_CO_CWU": {
+            "value": 5,
+            "maxv": 99,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 4
+        },
+        "POWER_100": {
+            "value": 27,
+            "maxv": 35,
+            "minv": 15,
+            "edit": true,
+            "unit": 0,
+            "mult": 1,
+            "sec": 2,
+            "pos": 16
+        },
+        "POWER_30": {
+            "value": 7,
+            "maxv": 13,
+            "minv": 6,
+            "edit": true,
+            "unit": 0,
+            "mult": 1,
+            "sec": 2,
+            "pos": 18
+        },
+        "POWER_50": {
+            "value": 14,
+            "maxv": 26,
+            "minv": 8,
+            "edit": true,
+            "unit": 0,
+            "mult": 1,
+            "sec": 2,
+            "pos": 17
+        },
+        "PROGRAM_CONTROL_CO": {
+            "value": 0,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 0,
+            "pos": 3
+        },
+        "SCAVENGE_AFTER_KINDLE": {
+            "value": 45,
+            "maxv": 200,
+            "minv": 1,
+            "edit": true,
+            "unit": 2,
+            "mult": 1.0,
+            "sec": 102,
+            "pos": 8
+        },
+        "SCAVENGE_KINDLE": {
+            "value": 20,
+            "maxv": 240,
+            "minv": 10,
+            "edit": true,
+            "unit": 2,
+            "mult": 1.0,
+            "sec": 102,
+            "pos": 2
+        },
+        "SCAVENGE_START_EXTINGUISH": {
+            "value": 10,
+            "maxv": 100,
+            "minv": 1,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 106,
+            "pos": 6
+        },
+        "SCAVENGE_STOP_EXTINGUISH": {
+            "value": 5,
+            "maxv": 100,
+            "minv": 1,
+            "edit": true,
+            "unit": 6,
+            "mult": 1.0,
+            "sec": 106,
+            "pos": 7
+        },
+        "STER_CORRECTION_1": {
+            "value": 0.0,
+            "maxv": 4.0,
+            "minv": -4.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 8
+        },
+        "STER_CORRECTION_2": {
+            "value": 0.0,
+            "maxv": 4.0,
+            "minv": -4.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 8
+        },
+        "STER_HYSTEREZE_1": {
+            "value": 0.5,
+            "maxv": 5.0,
+            "minv": 0.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 7
+        },
+        "STER_HYSTEREZE_2": {
+            "value": 0.29999999999999999,
+            "maxv": 5.0,
+            "minv": 0.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 7
+        },
+        "STER_MODE_1": {
+            "value": 2,
+            "maxv": 7,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 19,
+            "sec": 36,
+            "pos": 1
+        },
+        "STER_MODE_2": {
+            "value": 0,
+            "maxv": 7,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 19,
+            "sec": 37,
+            "pos": 1
+        },
+        "STER_TEMP_ANTIFREEZ_1": {
+            "value": 10.0,
+            "maxv": 30.0,
+            "minv": 5.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 4
+        },
+        "STER_TEMP_ANTIFREEZ_2": {
+            "value": 10.0,
+            "maxv": 30.0,
+            "minv": 5.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 4
+        },
+        "STER_TEMP_DAY_1": {
+            "value": 24.100000000000001,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 2
+        },
+        "STER_TEMP_DAY_2": {
+            "value": 23.399999999999999,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 2
+        },
+        "STER_TEMP_NIGHT_1": {
+            "value": 20.0,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 3
+        },
+        "STER_TEMP_NIGHT_2": {
+            "value": 22.5,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 3
+        },
+        "STER_TEMP_SET_PARTY_1": {
+            "value": 20.0,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 5
+        },
+        "STER_TEMP_SET_PARTY_2": {
+            "value": 20.0,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 5
+        },
+        "STER_TEMP_SET_SUMMER_1": {
+            "value": 20.0,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 36,
+            "pos": 6
+        },
+        "STER_TEMP_SET_SUMMER_2": {
+            "value": 20.0,
+            "maxv": 35.0,
+            "minv": 10.0,
+            "edit": true,
+            "unit": 1,
+            "mult": 0.10000000000000001,
+            "sec": 37,
+            "pos": 6
+        },
+        "STER_TIMER_EXIT_1": {
+            "value": 60,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 4,
+            "mult": 1.0,
+            "sec": 36,
+            "pos": 9
+        },
+        "STER_TIMER_EXIT_2": {
+            "value": 8,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 4,
+            "mult": 1.0,
+            "sec": 37,
+            "pos": 9
+        },
+        "STER_TIMER_HOLIDAY_1": {
+            "value": 4,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 5,
+            "mult": 1.0,
+            "sec": 36,
+            "pos": 12
+        },
+        "STER_TIMER_HOLIDAY_2": {
+            "value": 4,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 5,
+            "mult": 1.0,
+            "sec": 37,
+            "pos": 12
+        },
+        "STER_TIMER_PARTY_1": {
+            "value": 6,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 4,
+            "mult": 1.0,
+            "sec": 36,
+            "pos": 11
+        },
+        "STER_TIMER_PARTY_2": {
+            "value": 1,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 4,
+            "mult": 1.0,
+            "sec": 37,
+            "pos": 11
+        },
+        "STER_TIMER_VENT_1": {
+            "value": 15,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 36,
+            "pos": 10
+        },
+        "STER_TIMER_VENT_2": {
+            "value": 15,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 37,
+            "pos": 10
+        },
+        "SUMMER_TEMP_OFF": {
+            "value": 9,
+            "maxv": 14,
+            "minv": 1,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 30,
+            "pos": 7
+        },
+        "SUMMER_TEMP_ON": {
+            "value": 15,
+            "maxv": 30,
+            "minv": 5,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 30,
+            "pos": 6
+        },
+        "SUPERVISION_TIME": {
+            "value": 0,
+            "maxv": 60,
+            "minv": 0,
+            "edit": true,
+            "unit": 3,
+            "mult": 1.0,
+            "sec": 110,
+            "pos": 1
+        },
+        "SWITCH_CO_TEMP": {
+            "value": 45,
+            "maxv": 80,
+            "minv": 30,
+            "edit": true,
+            "unit": 1,
+            "mult": 1.0,
+            "sec": 100,
+            "pos": 3
+        },
+        "TERM_BOILER_MODE": {
+            "value": 3,
+            "maxv": 3,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 23,
+            "sec": 0,
+            "pos": 8
+        },
+        "TERM_PUMP_OFF": {
+            "value": 0,
+            "maxv": 1,
+            "minv": 0,
+            "edit": true,
+            "unit": 31,
+            "mult": 0,
+            "sec": 100,
+            "pos": 7
+        },
+        "WARMING_UP_BRAKE_TIME": {
+            "value": 8,
+            "maxv": 250,
+            "minv": 1,
+            "edit": true,
+            "unit": 4,
+            "mult": 1.0,
+            "sec": 108,
+            "pos": 4
+        },
+        "WARMING_UP_TIME": {
+            "value": 30.0,
+            "maxv": 500.0,
+            "minv": 2.0,
+            "edit": true,
+            "unit": 2,
+            "mult": 2.0,
+            "sec": 102,
+            "pos": 5
+        },
+        "WEATHER_TEMP_FACTOR_4": {
+            "value": 0,
+            "maxv": 50,
+            "minv": 0,
+            "edit": true,
+            "unit": 0,
+            "mult": 1,
+            "sec": 9,
+            "pos": 7
+        },
+        "WEATHER_TEMP_FACTOR_5": {
+            "value": 10,
+            "maxv": 50,
+            "minv": 0,
+            "edit": true,
+            "unit": 0,
+            "mult": 1,
+            "sec": 10,
+            "pos": 7
+        }
+    }
+}
