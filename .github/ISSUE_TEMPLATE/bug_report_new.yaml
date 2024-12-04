@@ -7,7 +7,7 @@ body:
       value: >-
         This issue form is for reporting bugs only!
         If you have a feature or enhancement request, please use the feature request issue type.
-        [feature request]: https://github.com/jontofront/ecoNET-300-Home-Assistant-Integration/issues/new/choose
+        [feature request]: https://github.com/synthtex/ecoNET-300-Home-Assistant-Integration/issues/new/choose
 
   - type: input
     id: bug_title
