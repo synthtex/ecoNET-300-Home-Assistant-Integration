@@ -1,5 +1,4 @@
 """Base econet entity class."""
-
 import logging
 
 from homeassistant.core import callback
@@ -12,6 +11,7 @@ from .const import (
     DEVICE_INFO_CONTROLLER_NAME,
     DEVICE_INFO_MANUFACTURER,
     DEVICE_INFO_MIXER_NAME,
+    DEVICE_INFO_ECOSTER_NAME,
     DEVICE_INFO_MODEL,
     DOMAIN,
 )
@@ -19,76 +19,84 @@ from .const import (
 _LOGGER = logging.getLogger(__name__)
 
 
+class EconetEditParamsValue:
+    """Read value param from the JSON payload with param value: ."""
+## определение объектов класса и ссылка на экземпляры
+    def __init__(self, editvalue: float):
+        """Construct the necessary attributes for the Limits object."""
+        self.editval = editvalue
+
 class EconetEntity(CoordinatorEntity):
     """Representes EconetEntity."""
 
-    api: Econet300Api
-    entity_description: EntityDescription
+    def __init__(
+        self,
+        description: EntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+    ):
+        super().__init__(coordinator)
 
-    @property
-    def has_entity_name(self):
-        """Return if the name of the entity is describing only the entity itself."""
-        return True
+        self.entity_description = description
+        self._api = api
+        self._coordinator = coordinator
 
     @property
     def unique_id(self) -> str | None:
         """Return the unique_id of the entity."""
-        return f"{self.api.uid}-{self.entity_description.key}"
+        return f"{self._api.uid()}-{self.entity_description.key}"
 
     @property
     def device_info(self) -> DeviceInfo | None:
         """Return device info of the entity."""
         return DeviceInfo(
-            identifiers={(DOMAIN, self.api.uid)},
+            identifiers={(DOMAIN, self._api.uid())},
             name=DEVICE_INFO_CONTROLLER_NAME,
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
-            model_id=self.api.model_id,
-            configuration_url=self.api.host,
-            sw_version=self.api.sw_rev,
-            hw_version=self.api.hw_ver,
+            configuration_url=self._api.host(),
+            sw_version=self._api.sw_rev(),
+            hw_version=self._api.hw_ver(),
         )
+
+    @property
+    def name(self) -> str:
+        """Return the name of the entity."""
+        return self.entity_description.name
 
     @callback
     def _handle_coordinator_update(self) -> None:
         """Handle updated data from the coordinator."""
         _LOGGER.debug(
-            "Update EconetEntity, entity name: %s", self.entity_description.name
+            "Update EconetEntity, entity name: %s : %s,", 
+            self.entity_description.name,
+            self.entity_description.key
         )
-
-        if self.coordinator.data[self.entity_description.key] is None:
-            return
-
-        value = self.coordinator.data[self.entity_description.key]
-
-        self._sync_state(value)
-
-    async def async_added_to_hass(self):
-        """Handle added to hass."""
-        _LOGGER.debug("Entering async_added_to_hass method")
-        _LOGGER.debug("Added to HASS: %s", self.entity_description)
-        _LOGGER.debug("Coordinator: %s", self.coordinator)
-
-        _LOGGER.debug("Added to HASS: %s", self.entity_description.name)
-
-        if "data" not in dir(self.coordinator):
-            _LOGGER.error("Coordinator object does not have a 'data' attribute")
-            return
-
-        if (
-            not self.coordinator.has_data(self.entity_description.key)
-            or self.coordinator.data[self.entity_description.key] is None
-        ):
+        
+        if self._coordinator.data[self.entity_description.key] is None:
             _LOGGER.warning(
                 "Data key: %s was expected to exist but it doesn't",
                 self.entity_description.key,
             )
-            _LOGGER.debug("Coordinator available data: %s", self.coordinator.data)
-
-            _LOGGER.debug("Exiting async_added_to_hass method")
             return
+            
+        value = self._coordinator.data[self.entity_description.key]
+        
+        # _LOGGER.debug("handle coordinator data value: %s", value)
+        self._sync_state(value)
 
-        value = self.coordinator.data[self.entity_description.key]
+    async def async_added_to_hass(self):
+        """Handle added to hass."""
+
+        if self._coordinator.data[self.entity_description.key] is None:
+            _LOGGER.warning(
+                "Data key: %s was expected to exist but it doesn't",
+                self.entity_description.key,
+            )
+            
+            return
+            
+        value = self._coordinator.data[self.entity_description.key]
 
         await super().async_added_to_hass()
         self._sync_state(value)
@@ -104,7 +112,6 @@ class MixerEntity(EconetEntity):
         api: Econet300Api,
         idx: int,
     ):
-        """Initialize the MixerEntity."""
         super().__init__(description, coordinator, api)
 
         self._idx = idx
@@ -113,12 +120,39 @@ class MixerEntity(EconetEntity):
     def device_info(self) -> DeviceInfo | None:
         """Return device info of the entity."""
         return DeviceInfo(
-            identifiers={(DOMAIN, f"{self.api.uid}-mixer-{self._idx}")},
+            identifiers={(DOMAIN, f"{self._api.uid()}-mixer-{self._idx}")},
             name=f"{DEVICE_INFO_MIXER_NAME}{self._idx}",
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
-            model_id=self.api.model_id,
-            configuration_url=self.api.host,
-            sw_version=self.api.sw_rev,
-            via_device=(DOMAIN, self.api.uid),
+            configuration_url=self._api.host(),
+            sw_version=self._api.sw_rev(),
+            via_device=(DOMAIN, self._api.uid()),
+        )
+
+
+class EcosterEntity(EconetEntity):
+    """Represents EcosterEntity."""
+
+    def __init__(
+        self,
+        description: EntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+        idx: int,
+    ):
+        super().__init__(description, coordinator, api)
+
+        self._idx = idx
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        """Return device info of the entity."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, f"{self._api.uid()}-ecoster-{self._idx}")},
+            name=f"{DEVICE_INFO_ECOSTER_NAME} {self._idx}",
+            manufacturer=DEVICE_INFO_MANUFACTURER,
+            model=DEVICE_INFO_MODEL,
+            configuration_url=self._api.host(),
+            sw_version=self._api.sw_rev(),
+            via_device=(DOMAIN, self._api.uid()),
         )
