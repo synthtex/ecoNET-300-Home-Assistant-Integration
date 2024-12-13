@@ -1,5 +1,4 @@
 """The Example Integration integration."""
-
 from __future__ import annotations
 
 from homeassistant.config_entries import ConfigEntry
@@ -12,7 +11,7 @@ from .common import AuthError, EconetDataCoordinator
 from .const import DOMAIN, SERVICE_API, SERVICE_COORDINATOR
 from .mem_cache import MemCache
 
-PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER]
+PLATFORMS: list[Platform] = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.NUMBER, Platform.SWITCH, Platform.SELECT]
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
@@ -23,8 +22,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     cache = MemCache()
 
     try:
-        data: dict[str, str] = dict(entry.data)
-        api = await make_api(hass, cache, data)
+        api = await make_api(hass, cache, entry.data)
 
         coordinator = EconetDataCoordinator(hass, api)
         await coordinator.async_config_entry_first_refresh()
@@ -33,13 +31,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             SERVICE_API: api,
             SERVICE_COORDINATOR: coordinator,
         }
+
+        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+        return True
+
     except AuthError as auth_error:
         raise ConfigEntryAuthFailed("Client not authenticated") from auth_error
     except TimeoutError as timeout_error:
         raise ConfigEntryNotReady("Target not found") from timeout_error
-    else:
-        await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-        return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
