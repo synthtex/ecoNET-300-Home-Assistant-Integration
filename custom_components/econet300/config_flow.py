@@ -1,15 +1,15 @@
 """Config flow for Example Integration integration."""
-
 from __future__ import annotations
 
 import logging
 from typing import Any
 
+import voluptuous as vol
+
 from homeassistant import config_entries
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
-import voluptuous as vol
 
 from .api import make_api
 from .common import AuthError
@@ -36,7 +36,7 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str,
 
     try:
         api = await make_api(hass, cache, data)
-        info["uid"] = api.uid
+        info["uid"] = api.uid()
     except AuthError as auth_error:
         raise InvalidAuth from auth_error
     except TimeoutError as timeout_error:
