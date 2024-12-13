@@ -1,10 +1,9 @@
 """Module provides the API functionality for ecoNET-300 Home Assistant Integration."""
 import asyncio
-import time
 from http import HTTPStatus
 import logging
 from typing import Any
-
+import aiohttp
 from aiohttp import BasicAuth, ClientSession
 
 from homeassistant.core import HomeAssistant
@@ -20,7 +19,6 @@ from .const import (
     API_EDIT_PARAMS_URI,
     API_EDIT_PARAMS_DATA,
     API_SYS_PARAMS_PARAM_HW_VER,
-    API_SYS_PARAMS_PARAM_MODEL_ID,
     API_SYS_PARAMS_PARAM_SW_REV,
     API_SYS_PARAMS_PARAM_UID,
     API_SYS_PARAMS_URI,
@@ -75,7 +73,7 @@ class EconetClient:
         not_contains = all(p not in host for p in proto)
 
         if not_contains:
-            _LOGGER.warning("Manually adding 'http' to host")
+            #_LOGGER.warning("Manually adding 'http' to host")
             host = "http://" + host
 
         self._host = host
@@ -91,7 +89,6 @@ class EconetClient:
 
     async def set_param(self, key: str, value: str):
         """Set a parameter."""
-        # newParam?newParamName=BOILER_CONTROL&newParamValue=0
         url = f"{self._host}/econet/newParam?newParamName={key}&newParamValue={value}"
         _LOGGER.debug("Set Param URL: %s", url)
         return await self._get(url)
@@ -274,14 +271,6 @@ class Econet300Api:
 
         curr_limits = limits[param_idx]
         
-        min_temp = curr_limits['minv']
-        max_temp = curr_limits['maxv']
-        _LOGGER.debug("Data for %s: min = %s, max = %s,", 
-        param_idx,
-        min_temp,
-        max_temp
-        )
-
         return Limits(curr_limits['minv'], curr_limits['maxv'])
 
 
@@ -301,7 +290,8 @@ class Econet300Api:
         """ Edit Params values"""
         for key, value in edit_params.items():
             edit_params[key] = value['value']
-
+        
+        # _LOGGER.warning("Edits Params data: %s", edit_params)
         return {**reg_params, **reg_paramsdata, **sys_params, **edit_params}
 
 
@@ -310,7 +300,7 @@ class Econet300Api:
         data = await self._client.get_params(reg)
 
         if 'error' in data:
-            _LOGGER.warning("Error in DATA: %s", data)
+            #_LOGGER.warning("Error in DATA: %s", data)
             """Retrive data again"""
             data = await self._client.get_params(reg)
 
@@ -325,7 +315,6 @@ class Econet300Api:
             raise DataError(f"Data for key: {data_key} does not exist")
 
         return data[data_key]
-
 
 async def make_api(hass: HomeAssistant, cache: MemCache, data: dict):
     """Create an Econet 300 API instance."""
