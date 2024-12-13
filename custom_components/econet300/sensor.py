@@ -3,6 +3,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import logging
 from typing import Any
+from enum import StrEnum
 
 from homeassistant.components.sensor import (
     SensorDeviceClass,
@@ -36,7 +37,6 @@ from .entity import EconetEntity, MixerEntity, EcosterEntity
 
 _LOGGER = logging.getLogger(__name__)
 
-from enum import StrEnum
 
 @dataclass
 class EconetSensorEntityDescription(SensorEntityDescription):
@@ -194,7 +194,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         translation_key="fuel_Stream",
         name="Fuel Stream",
         icon="mdi:gauge-low",
-        native_unit_of_measurement=UnitOfVolumeFlowRates.KILOGRAMM_PER_HOUR,
+        native_unit_of_measurement=UnitOfVolumeFlowRates.KILOGRAMM_PER_HOUR, # custom unit of measurement
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=REG_PARAM_PRECICION["fuelStream"],
         process_val=lambda x: round(x, 1),
