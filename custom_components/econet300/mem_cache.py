@@ -1,6 +1,5 @@
 
 """Module provides a memory cache implementation."""
-
 import logging
 import time
 
@@ -29,7 +28,12 @@ class MemCacheItem:
 
     def __repr__(self):
         """Return a string representation of the cache item."""
-        return f"<MemCacheItem {{{self._key}:{self._value}}} expires at: {self.expiry()}, expired: {self.expiry() < time.time()}>"
+        return "<MemCacheItem {{{}:{}}} expires at: {}, expired: {}>".format(
+            self._key,
+            self._value,
+            self.expiry(),
+            self.expiry() < time.time(),
+        )
 
 class MemCache:
     """Class representing a memory cache."""
@@ -51,7 +55,7 @@ class MemCache:
         return self._data[key].value()
 
 
-    def set(self, key, value, duration: int = 80):
+    def set(self, key, value, duration: int = 30):
         """Set the value of the specified key in the cache."""
         _LOGGER.debug("Caching value for: '%s'", key)
         self._data[key] = MemCacheItem(key, value, duration)
