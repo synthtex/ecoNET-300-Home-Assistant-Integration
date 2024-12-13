@@ -14,9 +14,19 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .api import Limits, Econet300Api
-from .common import Econet300Api, EconetDataCoordinator
-from .const import DOMAIN, SERVICE_API, SERVICE_COORDINATOR, ENTITY_MIN_VALUE, ENTITY_MAX_VALUE, EDITABLE_PARAMS_MAPPING_TABLE
-from .entity import EconetEntity
+from .common import EconetDataCoordinator
+from .const import (
+    DOMAIN,
+    SERVICE_API,
+    SERVICE_COORDINATOR,
+    ENTITY_MIN_VALUE,
+    ENTITY_MAX_VALUE,
+    EDITABLE_PARAMS_MAPPING_TABLE,
+    AVAILABLE_NUMBER_OF_MIXERS,
+    AVAILABLE_NUMBER_OF_ECOSTERS
+
+)
+from .entity import EconetEntity, MixerEntity, EcosterEntity
 from enum import StrEnum
 
 _LOGGER = logging.getLogger(__name__)
@@ -84,8 +94,20 @@ NUMBER_TYPES: tuple[EconetNumberEntityDescription, ...] = (
         max_value=55,
         native_step=1,
     ),
-)
+        EconetNumberEntityDescription(
+        key="EXTERN_BOILER_TEMP",
+        name="Outer boiler turn-off temperature",
+        translation_key="extern_boiler_temp",
+        icon="mdi:thermometer",
+        device_class=NumberDeviceClass.TEMPERATURE,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        entity_registry_visible_default=True,
+        min_value=25,
+        max_value=60,
+        native_step=1,
+    ),
 
+)
 
 class EconetNumber(EconetEntity, NumberEntity):
     """Describes Econet number sensor entity."""
@@ -102,13 +124,12 @@ class EconetNumber(EconetEntity, NumberEntity):
     def _sync_state(self, value):
         """Sync state."""
         map_key = EDITABLE_PARAMS_MAPPING_TABLE.get(self.entity_description.key)
-        
         self._attr_native_value = value
         self._attr_native_min_value = ENTITY_MIN_VALUE.get(map_key)
         self._attr_native_max_value = ENTITY_MAX_VALUE.get(map_key)
 
         self.async_write_ha_state()
-        self.hass.async_create_task(self.async_set_limits_values())
+        #self.hass.async_create_task(self.async_set_limits_values()) 
 
     async def async_set_limits_values(self):
         """Async Sync number limits."""
@@ -151,11 +172,196 @@ class EconetNumber(EconetEntity, NumberEntity):
         self._attr_native_value = value
         self.async_write_ha_state()
 
+class MixerNumber(MixerEntity, EconetNumber):
+    """Mixer sensor class."""
+
+    def __init__(
+            self,
+            description: EconetNumberEntityDescription,
+            coordinator: EconetDataCoordinator,
+            api: Econet300Api,
+            idx: int,
+        ):
+            """Initialize a new instance of the EconetSensor class."""
+            super().__init__(description, coordinator, api, idx)
+
+class EcosterNumber(EcosterEntity, EconetNumber):
+    """Mixer sensor class."""
+
+    def __init__(
+            self,
+            description: EconetNumberEntityDescription,
+            coordinator: EconetDataCoordinator,
+            api: Econet300Api,
+            idx: int,
+        ):
+            """Initialize a new instance of the EconetSensor class."""
+            super().__init__(description, coordinator, api, idx)
+
+def create_mixer_numbers(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Create individual sensor descriptions for mixer sensors."""
+    entities = []
+
+    for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
+        description = EconetNumberEntityDescription(
+            key=f"MIX_HEAT_CURVE_{i}",  # MIX_HEAT_CURVE_4
+            name=f"Mixer {i} Heating curve",
+            translation_key=f"mix_heat_curve_{i}",
+            icon="mdi:chart-bell-curve-cumulative",
+            mode=NumberMode.BOX,
+            device_class=NumberDeviceClass.POWER_FACTOR,
+            entity_registry_visible_default=True,
+            min_value=0.1,
+            max_value=4.0,
+            native_step=0.1,
+        )
+        if can_add(description, coordinator):
+            entities.append(MixerNumber(description, coordinator, api, i))
+            
+        else:
+            _LOGGER.debug(
+                "Availability key: %s does not exist, entity will not be added",
+                description.key,
+            )
+        avail_mixer_key = f"mixerTemp{i}"
+        if can_add_number(avail_mixer_key, coordinator):
+            weather_temp_factor = EconetNumberEntityDescription(
+                key=f"WEATHER_TEMP_FACTOR_{i}",
+                name=f"Mixer {i} Temperature coefficient weather",
+                translation_key=f"weather_temp_factor_{i}",
+                icon="mdi:chart-bell-curve",
+                mode=NumberMode.BOX,
+                device_class=NumberDeviceClass.POWER_FACTOR,
+                entity_registry_visible_default=True,
+                min_value=0,
+                max_value=50,
+                native_step=1,
+            )
+            entities.append(MixerNumber(weather_temp_factor, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                f"Availability key: WEATHER_TEMP_FACTOR_{i} does not exist, entity will not be added"
+            )
+        if can_add_number(avail_mixer_key, coordinator):
+            parallel_offset_heat_curv = EconetNumberEntityDescription(
+                key=f"PARALLEL_OFFSET_HEAT_CURV_{i}",
+                name=f"Mixer {i} Parallel displacement of heating curve",
+                translation_key=f"parallel_offset_heat_curv_{i}",
+                icon="mdi:chart-areaspline",
+                mode=NumberMode.BOX,
+                device_class=NumberDeviceClass.TEMPERATURE,
+                native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                entity_registry_visible_default=True,
+                min_value=-20,
+                max_value=20,
+                native_step=1,
+            )
+            entities.append(MixerNumber(parallel_offset_heat_curv, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                f"Availability key: PARALLEL_OFFSET_HEAT_CURV_{i} does not exist, entity will not be added"
+            )
+        if can_add_number(avail_mixer_key, coordinator):
+            low_mix_set_temp = EconetNumberEntityDescription(
+                key=f"LOW_MIX_SET_TEMP_{i}",
+                name=f"Mixer {i} Lowering temp. by thermostat",
+                translation_key=f"parallel_offset_heat_curv_{i}",
+                icon="mdi:thermometer-chevron-down",
+                mode=NumberMode.BOX,
+                device_class=NumberDeviceClass.TEMPERATURE,
+                native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                entity_registry_visible_default=True,
+                min_value=0,
+                max_value=30,
+                native_step=1,
+            )
+            entities.append(MixerNumber(low_mix_set_temp, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                f"Availability key: LOW_MIX_SET_TEMP_{i} does not exist, entity will not be added"
+            )
+    return entities
+
+def create_ecoster_numbers(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Create individual sensor descriptions for mixer sensors."""
+    entities = []
+    for i in range(1, AVAILABLE_NUMBER_OF_ECOSTERS + 1):
+        avail_ecoster_key = f"ecoSterTemp{i}"
+        if can_add_number(avail_ecoster_key, coordinator):
+            ster_temp_day = EconetNumberEntityDescription(
+                key=f"STER_TEMP_DAY_{i}",
+                name=f"ecoSTER {i} Temperature set point day",
+                translation_key=f"ster_temp_day_{i}",
+                icon="mdi:sun-thermometer-outline",
+                mode=NumberMode.BOX,
+                device_class=NumberDeviceClass.TEMPERATURE,
+                native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                entity_registry_visible_default=True,
+                min_value=10,
+                max_value=35,
+                native_step=0.1,
+            )
+            entities.append(EcosterNumber(ster_temp_day, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                f"Availability key: STER_TEMP_DAY_{i} does not exist, entity will not be added"
+            )
+        if can_add_number(avail_ecoster_key, coordinator):
+            ster_temp_night = EconetNumberEntityDescription(
+                key=f"STER_TEMP_NIGHT_{i}",
+                name=f"ecoSTER {i} Temperature set point night",
+                translation_key=f"ster_temp_night_{i}",
+                icon="mdi:sun-thermometer",
+                mode=NumberMode.BOX,
+                device_class=NumberDeviceClass.TEMPERATURE,
+                native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                entity_registry_visible_default=True,
+                min_value=10,
+                max_value=35,
+                native_step=0.1,
+            )
+            entities.append(EcosterNumber(ster_temp_night, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                f"Availability key: STER_TEMP_NIGHT_{i} does not exist, entity will not be added"
+            )
+    return entities
+
+def can_add_number(
+    desc: str, coordinator: EconetDataCoordinator
+):
+    return (
+        coordinator.has_data(desc)
+        and coordinator.data[desc] is not None
+    )
 
 def can_add(desc: EconetNumberEntityDescription, coordinator: EconetDataCoordinator):
     """Check if a given entity can be added based on the availability of data in the coordinator."""
+    _LOGGER 
     return coordinator.has_data(desc.key) and coordinator.data[desc.key]
 
+def create_controller_numbers(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Add key."""
+    entities = []
+
+    for description in NUMBER_TYPES:
+        # number_limits = await api.get_param_limits(description.key)
+
+        # if number_limits is None:
+        #     _LOGGER.warning(
+        #         "Cannot add entity: {}, numeric limits for this entity is None"
+        #     )
+        #     continue
+
+        if can_add(description, coordinator):
+            # apply_limits(description, number_limits)
+            entities.append(EconetNumber(description, coordinator, api))
+        else:
+            _LOGGER.debug(
+                "Cannot add entity - availability key: %s does not exist",
+                description.key,
+            )
+    return entities
 
 def apply_limits(desc: EconetNumberEntityDescription, limits: Limits):
     """Set the native minimum and maximum values for the given entity description."""
@@ -174,23 +380,8 @@ async def async_setup_entry(
     api = hass.data[DOMAIN][entry.entry_id][SERVICE_API]
 
     entities: list[EconetNumber] = []
-
-    for description in NUMBER_TYPES:
-        number_limits = await api.get_param_limits(description.key)
-
-        if number_limits is None:
-            _LOGGER.warning(
-                "Cannot add entity: {}, numeric limits for this entity is None"
-            )
-            continue
-
-        if can_add(description, coordinator):
-            apply_limits(description, number_limits)
-            entities.append(EconetNumber(description, coordinator, api))
-        else:
-            _LOGGER.debug(
-                "Cannot add entity - availability key: %s does not exist",
-                description.key,
-            )
-
+    entities = entities + create_controller_numbers(coordinator, api)
+    entities = entities + create_mixer_numbers(coordinator, api)
+    entities = entities + create_ecoster_numbers(coordinator, api)
+    
     return async_add_entities(entities)
