@@ -42,13 +42,6 @@ _LOGGER = logging.getLogger(__name__)
 class EconetSelectEntityDescription(SelectEntityDescription):
     """Describes Econet select entity."""
 
-# SELECT_TYPES: tuple[EconetSelectEntityDescription, ...] = (
-#     EconetSelectEntityDescription(
-#         key = "test",
-#         options = [OFF, ON],
-#         translation_key="test",
-#     ),
-# )
 
 class EconetSelect(EconetEntity, SelectEntity):
     """Represents an Econet300 select."""
