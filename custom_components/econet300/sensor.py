@@ -243,7 +243,7 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         if x == 0
         else ("START" if x == 1 else ("Working" if x == 2 else "Unknown")),
     ),
-        EconetSensorEntityDescription(
+    EconetSensorEntityDescription(
         key="tempUpperBuffer",
         translation_key="temp_upper_buffer",
         name="Upper buffer temperature",
@@ -456,25 +456,25 @@ def create_mixer_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
                 "Availability key: %s does not exist, entity will not be added",
                 description2.key,
             )
-        description3 = EconetSensorEntityDescription(
-            key=f"15{i - 1}",
-            name=f"Mixer {i} valve open",
-            translation_key=f"mixer_{i}_valve_state",
-            icon="mdi:valve",
-            native_unit_of_measurement=PERCENTAGE,
-            state_class=SensorStateClass.MEASUREMENT,
-            device_class=SensorDeviceClass.POWER_FACTOR,
-            suggested_display_precision=0,
-            process_val=lambda x: x,
-        )
+        # description3 = EconetSensorEntityDescription(
+        #     key=f"15{i - 1}",
+        #     name=f"Mixer {i} valve open",
+        #     translation_key=f"mixer_{i}_valve_state",
+        #     icon="mdi:valve",
+        #     native_unit_of_measurement=PERCENTAGE,
+        #     state_class=SensorStateClass.MEASUREMENT,
+        #     device_class=SensorDeviceClass.POWER_FACTOR,
+        #     suggested_display_precision=0,
+        #     process_val=lambda x: x,
+        # )
 
-        if can_add(description, coordinator) and can_add(description3, coordinator):
-            entities.append(MixerSensor(description3, coordinator, api, i))
-        else:
-            _LOGGER.debug(
-                "Availability key: %s does not exist, entity will not be added",
-                description3.name,
-            )
+        # if can_add(description, coordinator) and can_add(description3, coordinator):
+        #     entities.append(MixerSensor(description3, coordinator, api, i))
+        # else:
+        #     _LOGGER.debug(
+        #         "Availability key: %s does not exist, entity will not be added",
+        #         description3.name,
+        #     )
     return entities
 
 def create_ecoster_sensors(coordinator: EconetDataCoordinator, api: Econet300Api):
@@ -525,7 +525,7 @@ def create_ecoster_sensors(coordinator: EconetDataCoordinator, api: Econet300Api
             translation_key=f"ecoster_{i}_mode",
             icon="mdi:sync",
             device_class="DEVICE_CLASS_OPERATION_MODE",  # custom class for boiler status
-        process_val=lambda x: ECOSTER_MODE_NAMES.get(x, "Unknown"),
+            process_val=lambda x: ECOSTER_MODE_NAMES.get(x, "Unknown"),
         )
 
         if can_add(description, coordinator) and can_add(description3, coordinator):
