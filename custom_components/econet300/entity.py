@@ -12,6 +12,7 @@ from .const import (
     DEVICE_INFO_MANUFACTURER,
     DEVICE_INFO_MIXER_NAME,
     DEVICE_INFO_ECOSTER_NAME,
+    DEVICE_INFO_THERMOSTAT_NAME,
     DEVICE_INFO_MODEL,
     DOMAIN,
 )
@@ -149,6 +150,32 @@ class EcosterEntity(EconetEntity):
         return DeviceInfo(
             identifiers={(DOMAIN, f"{self._api.uid()}-ecoster-{self._idx}")},
             name=f"{DEVICE_INFO_ECOSTER_NAME} {self._idx}",
+            manufacturer=DEVICE_INFO_MANUFACTURER,
+            model=DEVICE_INFO_MODEL,
+            configuration_url=self._api.host(),
+            sw_version=self._api.sw_rev(),
+            via_device=(DOMAIN, self._api.uid()),
+        )
+
+class EcosterThermEntity(EconetEntity):
+    """Represents EcosterClimateEntity."""
+
+    def __init__(
+        self,
+        description: EntityDescription,
+        coordinator: EconetDataCoordinator,
+        api: Econet300Api,
+        idx: int,
+    ):
+        super().__init__(description, coordinator, api)
+        self._idx = idx
+
+    @property
+    def device_info(self) -> DeviceInfo | None:
+        """Return device info of the entity."""
+        return DeviceInfo(
+            identifiers={(DOMAIN, f"{self._api.uid()}-ecostertherm-{self._idx}")},
+            name=f"{DEVICE_INFO_THERMOSTAT_NAME} {self._idx}",
             manufacturer=DEVICE_INFO_MANUFACTURER,
             model=DEVICE_INFO_MODEL,
             configuration_url=self._api.host(),
