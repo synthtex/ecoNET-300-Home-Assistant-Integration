@@ -12,8 +12,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .common import Econet300Api, EconetDataCoordinator
-from .const import DOMAIN, SERVICE_API, SERVICE_COORDINATOR, AVAILABLE_NUMBER_OF_ECOSTERS
-from .entity import EconetEntity, EcosterEntity
+from .const import DOMAIN, SERVICE_API, SERVICE_COORDINATOR, AVAILABLE_NUMBER_OF_ECOSTERS, AVAILABLE_NUMBER_OF_MIXERS
+from .entity import EconetEntity, EcosterEntity, MixerEntity
 
 OFF: Final = "Off"
 ON: Final = "On"
@@ -85,6 +85,18 @@ class EcosterSelect(EcosterEntity, EconetSelect):
             """Initialize a new instance of the EconetSensor class."""
             super().__init__(description, coordinator, api, idx)
 
+class MixerSelect(MixerEntity, EconetSelect):
+    """Ecoster select class."""
+
+    def __init__(
+            self,
+            description: EconetSelectEntityDescription,
+            coordinator: EconetDataCoordinator,
+            api: Econet300Api,
+            idx: int,
+        ):
+            """Initialize a new instance of the EconetSensor class."""
+            super().__init__(description, coordinator, api, idx)
 
 
 def can_add(desc: EconetSelectEntityDescription, coordinator: EconetDataCoordinator):
@@ -118,6 +130,46 @@ def create_ecoster_selects(coordinator: EconetDataCoordinator, api: Econet300Api
             )
     return entities
 
+def create_mixer_selects(coordinator: EconetDataCoordinator, api: Econet300Api):
+    """Create individual selects descriptions for ecoster."""
+    entities = []
+
+    for i in range(1, AVAILABLE_NUMBER_OF_MIXERS + 1):
+
+        description = EconetSelectEntityDescription(
+            key=f"CTRL_WEATHER_MIX_{i}",
+            name=f"Mixer {i} Weather temperature control circuit",
+            options = [OFF, ON],
+            translation_key=f"mixer_{i}_ctrl_weather",
+            icon="mdi:weather-partly-cloudy",
+            entity_registry_visible_default=True,
+        )
+
+        if can_add(description, coordinator) and can_add(description, coordinator):
+            entities.append(MixerSelect(description, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                "Availability key: %s does not exist, entity will not be added",
+                description.key,
+            )
+        description = EconetSelectEntityDescription(
+            key=f"MIX_THERM_MODE_{i}",
+            name=f"Mixer {i} Circulation thermostat mode",
+            options = [OFF, THERMOSTAT_CONTACT, ECOSTER1, ECOSTER2], # For future Check number of ecosters!!!
+            translation_key=f"mixer_{i}_therm_mode",
+            icon="mdi:thermostat-cog",
+            entity_registry_visible_default=True,
+        )
+
+        if can_add(description, coordinator) and can_add(description, coordinator):
+            entities.append(MixerSelect(description, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                "Availability key: %s does not exist, entity will not be added",
+                description.key,
+            )
+    return entities
+
 async def async_setup_entry(
     hass: HomeAssistant,
     entry: ConfigEntry,
@@ -130,5 +182,6 @@ async def async_setup_entry(
 
     entities: list[EconetSelect] = []
     entities = entities + create_ecoster_selects(coordinator, api)
+    entities = entities + create_mixer_selects(coordinator, api)
 
     return async_add_entities(entities)
