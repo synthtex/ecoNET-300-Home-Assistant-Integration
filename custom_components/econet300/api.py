@@ -10,8 +10,8 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import (
-    API_EDITABLE_PARAMS_LIMITS_DATA,
-    API_EDITABLE_PARAMS_LIMITS_URI,
+    # API_EDITABLE_PARAMS_LIMITS_DATA,
+    # API_EDITABLE_PARAMS_LIMITS_URI,
     API_REG_PARAMS_PARAM_DATA,
     API_REG_PARAMS_URI,
     # API_REG_PARAMSDATA_URI,
@@ -245,13 +245,13 @@ class Econet300Api:
 
     async def get_param_limits(self, param: str):
         """Fetch and return the limits for a particular parameter from the Econet 300 API, using a cache for efficient retrieval if available."""
-        if not self._cache.exists(API_EDITABLE_PARAMS_LIMITS_DATA):
+        if not self._cache.exists(API_EDIT_PARAMS_DATA):
             limits = await self._fetch_reg_key(
-                API_EDITABLE_PARAMS_LIMITS_URI, API_EDITABLE_PARAMS_LIMITS_DATA
+                API_EDIT_PARAMS_URI, API_EDIT_PARAMS_DATA
             )
-            self._cache.set(API_EDITABLE_PARAMS_LIMITS_DATA, limits)
+            self._cache.set(API_EDIT_PARAMS_DATA, limits)
 
-        limits = self._cache.get(API_EDITABLE_PARAMS_LIMITS_DATA)
+        limits = self._cache.get(API_EDIT_PARAMS_DATA)
         param_idx = map_param(param)
         
         if param_idx is None:
