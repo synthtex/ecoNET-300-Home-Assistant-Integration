@@ -8,6 +8,7 @@ from homeassistant.components.number import (
     NumberEntityDescription,
     NumberMode,
 )
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfTemperature
 from homeassistant.core import HomeAssistant
@@ -164,6 +165,15 @@ class EconetNumber(EconetEntity, NumberEntity):
                 self._attr_min_value,
             )
             return
+        if "MIX_SET_TEMP" in self.entity_description.key:
+            if self.entity_description.key == f"MIX_SET_TEMP_{str(self._idx)}" and self._coordinator.data[f"CTRL_WEATHER_MIX_{str(self._idx)}"] == 1:
+                _LOGGER.warning(f"Weather control for MIXER {str(self._idx)} is used to set the temperature.")
+                raise ServiceValidationError(f"Weather control for MIXER {str(self._idx)} is used to set the temperature.")
+                return
+        else:
+            if not await self._api.set_param(self.entity_description.key, value):
+                _LOGGER.warning("Setting value failed")
+                return
 
         if not await self._api.set_param(self.entity_description.key, value):
             _LOGGER.warning("Setting value failed")
@@ -279,6 +289,25 @@ def create_mixer_numbers(coordinator: EconetDataCoordinator, api: Econet300Api):
         else:
             _LOGGER.debug(
                 f"Availability key: LOW_MIX_SET_TEMP_{i} does not exist, entity will not be added"
+            )
+        if can_add_number(avail_mixer_key, coordinator):
+            low_mix_set_temp = EconetNumberEntityDescription(
+                key=f"MIX_SET_TEMP_{i}",
+                name=f"Mixer {i} Set temperature heating circuit",
+                translation_key=f"mix_set_temp_{i}",
+                icon="mdi:thermometer",
+                mode=NumberMode.BOX,
+                device_class=NumberDeviceClass.TEMPERATURE,
+                native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+                entity_registry_visible_default=True,
+                min_value=20,
+                max_value=50,
+                native_step=1,
+            )
+            entities.append(MixerNumber(low_mix_set_temp, coordinator, api, i))
+        else:
+            _LOGGER.debug(
+                f"Availability key: MIX_SET_TEMP_{i} does not exist, entity will not be added"
             )
     return entities
 
