@@ -276,7 +276,7 @@ def create_ecoster_sensors(coordinator: EconetDataCoordinator, api: Econet300Api
             entities.append(EcosterBinarySensor(description, coordinator, api, i))
         else:
             _LOGGER.debug(
-                f"Availability key: ecoSterContacts {i} does not exist, entity will not be added",
+                f"Availability key: ecoSterSetTemp{i} does not exist, entity will not be added",
             )
 
     return entities
