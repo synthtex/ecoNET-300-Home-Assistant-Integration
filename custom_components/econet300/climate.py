@@ -82,7 +82,6 @@ class EconetClimate(EcosterThermEntity, ClimateEntity):
     _attr_target_temperature_name: str | None = None
     _attr_target_temperature_step = TEMPERATURE_STEP
     _attr_temperature_unit = UnitOfTemperature.CELSIUS
-    _callbacks: dict[str]
     entity_description: EconetClimateEntityDescription
 
 
@@ -96,14 +95,13 @@ class EconetClimate(EcosterThermEntity, ClimateEntity):
             """Initialize a new instance of the EconetClimate class."""
             self.idx = idx
             super().__init__(description, coordinator, api, idx)
-    # may be
+
     def _sync_state(self, value):
         """Sync state."""
-        therm_number = str(self.idx)
         data = self._coordinator.data
         
-        value = data[f"ecoSterTemp{therm_number}"]
-        mode = data[f"ecoSterMode{therm_number}"]
+        value = data[f"ecoSterTemp{str(self.idx)}"]
+        mode = data[f"ecoSterMode{str(self.idx)}"]
         
         preset_mode = EM_TO_HA_MODE[mode]
         thermstate = self._coordinator.data[f"ecoSterContacts{str(self.idx)}"]
@@ -112,7 +110,7 @@ class EconetClimate(EcosterThermEntity, ClimateEntity):
             self._attr_hvac_action = HVACAction.HEATING
         else:
             self._attr_hvac_action = HVACAction.IDLE
-        
+        # Temp limits for presets
         if mode == 7:
             self._attr_min_temp = 5
             self._attr_max_temp = 30
@@ -142,16 +140,9 @@ class EconetClimate(EcosterThermEntity, ClimateEntity):
         if mode == 133:
             mode = 5
         
-        _LOGGER.warning("SET Therm mode: %s to %s",self.entity_description.key, mode)
         await self._api.set_param(self.entity_description.key, mode)
         self._attr_preset_mode = preset_mode
         await self._async_update_target_temperature_attributes()
-        self.async_write_ha_state()
-
-    async def async_update_target_temperature(self, value: float) -> None:
-        """Update target temperature."""
-        self._attr_target_temperature = value
-        await self._async_update_target_temperature_attributes(value)
         self.async_write_ha_state()
 
     async def _async_update_target_temperature_attributes(
