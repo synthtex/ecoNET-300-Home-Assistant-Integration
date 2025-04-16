@@ -227,6 +227,7 @@ REG_PARAM_PRECICION = {
     "tempCWU": 1,
     "tempCWUSet": 0,
     "tempUpperBuffer": 0,
+     "tempLowerBuffer": 0,
     "tempOpticalSensor": 0,
 }
 
