@@ -23,7 +23,7 @@ class EconetDataCoordinator(DataUpdateCoordinator):
             _LOGGER,
             name=DOMAIN,
             # Polling interval. Will only be polled if there are subscribers.
-            update_interval=timedelta(seconds=30),
+            update_interval=timedelta(seconds=60),
         )
         self._api = api
 
