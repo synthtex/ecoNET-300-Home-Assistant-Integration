@@ -3,7 +3,7 @@
   "name": "ecoNET300",
   "codeowners": [
     "@pblxptr",
-    "@jontofront"
+    "@jontofront",
     "@synthtex"
   ],
   "config_flow": true,

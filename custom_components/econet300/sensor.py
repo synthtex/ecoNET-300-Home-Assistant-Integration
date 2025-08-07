@@ -254,6 +254,17 @@ SENSOR_TYPES: tuple[EconetSensorEntityDescription, ...] = (
         suggested_display_precision=REG_PARAM_PRECICION["tempUpperBuffer"],
         process_val=lambda x: x,
     ),
+      EconetSensorEntityDescription(
+        key="tempLowerBuffer",
+        translation_key="temp_lower_buffer",
+        name="Lower buffer temperature",
+        icon="mdi:thermometer",
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
+        state_class=SensorStateClass.MEASUREMENT,
+        device_class=SensorDeviceClass.TEMPERATURE,
+        suggested_display_precision=REG_PARAM_PRECICION["tempLowerBuffer"],
+        process_val=lambda x: x,
+    ),
     EconetSensorEntityDescription(
         key="signal",
         translation_key="signal",
